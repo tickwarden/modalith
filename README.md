@@ -11,7 +11,13 @@ $return run dialog show @s $(dialog)
 The library serializes an NBT compound from storage into an inline dialog definition. It does not register new dialog IDs or bypass vanilla permissions and codecs.
 
 **Version:** 1.3.0 · **Data pack format:** 80 · **License:** MIT
-**Prepared repository target:** `tickwarden/modalith` — preparation does not mean the repository or release has already been published.
+**Repository:** [tickwarden/modalith](https://github.com/tickwarden/modalith)
+
+## Publication history
+
+Modalith started at **1.0.0**, not 1.3.0. Versions **1.0.0, 1.1.0, and 1.2.0** were developed and packaged locally before the repository was uploaded to GitHub. The repository was first published on **November 11, 2026**, when development had already reached **1.3.0**.
+
+The initial GitHub commit therefore imports the accumulated 1.3.0 source; it is **not the project's first development version**. Earlier development stages are documented in the [changelog](CHANGELOG.md), but their original commit-by-commit history is not present in this repository. Those entries describe pre-publication versions, not prior GitHub Releases or tags.
 
 ## New in 1.3: six runtime extensions
 
