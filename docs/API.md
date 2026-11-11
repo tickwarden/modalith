@@ -249,3 +249,10 @@ See [EXTENSIONS.md](EXTENSIONS.md) for complete signatures, examples, persistenc
 All calls require `@s` to be a player with a library ID (after join initialization or `api/begin`). Keys/locales are trusted simple `[a-z0-9_]+` identifiers, not user text. State values and text components use compounds. The new rejection reason `validation` is observable through `#mdl:on_reject` and the ordinary rejection metrics.
 
 Notification acknowledgements use the existing route validator, one-use tickets and cooldowns. Enqueueing is explicit; it does not poll or interrupt on tick. Notification frames are excluded from template save/load to prevent cloning queue-specific acknowledgement routes. Old non-notification templates continue to load with missing new fields defaulted.
+
+## Button widths
+
+- `mdl:api/button_width {width:220}`: resize the last appended draft action button (routed or native).
+- `mdl:api/exit_width {width:220}`: resize the existing draft exit action.
+
+Both accept an NBT int in 1..1024. Call after adding the target and before show/notice/confirmation conversion. Invalid widths or absent targets return 0 without changing the target. Explicit setter widths override theme defaults. See [examples](EXAMPLES.md#configurable-button-widths).

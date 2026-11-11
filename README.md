@@ -87,6 +87,8 @@ Administrator alternative:
 execute as <player> at @s run function mdl_demo:demo/home
 ```
 
+The home screen links directly to **2.0 • Typed actions + hooks**. See the [example walkthrough](docs/EXAMPLES.md) for native buttons, ordered callbacks and the optional hook companion pack.
+
 The demo opener is public. Replace its routing in `tick.mcfunction` before deploying a private/admin UI. Recheck permissions in privileged callbacks.
 
 ## Quick start
@@ -99,7 +101,7 @@ function mdl:api/title {text:{text:"Quests",color:"gold",bold:true}}
 function mdl:api/body {text:{text:"Choose your next adventure.",color:"gray"},width:300}
 function mdl:api/view {callback:[{type:"function",function:"example:menu"}],payload:{}}
 function mdl:api/button {label:{text:"Forest expedition"},callback:[{type:"function",function:"example:accept"}],payload:{quest:7}}
-function mdl:api/exit {label:{text:"Close"},callback:[{type:"function",function:"mdl:api/close"}],payload:{}}
+function mdl:api/exit {label:{text:"Close"},callback:[{type:"close"}],payload:{}}
 function mdl:api/show
 ```
 

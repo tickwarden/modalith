@@ -60,3 +60,5 @@ Large ranked-catalog test models are assembled record-by-record in fixture stora
 ## 2.0 coverage
 
 Twenty additional vanilla assertions cover ordered typed commands, inherited/overridden payloads, nested queue and result snapshots, before/after hook observation and cancellation, 64-action and 16-chain bounds, unsupported/empty actions, five native client action codecs and no privileged tickets, refresh/close, cloned multi-action ticket dispatch from a non-OP player, and the isolated action showcase. All callback fixtures are explicitly migrated to arrays; no compatibility adapter converts strings during the tests. Runtime source is checked byte-for-byte against tested production data.
+
+The subsequent example/width update adds integration assertions for missing targets, per-button overrides, invalid widths and native/exit codec bounds; those new assertions have not yet been executed in vanilla. The recorded 140-check result predates that update. Current static/unit/package checks are reported separately.

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Updated the 2.0 demo home, native/typed action showcase and optional hook companion examples.
+- Added validated button_width and exit_width setters for per-button width overrides without changing existing builder signatures.
+
 ## 2.0.0
 
 - Breaking: callback fields are typed action arrays, including views, forms and catalogs.

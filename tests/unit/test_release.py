@@ -43,7 +43,7 @@ class ReleaseTests(unittest.TestCase):
             self.assertTrue((directory / "SHA256SUMS").read_text().startswith(hashlib.sha256(first).hexdigest()))
 
     def test_new_public_apis_exist(self):
-        for name in ["template_save", "template_load", "template_delete", "guarded_button", "form_guard", "cooldown", "stats", "stats_reset", "progress", "progress_style", "auto_refresh", "auto_refresh_stop", "theme_register", "theme_apply", "themed_body", "translation_register", "locale_set", "translate", "localized_title", "localized_body", "localized_button", "state_set", "state_get", "state_remove", "state_clear", "notify", "notifications_show", "notification_next", "notifications_clear", "form_rules", "catalog_sorted"]:
+        for name in ["template_save", "template_load", "template_delete", "guarded_button", "form_guard", "cooldown", "stats", "stats_reset", "progress", "progress_style", "auto_refresh", "auto_refresh_stop", "theme_register", "theme_apply", "themed_body", "translation_register", "locale_set", "translate", "localized_title", "localized_body", "localized_button", "state_set", "state_get", "state_remove", "state_clear", "notify", "notifications_show", "notification_next", "notifications_clear", "form_rules", "catalog_sorted", "button_width", "exit_width"]:
             self.assertTrue((ROOT / "data" / "mdl" / "function" / "api" / f"{name}.mcfunction").is_file())
 
     def test_observer_tags_are_empty_in_production(self):
@@ -59,6 +59,31 @@ class ReleaseTests(unittest.TestCase):
             self.assertNotIn('callback:"', path.read_text())
         self.assertFalse((ROOT / 'data/mdl/function/demo').exists())
         self.assertTrue((ROOT / 'data/mdl_demo/function/demo/actions.mcfunction').is_file())
+
+    def test_updated_examples_and_optional_hook_pack(self):
+        home = (ROOT / 'data/mdl_demo/function/demo/home.mcfunction').read_text()
+        self.assertIn('mdl_demo:demo/actions', home)
+        actions = (ROOT / 'data/mdl_demo/function/demo/actions.mcfunction').read_text()
+        for token in ['type:"close"', 'type:"refresh"', 'type:"run_command"', 'key:"action_demo"']:
+            self.assertIn(token, actions)
+        example = ROOT / 'examples/action_hooks'
+        self.assertEqual(json.loads((example / 'pack.mcmeta').read_text())['pack']['pack_format'], 80)
+        for hook in ['before_action', 'after_action']:
+            value = json.loads((example / 'data/mdl/tags/function' / (hook + '.json')).read_text())['values'][0]
+            ns, path = value.split(':')
+            self.assertTrue((example / 'data' / ns / 'function' / (path + '.mcfunction')).is_file())
+        with tempfile.TemporaryDirectory() as tmp:
+            with zipfile.ZipFile(builder.build(Path(tmp))) as z:
+                self.assertFalse(any('mdl_example' in n for n in z.namelist()))
+
+    def test_width_setter_validation_precedes_target_mutation(self):
+        for name, target in [('button_width', 'dialog.actions[-1]'), ('exit_width', 'dialog.exit_action')]:
+            text = (ROOT / 'data/mdl/function/api' / (name + '.mcfunction')).read_text()
+            self.assertIn('matches 1..1024 run return 0', text)
+            self.assertIn('check.width int 1', text)
+            self.assertIn('score #width_type mdl.tmp matches 1 run return 0', text)
+            self.assertIn('unless data storage mdl:work ' + target + ' run return 0', text)
+            self.assertLess(text.index('matches 1..1024'), text.index(target + '.width set'))
 
     def test_no_turkish_text_in_runtime_or_documentation(self):
         import re
