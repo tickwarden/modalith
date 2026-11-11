@@ -47,9 +47,18 @@ class ReleaseTests(unittest.TestCase):
             self.assertTrue((ROOT / "data" / "mdl" / "function" / "api" / f"{name}.mcfunction").is_file())
 
     def test_observer_tags_are_empty_in_production(self):
-        for name in ["event", "show", "close", "timeout", "reject"]:
-            path = ROOT / "data" / "mdl" / "tags" / "function" / f"on_{name}.json"
+        for name in ["event", "show", "close", "timeout", "reject", "before_action", "after_action"]:
+            path = ROOT / "data" / "mdl" / "tags" / "function" / f"{name if name in ['before_action', 'after_action'] else 'on_' + name}.json"
             self.assertEqual(json.loads(path.read_text())["values"], [])
+
+    def test_typed_dispatch_and_actions(self):
+        for name in ['function', 'run_command', 'close', 'refresh', 'open_url', 'suggest_command', 'copy_to_clipboard', 'show_dialog']:
+            self.assertTrue((ROOT / 'data/mdl/function/action' / (name + '.mcfunction')).is_file())
+        self.assertEqual((ROOT / 'data/mdl/function/action/run_command.mcfunction').read_text().strip(), '$$(cmd)')
+        for path in (ROOT / 'data').rglob('*.mcfunction'):
+            self.assertNotIn('callback:"', path.read_text())
+        self.assertFalse((ROOT / 'data/mdl/function/demo').exists())
+        self.assertTrue((ROOT / 'data/mdl_demo/function/demo/actions.mcfunction').is_file())
 
     def test_no_turkish_text_in_runtime_or_documentation(self):
         import re

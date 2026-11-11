@@ -10,7 +10,7 @@ Call as a player:
 function mdl:api/begin
 function mdl:api/title {text:{text:"Download status",color:"aqua"}}
 function mdl:api/progress {label:{text:"Files"},value:65,max:100}
-function mdl:api/exit {label:{text:"Close"},callback:"mdl:api/close",payload:{}}
+function mdl:api/exit {label:{text:"Close"},callback:[{type:"function",function:"mdl:api/close"}],payload:{}}
 function mdl:api/show
 ```
 
@@ -40,14 +40,14 @@ In your own `example:render_status` function:
 ```mcfunction
 function mdl:api/begin
 function mdl:api/title {text:{text:"Live download",color:"aqua"}}
-function mdl:api/view {callback:"example:render_status",payload:{}}
+function mdl:api/view {callback:[{type:"function",function:"example:render_status"}],payload:{}}
 
 data modify storage example:ui progress set value {label:{text:"Files"},value:0,max:100}
 execute store result storage example:ui progress.value int 1 run scoreboard players get @s download.progress
 function mdl:api/progress with storage example:ui progress
 
 function mdl:api/auto_refresh {ticks:20}
-function mdl:api/exit {label:{text:"Close"},callback:"mdl:api/close",payload:{}}
+function mdl:api/exit {label:{text:"Close"},callback:[{type:"function",function:"mdl:api/close"}],payload:{}}
 function mdl:api/show
 ```
 

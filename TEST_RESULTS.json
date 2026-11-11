@@ -598,5 +598,105 @@
     "test": "Notification rejects invalid width",
     "pass": true,
     "detail": ""
+  },
+  {
+    "test": "Typed command actions execute in array order",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Function action inherits route payload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Action-specific payload overrides shared payload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Nested chain preserves parent remainder",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Nested function result is restored for after hook",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Dispatcher stack drains after nested calls",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Before and after hooks observe each action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Before-action hook can cancel execution",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Action chain bounded to 64 entries",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Unsupported action reports zero result",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Empty callback array is a no-op",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Five native action buttons pass server dialog codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native buttons allocate no privileged callback tickets",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native URL action retains its URL",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Refresh action rebuilds renderer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Close action invalidates the current session",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Recursive action dispatch stops at 16 chains",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Non-OP ticket dispatch runs entire cloned action array",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Cloned chain dispatch drains stack",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Isolated action showcase renders",
+    "pass": true,
+    "detail": ""
   }
 ]

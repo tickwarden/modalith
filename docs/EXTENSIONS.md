@@ -1,4 +1,4 @@
-# Six extensions — Modalith 1.3.0
+# Six extensions — introduced in 1.3, examples updated for 2.0
 
 All examples execute as a player after library initialization. Finish builder chains synchronously. Keys/locales are **trusted developer-controlled simple identifiers**, conventionally `[a-z0-9_]+`; never substitute untrusted player text into them. Component and state parameters are compounds, not bare strings.
 
@@ -10,7 +10,7 @@ function mdl:api/begin
 function mdl:api/theme_apply {key:"ocean"}
 function mdl:api/title {text:{text:"Themed menu"}}
 function mdl:api/themed_body {text:{text:"The theme supplies body width and text style."}}
-function mdl:api/button {label:{text:"Continue"},callback:"example:continue",payload:{}}
+function mdl:api/button {label:{text:"Continue"},callback:[{type:"function",function:"example:continue"}],payload:{}}
 function mdl:api/show
 ```
 
@@ -31,7 +31,7 @@ function mdl:api/locale_set {locale:"en_gb"}
 function mdl:api/begin
 function mdl:api/localized_title {key:"welcome"}
 function mdl:api/localized_body {key:"welcome",width:300}
-function mdl:api/localized_button {key:"welcome",callback:"example:continue",payload:{screen:2}}
+function mdl:api/localized_button {key:"welcome",callback:[{type:"function",function:"example:continue"}],payload:{screen:2}}
 function mdl:api/show
 ```
 
@@ -97,7 +97,7 @@ Notification frames contain queue-specific acknowledgement routes and **cannot b
 After creating a numeric receiver, before show:
 
 ```mcfunction
-function mdl:api/form_digit {label:{text:"Save"},callback:"example:save",payload:{},min:0,max:9}
+function mdl:api/form_digit {label:{text:"Save"},callback:[{type:"function",function:"example:save"}],payload:{},min:0,max:9}
 function mdl:api/form_rules {step:2,offset:0,allowed:[{value:2},{value:4},{value:8}]}
 ```
 
@@ -117,7 +117,7 @@ For packed multi-field forms, rules apply to the **combined numeric code**. They
 ## 6. Stable ranked catalogs
 
 ```mcfunction
-function mdl:api/catalog_sorted {title:{text:"Priorities"},size:8,page:0,descending:1b,items:[{label:{text:"Normal"},rank:10,callback:"example:choose",payload:{id:1}},{label:{text:"Urgent first"},rank:50,callback:"example:choose",payload:{id:2}},{label:{text:"Urgent second"},rank:50,callback:"example:choose",payload:{id:3}}]}
+function mdl:api/catalog_sorted {title:{text:"Priorities"},size:8,page:0,descending:1b,items:[{label:{text:"Normal"},rank:10,callback:[{type:"function",function:"example:choose"}],payload:{id:1}},{label:{text:"Urgent first"},rank:50,callback:[{type:"function",function:"example:choose"}],payload:{id:2}},{label:{text:"Urgent second"},rank:50,callback:[{type:"function",function:"example:choose"}],payload:{id:3}}]}
 ```
 
 The API accepts up to **64 items**, each using the normal button record plus an optional signed integer `rank`. Missing rank is zero. `descending:0b` sorts low-to-high; `1b` sorts high-to-low. Equal ranks preserve original order. The sorted records, including their trusted payloads, become the catalog model before the existing page renderer runs. Page size remains 1–27; page numbers follow ordinary clamping behavior.

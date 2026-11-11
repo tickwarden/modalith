@@ -1,5 +1,5 @@
 # Integer input named value, validated in 0..9. Gate+digit transported atomically.
-$data modify storage mdl:work route set value {label:$(label),callback:"$(callback)",payload:$(payload),min:$(min),max:$(max),factor:10}
+$data modify storage mdl:work route set value {label:$(label),callback:$(callback),payload:$(payload),min:$(min),max:$(max),factor:10}
 execute store result score #min mdl.tmp run data get storage mdl:work route.min
 execute store result score #max mdl.tmp run data get storage mdl:work route.max
 execute unless score #min mdl.tmp matches 0..9 run return 0

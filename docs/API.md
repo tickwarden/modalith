@@ -1,4 +1,4 @@
-# API reference — 1.3.0
+# API reference — 2.0.0
 
 ## Conventions
 
@@ -6,7 +6,7 @@ All builder calls execute **as a player**, in one synchronous `begin → setters
 
 - `text`, `title`, and `label`: use compound text components, e.g. `{text:"Hello"}`. Do not supply bare strings to these macro parameters.
 - `payload`, `input`, `item`, and `button`: NBT compounds.
-- `callback`: a trusted function resource location, never user-supplied text.
+- `callback`: an array of trusted typed action objects, never user-supplied text. See [actions and migration](ACTIONS.md).
 - `guard`: a trusted predicate resource location, evaluated with the player as `this` at their current location.
 - `key` for templates: a trusted simple identifier such as `quest_card`, conventionally `[a-z0-9_]+`. This is a developer API, not a sandboxed parser for untrusted keys.
 - Component compounds are serialized as complete SNBT values, preserving quotes, backslashes, newlines, and literal `$()` text.
@@ -21,10 +21,10 @@ All builder calls execute **as a player**, in one synchronous `begin → setters
 | `mdl:api/item` | `{item:{id:"minecraft:diamond",count:1},text:{text:"Diamond"}}` |
 | `mdl:api/options` | `{columns:2,escape:1b}` |
 | `mdl:api/input` | `{input:{type:"minecraft:boolean",key:"value",label:"Enabled"}}` |
-| `mdl:api/button` | `{label:{text:"Choose"},callback:"example:choose",payload:{id:4}}` |
+| `mdl:api/button` | `{label:{text:"Choose"},callback:[{type:"function",function:"example:choose"}],payload:{id:4}}` |
 | `mdl:api/exit` | Same parameters; creates the footer/Escape action. |
 | `mdl:api/raw_button` | `{button:{label:{text:"Copy"},action:{type:"minecraft:copy_to_clipboard",value:"ABC"}}}` |
-| `mdl:api/view` | `{callback:"example:render",payload:{tab:2}}`; defines the renderer for back/refresh. |
+| `mdl:api/view` | `{callback:[{type:"function",function:"example:render"}],payload:{tab:2}}`; defines the renderer for back/refresh. |
 | `mdl:api/notice` | Moves the first button into a native notice footer. Create at least one button first. |
 | `mdl:api/confirmation` | Moves the first two buttons into native yes/no fields. Escape invokes no. |
 | `mdl:api/show` | Renders the inline compound, then commits on success; returns 1 on success, 0 on guarded failure. |
@@ -38,7 +38,7 @@ Call notice/confirmation conversion after all buttons and before show. Do not ad
 ## Callback contract
 
 ```mcfunction
-function mdl:api/button {label:{text:"Buy"},callback:"shop:purchase",payload:{sku:12}}
+function mdl:api/button {label:{text:"Buy"},callback:[{type:"function",function:"shop:purchase"}],payload:{sku:12}}
 ```
 
 The router invokes `function shop:purchase {sku:12}` as the submitting player with server-function permission. The client sends only a numeric ticket, not the callback name or payload. The session is consumed and the UI cleared before accepted-event hooks and the callback execute.
@@ -65,7 +65,7 @@ function mdl:api/refresh
 `push` stores the current renderer, payload, and catalog snapshot. History depth is 16. `back` re-renders with fresh tickets, rather than restoring old commands. Renderers must not push history on every refresh.
 
 ```mcfunction
-function mdl:api/catalog {title:{text:"Quests"},size:8,page:0,items:[{label:{text:"Forest"},callback:"example:choose",payload:{id:1}}]}
+function mdl:api/catalog {title:{text:"Quests"},size:8,page:0,items:[{label:{text:"Forest"},callback:[{type:"function",function:"example:choose"}],payload:{id:1}}]}
 ```
 
 For large models, construct a compound in your storage and call `function mdl:api/catalog with storage example:ui args`. Size must be 1–27; page is zero-based and clamped. Item parameters match `api/button`. Previous/next controls are added automatically; the layout uses two columns. Empty catalogs remain closable. Selection submenus preserve the current catalog; history can restore nested catalog snapshots.
@@ -77,7 +77,7 @@ For large models, construct a compound in your storage and call `function mdl:ap
 ```mcfunction
 function mdl:api/begin
 function mdl:api/input {input:{type:"minecraft:number_range",key:"value",label:"Level",start:0,end:9,step:1,initial:5}}
-function mdl:api/form_digit {label:{text:"Save"},callback:"example:save",payload:{setting:1},min:0,max:9}
+function mdl:api/form_digit {label:{text:"Save"},callback:[{type:"function",function:"example:save"}],payload:{setting:1},min:0,max:9}
 function mdl:api/show
 ```
 
@@ -86,7 +86,7 @@ The input key must be `value`, and its substitution must output one decimal digi
 ### Atomic multi-field codes
 
 ```mcfunction
-function mdl:api/form_code {label:{text:"Save"},callback:"example:save_many",payload:{},min:0,max:999,digits:3,pattern:"$(power)$(enabled)$(mode)"}
+function mdl:api/form_code {label:{text:"Save"},callback:[{type:"function",function:"example:save_many"}],payload:{},min:0,max:999,digits:3,pattern:"$(power)$(enabled)$(mode)"}
 ```
 
 Create the referenced inputs first. Each should output exactly one digit; this example encodes `7`, `1`, `2` as `712`. Leading zeroes are interpreted through the fixed number of positions, not as persistent string formatting.
@@ -123,7 +123,7 @@ Create `example.tmp` yourself. Loading a missing template leaves the existing dr
 ## New feature 2: predicate guards
 
 ```mcfunction
-function mdl:api/guarded_button {label:{text:"Restricted action"},callback:"example:restricted",payload:{},guard:"example:can_use"}
+function mdl:api/guarded_button {label:{text:"Restricted action"},callback:[{type:"function",function:"example:restricted"}],payload:{},guard:"example:can_use"}
 ```
 
 The predicate is checked at submission, not just at render time. It executes with `@s` as `this` at the player's current position. A false or missing predicate denies the action without consuming the session. The original committed screen is resent and the trigger rearmed. Undefined/missing predicates fail closed; malformed trusted resource-location syntax is a developer error.
@@ -134,7 +134,7 @@ To guard a form, call this **after** `form_digit` or `form_code` and before show
 function mdl:api/form_guard {guard:"example:can_use"}
 ```
 
-This API does not automatically guard every raw command. Keep checks for stock, balance, and state changes inside the privileged callback, too. `mdl:demo_allowed` is an example predicate requiring the player tag `mdl.demo.allowed`.
+This API does not automatically guard every raw command. Keep checks for stock, balance, and state changes inside the privileged callback, too. `mdl_demo:demo_allowed` is an example predicate requiring the player tag `mdl.demo.allowed`.
 
 ## New feature 3: callback cooldowns
 
@@ -213,7 +213,7 @@ The temporary `storage mdl:progress result` exposes clamped `value`, `max`, `fil
 ## New in 1.2: automatic live-view refresh
 
 ```mcfunction
-function mdl:api/view {callback:"example:render_status",payload:{}}
+function mdl:api/view {callback:[{type:"function",function:"example:render_status"}],payload:{}}
 function mdl:api/auto_refresh {ticks:20}
 function mdl:api/show
 # Later, as the same player, to freeze without closing:

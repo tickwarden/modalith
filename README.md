@@ -10,7 +10,7 @@ $return run dialog show @s $(dialog)
 
 The library serializes an NBT compound from storage into an inline dialog definition. It does not register new dialog IDs or bypass vanilla permissions and codecs.
 
-**Version:** 1.3.0 · **Data pack format:** 80 · **License:** MIT
+**Version:** 2.0.0 · **Data pack format:** 80 · **License:** MIT
 **Repository:** [tickwarden/modalith](https://github.com/tickwarden/modalith)
 
 ## Publication history
@@ -18,6 +18,10 @@ The library serializes an NBT compound from storage into an inline dialog defini
 Modalith started at **1.0.0**, not 1.3.0. Versions **1.0.0, 1.1.0, and 1.2.0** were developed and packaged locally before the repository was uploaded to GitHub. The repository was first published on **November 11, 2026**, when development had already reached **1.3.0**.
 
 The initial GitHub commit therefore imports the accumulated 1.3.0 source; it is **not the project's first development version**. Earlier development stages are documented in the [changelog](CHANGELOG.md), but their original commit-by-commit history is not present in this repository. Those entries describe pre-publication versions, not prior GitHub Releases or tags.
+
+## New in 2.0: typed multi-action callbacks
+
+Callbacks are now arrays of typed server actions. This is a breaking API change; migrate string callbacks before upgrading. Eight action entry points, isolated `mdl_demo` examples and cancellable per-action hooks are described in [the action and migration guide](docs/ACTIONS.md).
 
 ## New in 1.3: six runtime extensions
 
@@ -41,7 +45,7 @@ See [the six-feature tutorial and reference](docs/EXTENSIONS.md). The demo opene
 function mdl:api/progress_style {segments:20,width:300,filled:{text:"|",color:"aqua"},empty:{text:"|",color:"dark_gray"}}
 function mdl:api/progress {label:{text:"Download"},value:65,max:100}
 # To update live, define a pure renderer and opt in before every show:
-function mdl:api/view {callback:"example:render_status",payload:{}}
+function mdl:api/view {callback:[{type:"function",function:"example:render_status"}],payload:{}}
 function mdl:api/auto_refresh {ticks:20}
 ```
 
@@ -72,7 +76,7 @@ All demo UI, documentation, and contributor-facing text is in English.
 
 ## Install
 
-1. Build or download `modalith-1.3.0-mc1.21.6.zip`.
+1. Build or download `modalith-2.0.0-mc1.21.6.zip`.
 2. Copy it to `<world>/datapacks/`. The ZIP contains `pack.mcmeta` at its root.
 3. Run `/reload`.
 4. As a player, run `/trigger mdl.open`. OP is not required.
@@ -80,7 +84,7 @@ All demo UI, documentation, and contributor-facing text is in English.
 Administrator alternative:
 
 ```mcfunction
-execute as <player> at @s run function mdl:demo/home
+execute as <player> at @s run function mdl_demo:demo/home
 ```
 
 The demo opener is public. Replace its routing in `tick.mcfunction` before deploying a private/admin UI. Recheck permissions in privileged callbacks.
@@ -93,9 +97,9 @@ In your own pack, create `data/example/function/menu.mcfunction`:
 function mdl:api/begin
 function mdl:api/title {text:{text:"Quests",color:"gold",bold:true}}
 function mdl:api/body {text:{text:"Choose your next adventure.",color:"gray"},width:300}
-function mdl:api/view {callback:"example:menu",payload:{}}
-function mdl:api/button {label:{text:"Forest expedition"},callback:"example:accept",payload:{quest:7}}
-function mdl:api/exit {label:{text:"Close"},callback:"mdl:api/close",payload:{}}
+function mdl:api/view {callback:[{type:"function",function:"example:menu"}],payload:{}}
+function mdl:api/button {label:{text:"Forest expedition"},callback:[{type:"function",function:"example:accept"}],payload:{quest:7}}
+function mdl:api/exit {label:{text:"Close"},callback:[{type:"function",function:"mdl:api/close"}],payload:{}}
 function mdl:api/show
 ```
 

@@ -35,3 +35,4 @@ execute as @a run function mdl:internal/invalidate
 scoreboard players set @a mdl.open 0
 scoreboard players enable @a mdl.open
 tellraw @a {text:"[Modalith] 1.3.0 loaded. /trigger mdl.open",color:"aqua"}
+data modify storage mdl:dispatch stack set value []

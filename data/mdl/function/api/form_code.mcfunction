@@ -1,5 +1,5 @@
 # Fixed-width decimal pattern from trusted developer; 1..6 digits. inputs must output digits.
-$data modify storage mdl:work route set value {label:$(label),callback:"$(callback)",payload:$(payload),min:$(min),max:$(max),digits:$(digits),suffix:"$(pattern)"}
+$data modify storage mdl:work route set value {label:$(label),callback:$(callback),payload:$(payload),min:$(min),max:$(max),digits:$(digits),suffix:"$(pattern)"}
 execute store result score #digits mdl.tmp run data get storage mdl:work route.digits
 execute unless score #digits mdl.tmp matches 1..6 run return 0
 scoreboard players set #factor mdl.tmp 1

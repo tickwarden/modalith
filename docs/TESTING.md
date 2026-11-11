@@ -6,11 +6,11 @@ Runtime checks use the official vanilla Minecraft **1.21.6** dedicated server wi
 
 Player submissions are actual serverbound `chat_command` packets. Setup/inspection uses local RCON. Clientbound `show_dialog` packets are decoded by `minecraft-protocol`.
 
-The recorded 1.3.0 run passes **120/120 integration assertions**. Machine-readable results are in `TEST_RESULTS.json`. It covers the previous 28 checks plus template ownership/rekeying, native footer/form template rekeying, predicate denial/permission changes/missing predicates, form guards, cooldown rejection/retry, lifecycle observer behavior, and metrics snapshot/reset semantics. Version 1.2 added 26 progress/live-view assertions; version 1.3 adds 44 checks for themes, locale fallback and persistence, state isolation, bounded notification FIFO/return behavior, numeric validation, stable rank sorting, the 64-row boundary, and sorted payload dispatch.
+The recorded 2.0.0 run passes **140/140 integration assertions**. Machine-readable results are in `TEST_RESULTS.json`. It covers the previous 28 checks plus template ownership/rekeying, native footer/form template rekeying, predicate denial/permission changes/missing predicates, form guards, cooldown rejection/retry, lifecycle observer behavior, and metrics snapshot/reset semantics. Version 1.2 added 26 progress/live-view assertions; version 1.3 adds 44 checks for themes, locale fallback and persistence, state isolation, bounded notification FIFO/return behavior, numeric validation, stable rank sorting, the 64-row boundary, and sorted payload dispatch.
 
 Operator status is verified separately by the test server's empty `ops.json`; connection-presence assertions do not establish permission level.
 
-Seven standard-library unit tests separately check release layout, deterministic packaging/checksums, version consistency, production observer isolation, new API files, and English runtime/docs. Static checks validate JSON, local function/tag references, and the absence of static dialog JSON. They do not parse Minecraft command syntax or execute macros.
+Eight standard-library unit tests separately check release layout, deterministic packaging/checksums, version consistency, production observer isolation, new API files, and English runtime/docs. Static checks validate JSON, local function/tag references, and the absence of static dialog JSON. They do not parse Minecraft command syntax or execute macros.
 
 ## What is not claimed
 
@@ -19,7 +19,7 @@ Seven standard-library unit tests separately check release layout, deterministic
 - No production-scale TPS/soak benchmark, packet fuzzing, or exhaustive NBT/codec boundary testing.
 - No compatibility claim for later Minecraft versions, Paper/Fabric forks, or proxies.
 - No exhaustive crash/persistence/reconnect matrix; online reload invalidation is covered.
-- No GitHub-hosted Actions run has occurred before repository publication. Supplied workflows run static/unit/package checks, **not** the vanilla integration suite.
+- GitHub-hosted CI has run after publication. Supplied workflows run static/unit/package checks, **not** the vanilla integration suite.
 
 ## Static checks and release tests
 
@@ -56,3 +56,7 @@ The driver paces player commands to avoid vanilla's command spam disconnect. RCO
 Lifecycle hooks write observer snapshots to `mdl_test:events`, allowing tests to inspect an input event even after a callback opens a new screen and replaces `mdl:event`. This is also the recommended pattern for application-side event auditing.
 
 Large ranked-catalog test models are assembled record-by-record in fixture storage and passed with `function ... with storage`, rather than exceeding the RCON command-length limit. Synthetic clients join in a defined order to satisfy the documented player-ID fixture assumption.
+
+## 2.0 coverage
+
+Twenty additional vanilla assertions cover ordered typed commands, inherited/overridden payloads, nested queue and result snapshots, before/after hook observation and cancellation, 64-action and 16-chain bounds, unsupported/empty actions, five native client action codecs and no privileged tickets, refresh/close, cloned multi-action ticket dispatch from a non-OP player, and the isolated action showcase. All callback fixtures are explicitly migrated to arrays; no compatibility adapter converts strings during the tests. Runtime source is checked byte-for-byte against tested production data.

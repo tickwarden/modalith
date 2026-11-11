@@ -12,7 +12,7 @@ execute store result storage mdl:catalog model.page int 1 run scoreboard players
 function mdl:api/begin
 data modify storage mdl:work catalog set from storage mdl:catalog model
 data modify storage mdl:work dialog.title set from storage mdl:catalog model.title
-data modify storage mdl:work view set value {callback:"mdl:api/catalog_reopen",payload:{}}
+data modify storage mdl:work view set value {callback:[{type:"function",function:"mdl:api/catalog_reopen"}],payload:{}}
 data modify storage mdl:catalog queue set from storage mdl:catalog model.items
 scoreboard players operation #skip mdl.tmp = #page mdl.tmp
 scoreboard players operation #skip mdl.tmp *= #size mdl.tmp
@@ -21,5 +21,5 @@ scoreboard players operation #left mdl.tmp = #size mdl.tmp
 function mdl:internal/catalog_take
 execute if score #page mdl.tmp matches 1.. run function mdl:internal/catalog_prev
 execute if score #page mdl.tmp < #last mdl.tmp run function mdl:internal/catalog_next
-function mdl:api/exit {label: {text: "Close"}, callback: "mdl:api/close", payload: {}}
+function mdl:api/exit {label: {text: "Close"}, callback:[{type:"function",function:"mdl:api/close"}], payload: {}}
 function mdl:api/show

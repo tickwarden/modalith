@@ -23,3 +23,7 @@ Follow least privilege for production servers. Never expose the test driver or R
 Live-view renderers run on a server timer, not a newly accepted player request. Keep them display-only; do not award items, debit accounts, or push history on each render. Inputs are excluded, and timer refresh preserves original TTL. Local client dismissal is not universally observable, so provide a routed exit.
 
 Themes, locales, state keys and dictionaries are trusted developer-controlled inputs; do not interpolate arbitrary player text into these APIs. Notification display is explicit and acknowledgements consume ordinary routes; queues are not guaranteed message delivery. Numeric form rules strengthen input validation but do not replace transaction checks. Stable rank sorting is bounded to 64 records to limit synchronous work.
+
+## Typed actions (2.0)
+
+`run_command` uses `$$(cmd)` at server-function permission level. Action arrays, function IDs, payloads and hooks are trusted developer input, never arbitrary client data. Cancellation hooks do not provide a sandbox or rollback. Native client commands keep player permissions; native URL actions are not server callbacks. See docs/ACTIONS.md for bounds and migration.

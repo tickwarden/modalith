@@ -1,28 +1,19 @@
-# Modalith 1.3.0
+# Modalith 2.0.0
 
-Macro-native dialog library for **Minecraft Java 1.21.6**, data pack format **80**. No static dialog registry JSON, plugin, mod or resource pack required.
+Minecraft Java 1.21.6, datapack format 80. No static dialog registry files.
 
-## Six new features
+## Breaking changes
 
-1. **Runtime theme registry:** reusable text styles and validated button/body/layout defaults; template snapshots preserve themes.
-2. **Locale dictionaries:** explicit per-player language preference, component lookup with fallback, and localized builder helpers.
-3. **Player UI state:** compound-valued set/get/remove/clear APIs with isolated persistence and explicit missing-key output.
-4. **Notification FIFO:** up to 32 native modal notices, ticket-validated acknowledgement and previous-renderer restoration.
-5. **Numeric form rules:** step/offset and allowed-value validation before callback acceptance, with a distinct rejection reason.
-6. **Ranked catalogs:** stable ascending/descending sort of up to 64 items before normal pagination.
+- Callback fields are typed arrays instead of strings, including views, numeric forms and catalog entries.
+- Examples and demo predicate moved to `mdl_demo` namespace. Rebuild stored 1.x templates/renderers.
+- See [the migration and actions guide](ACTIONS.md) before upgrading.
 
-Progress bars, live refresh, templates, guards, cooldowns, lifecycle hooks and metrics remain available. The demo opener includes **New in 1.3 • Six extensions**.
+## Added
 
-## Install / upgrade
+- Eight action entry points: run_command, open_url, suggest_command, copy_to_clipboard, show_dialog, function, close and refresh.
+- Ordered server callback chains with nested queue snapshots, a 64-entry execution cap and 16-chain depth cap.
+- Native client buttons remain distinct from privileged server chains; vanilla does not batch several client actions from one button.
+- before_action/after_action observer tags with cancellation, action index, effective payload and integer result.
+- A multi-action/native-button showcase in `mdl_demo:demo/actions`.
 
-Replace the previous pack with `modalith-1.3.0-mc1.21.6.zip`, then run `/reload`. Do not install multiple versions together. The demo opener is public; replace it when integrating private/admin screens. Read `docs/EXTENSIONS.md` for signatures and examples.
-
-## Validation
-
-**120/120 local vanilla integration assertions passed**, including the previous 76 checks and 44 new extension checks. Seven release/layout unit tests and static consistency checks pass separately. No graphical client UI QA, production-scale certification or GitHub-hosted Actions run is claimed.
-
-## Honest boundaries
-
-Locale selection is explicit, not automatic Minecraft-language detection. Notifications are modal notices, not native toasts or guaranteed delivery; enqueueing does not interrupt the UI until display is requested. Themes and all registry/path keys are trusted developer data. State is not a transaction database. Numeric rules do not replace business checks or enable arbitrary text transport. Sorting is a bounded synchronous operation, not an unbounded query engine.
-
-Notification-specific frames cannot be reused as templates. Existing ordinary dialog templates remain supported. Privileged callbacks must still recheck permission, stock, balance and authoritative application state.
+Local vanilla integration and release unit results are recorded in TEST_RESULTS.json and tests/run-metadata.json. Native action codec validation is not a claim of manual graphical/browser testing. Earlier progress, refresh, state, localization, themes, queues and validation features remain available through the migrated API.

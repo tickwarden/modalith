@@ -115,3 +115,7 @@ Numeric rules run after gate/range transport validation but before cooldown/pred
 Rank sorting uses a stable selection pass with a copied scan queue. Missing ranks are zero, strict comparisons preserve tie order, and at most 64 items are accepted. Cost is quadratic; the bound is deliberate to stay within practical synchronous command budgets. It is not suitable for repeatedly sorting huge catalogs in a short live-refresh interval.
 
 The extra helpers still share synchronous scratch. Observers must not open builders, queue displays or nested dispatch chains. Trusted keys are interpolated as NBT paths and are not a sandboxed public user-key API.
+
+## 2.0 action dispatch
+
+`internal/callback` snapshots a typed callback array and shared payload into `mdl:dispatch stack`. Each entry is removed before execution, with up to 64 entries and 16 nested frames. The current frame survives renderer reentrancy. Action metadata lives in `mdl:action`; cancellable before/after hooks surround server dispatch only. Native client buttons are not privileged routes. See [ACTIONS.md](ACTIONS.md) for the context boundary and migration.

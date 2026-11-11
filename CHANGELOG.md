@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.0
+
+- Breaking: callback fields are typed action arrays, including views, forms and catalogs.
+- Added eight action entry points: run_command, open_url, suggest_command, copy_to_clipboard, show_dialog, function, close and refresh.
+- Server action chains preserve order and snapshot pending actions across nested dispatch. Bounded to 64 actions per chain and 16 nested chains.
+- Added before_action/after_action hooks with cancellation, action index and command result metadata.
+- Moved demo functions, codec examples and demo predicates into mdl_demo. Existing mdl:demo/* references must migrate.
+- Native client actions remain single client actions; arbitrary client action batching is not claimed.
+
+
 ## 1.3.0
 
 ### Added — six feature groups

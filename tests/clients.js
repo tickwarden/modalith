@@ -26,13 +26,16 @@ const server = net.createServer(socket => {
   });
 });
 server.listen(port, '127.0.0.1', () => console.log(`Local test driver: ${port}`));
-for (const username of ['Tester', 'Other']) {
+function connect(username) {
   const client = mc.createClient({
     host: '127.0.0.1', port: Number(process.env.MDL_GAME_PORT || 25565),
     username, version: '1.21.6', auth: 'offline'
   });
   clients[username] = client;
-  client.on('login', () => console.log(`${username} LOGIN`));
+  client.on('login', () => {
+    console.log(`${username} LOGIN`);
+    if (username === 'Tester') setTimeout(() => connect('Other'), 1200);
+  });
   client.on('packet', (data, meta) => {
     if (meta.name.includes('dialog')) {
       fs.appendFileSync('packets.jsonl', JSON.stringify({ username, name: meta.name, data }) + '\n');
@@ -41,6 +44,7 @@ for (const username of ['Tester', 'Other']) {
   client.on('error', error => console.error(username, error.message));
   client.on('end', reason => console.log(`${username} END ${reason}`));
 }
+connect('Tester');
 function shutdown() {
   for (const client of Object.values(clients)) client.end();
   server.close();
