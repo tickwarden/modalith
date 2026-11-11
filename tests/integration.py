@@ -1,0 +1,217 @@
+from mcrcon import MCRcon
+import nbtlib,json,socket,time,os
+from pathlib import Path
+m=MCRcon(os.getenv('MDL_RCON_HOST','127.0.0.1'),os.getenv('MDL_RCON_PASSWORD','local-test-only'),port=int(os.getenv('MDL_RCON_PORT','25575')));m.connect()
+results=[]
+def cmd(s):return m.command(s)
+def run(fn,p='Tester'):return cmd(f'execute as {p} at @s run function {fn}')
+def data(path):
+ r=cmd('data get storage mdl:db '+path)
+ try:return nbtlib.parse_nbt(r.split('contents: ',1)[1])
+ except:raise RuntimeError(r)
+def check(name,b,detail=''):
+ results.append({'test':name,'pass':bool(b),'detail':detail});print('PASS' if b else 'FAIL',name,detail)
+def send(s,p='Tester'):
+ with socket.create_connection(('127.0.0.1',int(os.getenv('MDL_CLIENT_PORT','25581')))) as x:x.sendall((json.dumps({'player':p,'command':s})+'\n').encode());response=x.recv(100);assert response.startswith(b'sent'),response
+ time.sleep(1.1)
+def frame(p=1):
+ root='players.p'+str(p)+'.frame.'
+ out=nbtlib.Compound({k:data(root+k) for k in ['owner','dialog','routes','view','form']})
+ try:out['catalog']=nbtlib.Compound({'page':data(root+'catalog.page')})
+ except:out['catalog']=nbtlib.Compound()
+ return out
+def click(callback,p='Tester',pid=1):
+ r=next(x for x in frame(pid)['routes'] if str(x['callback'])==callback);send('trigger mdl.click set '+str(int(r['ticket'])),p);return int(r['ticket'])
+run('mdl:demo/home');check('Home commits session',len(frame()['routes'])==10)
+run('mdl:demo/home','Other');other=frame(2).snbt();check('Two isolated players',frame()['owner']!=frame(2)['owner'])
+t=click('mdl:demo/catalog');check('Catalog page 1',len(frame()['dialog']['actions'])==9)
+check('Other player unchanged',frame(2).snbt()==other)
+click('mdl:api/catalog_page');check('Catalog page 2',int(frame()['catalog']['page'])==1)
+click('mdl:demo/selected');check('Item payload callback',str(frame()['dialog']['title']['text'])=='Selection validated by server')
+click('mdl:api/back');check('History rebuilds current catalog',int(frame()['catalog']['page'])==1)
+before=frame().snbt();send('trigger mdl.click set '+str(t));check('Stale ticket rejected',frame().snbt()==before)
+# another player's current ticket is not in this session
+alien=int(frame(2)['routes'][0]['ticket']);send('trigger mdl.click set '+str(alien));check('Cross-player ticket rejected',frame().snbt()==before)
+run('mdl:demo/wizard');fr=frame();check('Wizard client template', '$(value)' in str(fr['dialog']['actions'][0]['action']['template']))
+gate=int(fr['form']['ticket']);send('trigger mdl.input set '+str((gate+1)*10+4));check('Wrong input gate rejected',frame().snbt()==fr.snbt())
+send('trigger mdl.input set '+str(gate*10+7));check('Wizard first value saved',int(data('players.p1.wizard.power'))==7)
+gate2=int(frame()['form']['ticket']);send('trigger mdl.input set '+str(gate2*10+9));check('Input range rejected',int(frame()['form']['ticket'])==gate2)
+send('trigger mdl.input set '+str(gate2*10+1));check('Wizard second value saved',int(data('players.p1.wizard.enabled'))==1)
+run('mdl:demo/packed');fr=frame();g=int(fr['form']['ticket']);send('trigger mdl.input set '+str(g*1000+712));check('Three fields atomically packed',int(nbtlib.parse_nbt(cmd('data get storage mdl_test:events event.value').split('contents: ',1)[1]))==712)
+run('mdl:demo/inputs');check('Four controls parsed',len(frame()['dialog']['inputs'])==4)
+g=int(frame()['form']['ticket']);send('trigger mdl.input set '+str(g*10+2));check('Choice submits without OP',str(frame()['view']['callback'])=='mdl:demo/home')
+run('mdl:demo/live');check('Item body codec',str(frame()['dialog']['body'][-1]['type'])=='minecraft:item')
+click('mdl:api/refresh');check('Refresh renderer',str(frame()['view']['callback'])=='mdl:demo/live_refresh')
+run('mdl:demo/confirm');click('mdl:demo/confirmed');check('Confirmation routes',str(frame()['view']['callback'])=='mdl:demo/home')
+cmd('scoreboard players set Tester mdl.ttl 1');time.sleep(1.1);check('TTL closes and invalidates','mdl.active' not in cmd('tag Tester list'))
+send('trigger mdl.open set 1');check('Public opener no OP','mdl.active' in cmd('tag Tester list'))
+# Regression checks: draft reset, native dialog codecs and reload epochs.
+run('mdl:demo/wizard');run('mdl:demo/home');check('Draft clears previous form',len(frame()['form'])==0)
+run('mdl:demo/confirm');check('Native confirmation codec',str(frame()['dialog']['type'])=='minecraft:confirmation')
+run('mdl:api/begin');cmd('execute as Tester run function mdl:api/button {label:{text:"Close"},callback:"mdl:api/close",payload:{}}');run('mdl:api/notice');run('mdl:api/show');check('Native notice codec',str(frame()['dialog']['type'])=='minecraft:notice')
+# Whole compound substitution must preserve quotes, slash and newline as data.
+comp=nbtlib.Compound({'text':nbtlib.String('quote " slash \\ newline\n$(not_a_server_macro)')})
+run('mdl:api/begin');cmd('execute as Tester run function mdl:api/title '+nbtlib.Compound({'text':comp}).snbt());run('mdl:api/show');cmd('scoreboard players set #escape mdl.tmp 0');cmd('execute if data storage mdl:db players.p1.frame.dialog'+nbtlib.Compound({'title':comp}).snbt()+' run scoreboard players set #escape mdl.tmp 1');check('Component escaping and literal macro text','has 1 ' in cmd('scoreboard players get #escape mdl.tmp'))
+cmd('reload');time.sleep(1.1);check('Reload invalidates sessions','mdl.active' not in cmd('tag Tester list'))
+check('Clients remain online', 'Tester' in cmd('list') and 'Other' in cmd('list'))
+# 1.1 regression coverage: templates, predicates, cooldowns, lifecycle and metrics.
+def score(holder,obj):
+ r=cmd(f'scoreboard players get {holder} {obj}')
+ import re
+ match=re.search(r' has (-?\d+) ',r)
+ return int(match.group(1)) if match else 0
+
+def api(fn,args):return cmd('execute as Tester at @s run function mdl:api/'+fn+' '+args)
+
+def hook_value(path):
+ r=cmd('data get storage mdl_test:events '+path)
+ return nbtlib.parse_nbt(r.split('contents: ',1)[1])
+
+run('mdl:demo/home')
+check('Lifecycle on_show observer', score('#hook_show','mdl.tmp')>0 and str(hook_value('show.type'))=='show')
+run('mdl:api/close');closed=score('#hook_close','mdl.tmp');run('mdl:api/close')
+check('Lifecycle close is idempotent', closed>0 and closed==score('#hook_close','mdl.tmp'))
+run('mdl:demo/home');cmd('scoreboard players set Tester mdl.ttl 1');time.sleep(1.1)
+check('Lifecycle timeout observer', str(hook_value('timeout.type'))=='timeout')
+run('mdl:demo/features');cmd('tag Tester remove mdl.demo.allowed');api('cooldown','{ticks:0}');before=score('Tester','mdl.accept')
+r=next(x for x in frame()['routes'] if str(x['callback'])=='mdl:demo/guarded');guard_ticket=int(r['ticket'])
+send('trigger mdl.click set '+str(guard_ticket))
+check('Predicate denies without permission', score('Tester','mdl.accept')==before and str(hook_value('reject.reason'))=='guard')
+check('Denied action preserves session and ticket', any(int(x['ticket'])==guard_ticket for x in frame()['routes']) and 'mdl.active' in cmd('tag Tester list'))
+cmd('tag Tester add mdl.demo.allowed');send('trigger mdl.click set '+str(guard_ticket))
+check('Predicate permits after server state change', score('Tester','mdl.accept')==before+1)
+# Missing predicates must fail closed, rather than inheriting scratch success.
+run('mdl:api/begin');api('guarded_button','{label:{text:"Missing predicate"},callback:"mdl_test:echo",payload:{},guard:"mdl_test:missing"}');run('mdl:api/show');api('cooldown','{ticks:0}');before=score('Tester','mdl.accept');click('mdl_test:echo')
+check('Missing predicate fails closed',score('Tester','mdl.accept')==before and str(hook_value('reject.reason'))=='guard')
+run('mdl:demo/home');api('cooldown','{ticks:60}');before=score('Tester','mdl.accept');old=next(x for x in frame()['routes'] if str(x['callback'])=='mdl:demo/confirm');ticket=int(old['ticket']);send('trigger mdl.click set '+str(ticket))
+check('Cooldown rejects premature action',score('Tester','mdl.accept')==before and str(hook_value('reject.reason'))=='cooldown')
+api('cooldown','{ticks:0}');send('trigger mdl.click set '+str(ticket));check('Cooldown allows same valid ticket later',score('Tester','mdl.accept')==before+1)
+# Template save/load works across different owners and never reuses stored tickets.
+run('mdl:api/begin');api('button','{label:{text:"Template button"},callback:"mdl_test:echo",payload:{test:1}}');api('template_save','{key:"test_card"}');api('template_load','{key:"test_card"}');run('mdl:api/show');ticket_a=int(frame()['routes'][0]['ticket'])
+cmd('execute as Other run function mdl:api/template_load {key:"test_card"}');run('mdl:api/show','Other');ticket_b=int(frame(2)['routes'][0]['ticket'])
+check('Templates bind to current owner',int(frame()['owner'])==1 and int(frame(2)['owner'])==2)
+check('Templates issue distinct fresh tickets',ticket_a!=ticket_b)
+check('Template button command is rekeyed',str(frame(2)['dialog']['actions'][0]['action']['command']).endswith(' '+str(ticket_b)))
+# Notice, confirmation and numeric forms also rekey their actual client commands.
+api('template_load','{key:"test_card"}');run('mdl:api/notice');api('template_save','{key:"test_notice"}');api('template_load','{key:"test_notice"}');run('mdl:api/show');nt=int(frame()['routes'][0]['ticket'])
+check('Notice template footer rekeyed',str(frame()['dialog']['action']['action']['command']).endswith(' '+str(nt)))
+run('mdl:demo/confirm');api('template_save','{key:"test_confirmation"}');api('template_load','{key:"test_confirmation"}');run('mdl:api/show')
+check('Confirmation template yes/no rekeyed',all(str(frame()['dialog'][key]['action']['command']).endswith(' '+str(int(frame()['routes'][i]['ticket']))) for i,key in enumerate(['yes','no'])))
+run('mdl:demo/wizard');api('template_save','{key:"test_form"}');oldgate=int(frame()['form']['ticket']);api('template_load','{key:"test_form"}');run('mdl:api/show');newgate=int(frame()['form']['ticket'])
+check('Form template gate and template rekeyed',newgate!=oldgate and str(frame()['dialog']['actions'][0]['action']['template'])=='/trigger mdl.input set '+str(newgate)+'$(value)')
+api('cooldown','{ticks:0}');send('trigger mdl.input set '+str(newgate*10+6));check('Cloned form dispatches correctly',int(data('players.p1.wizard.power'))==6)
+# Numeric forms can use the same predicate mechanism.
+run('mdl:demo/wizard');api('form_guard','{guard:"mdl:demo_allowed"}');run('mdl:api/show');cmd('tag Tester remove mdl.demo.allowed');api('cooldown','{ticks:0}');g=int(frame()['form']['ticket']);send('trigger mdl.input set '+str(g*10+3))
+check('Form predicates enforced before dispatch',str(hook_value('reject.reason'))=='guard')
+run('mdl:api/stats');snapshot=nbtlib.parse_nbt(cmd('data get storage mdl:stats snapshot').split('contents: ',1)[1]);check('Metrics snapshot matches scoreboard',int(snapshot['player']['accepted'])==score('Tester','mdl.accept') and int(snapshot['global']['rejected'])==score('#rejected','mdl.stat'))
+check('Metrics record shown accepted rejected expired',all(int(snapshot['global'][k])>0 for k in ['shown','accepted','rejected','expired']))
+run('mdl:api/stats_reset');check('Player metric reset preserves global totals',score('Tester','mdl.accept')==0 and score('#accepted','mdl.stat')>0)
+api('template_delete','{key:"test_card"}');missing=api('template_load','{key:"test_card"}');check('Deleted template reports failure','returned 0' in missing)
+check('Clients remain connected after feature tests','Tester' in cmd('list') and 'Other' in cmd('list'))
+# 1.2 progress bar and live-view regressions.
+def progress_result():
+ return nbtlib.parse_nbt(cmd('data get storage mdl:progress result').split('contents: ',1)[1])
+
+def progress(value,maximum=100):
+ return api('progress','{label:{text:"Download",color:"gold"},value:'+str(value)+',max:'+str(maximum)+'}')
+
+run('mdl:api/begin');api('progress_style','{segments:10,width:280,filled:{text:"#",color:"aqua"},empty:{text:"-",color:"dark_gray"}}')
+progress(0);r=progress_result();check('Progress zero renders empty bar',int(r['filled'])==0 and int(r['percent'])==0)
+progress(50);r=progress_result();check('Progress half renders correct fill and percentage',int(r['filled'])==5 and int(r['percent'])==50)
+progress(100);r=progress_result();check('Progress complete renders full bar',int(r['filled'])==10 and int(r['percent'])==100)
+progress(-17);r=progress_result();check('Progress clamps negative values',int(r['value'])==0)
+progress(900);r=progress_result();check('Progress clamps over-maximum values',int(r['value'])==100)
+check('Progress rejects zero maximum','returned 0' in progress(1,0))
+check('Progress rejects unsafe maximum','returned 0' in progress(1,1000001))
+check('Progress rejects excessive segment count','returned 0' in api('progress_style','{segments:65,width:300,filled:{text:"#"},empty:{text:"-"}}'))
+check('Progress rejects invalid body width','returned 0' in api('progress_style','{segments:10,width:1025,filled:{text:"#"},empty:{text:"-"}}'))
+progress(2147483647,1000000);r=progress_result();check('Progress large numerator clamps before multiplication',int(r['value'])==1000000 and int(r['percent'])==100)
+run('mdl:api/show');b=data('players.p1.frame.dialog.body[1].contents.extra');check('Progress custom glyphs survive dialog codec',sum(str(x.get('text',''))=='#' for x in b)==5 and sum(str(x.get('text',''))=='-' for x in b)==5)
+api('template_save','{key:"test_progress"}');api('template_load','{key:"test_progress"}');style=nbtlib.parse_nbt(cmd('data get storage mdl:work progress_style').split('contents: ',1)[1]);check('Progress style survives template cloning',int(style['segments'])==10 and str(style['filled']['text'])=='#')
+run('mdl:api/begin');api('auto_refresh','{ticks:10}');check('Auto-refresh requires an explicit renderer','returned 0' in api('auto_refresh','{ticks:10}'))
+api('view','{callback:"mdl_test:live",payload:{}}');check('Auto-refresh rejects too-short intervals','returned 0' in api('auto_refresh','{ticks:4}'))
+api('input','{input:{type:"minecraft:boolean",key:"value",label:"Do not reset my input"}}');check('Auto-refresh refuses input dialogs','returned 0' in api('auto_refresh','{ticks:10}'))
+# Show-time validation also catches inputs added after auto-refresh was enabled.
+run('mdl:api/begin');api('view','{callback:"mdl_test:live",payload:{}}');api('auto_refresh','{ticks:10}');api('input','{input:{type:"minecraft:boolean",key:"late",label:"Late input"}}');run('mdl:api/show');check('Show-time input guard disables timer',score('Tester','mdl.interval')==0)
+run('mdl_test:live');first_ticket=int(frame()['routes'][0]['ticket']);before=score('Tester','mdl.shown');other_before=score('Other','mdl.shown');cmd('scoreboard players set Tester mdl.ttl 200');time.sleep(.7)
+check('Auto-refresh invokes renderer while active',score('Tester','mdl.shown')>before)
+check('Auto-refresh reissues route tickets',int(frame()['routes'][0]['ticket'])!=first_ticket)
+check('Auto-refresh does not extend original TTL',0<score('Tester','mdl.ttl')<200)
+check('Auto-refresh is isolated per player',score('Other','mdl.shown')==other_before)
+run('mdl:api/auto_refresh_stop');before=score('Tester','mdl.shown');time.sleep(.7);check('Explicit timer stop freezes current view',score('Tester','mdl.shown')==before and 'mdl.active' in cmd('tag Tester list'))
+run('mdl_test:live');run('mdl:api/close');before=score('Tester','mdl.shown');time.sleep(.7);check('Closing cancels automatic refresh',score('Tester','mdl.interval')==0 and score('Tester','mdl.shown')==before)
+run('mdl_test:live');api('view','{callback:"mdl_test:no_show",payload:{}}');run('mdl:api/show');time.sleep(.7);check('Non-rendering callback stops timer instead of retry-looping',score('Tester','mdl.interval')==0)
+run('mdl_test:live');cmd('scoreboard players set Tester mdl.ttl 2');time.sleep(.25);check('TTL expires even with automatic refresh enabled',score('Tester','mdl.interval')==0 and 'mdl.active' not in cmd('tag Tester list'))
+run('mdl_test:live');api('template_save','{key:"test_live"}');api('template_load','{key:"test_live"}');run('mdl:api/show');check('Auto-refresh interval survives template cloning',score('Tester','mdl.interval')==10)
+cmd('reload');time.sleep(.25);check('Reload invalidation stops live-view timers',score('Tester','mdl.interval')==0 and 'mdl.active' not in cmd('tag Tester list'))
+# 1.3: runtime themes, locales, player state, FIFO notices, form rules, rank catalogs.
+def storage(ns,path):
+ r=cmd('data get storage '+ns+' '+path)
+ return nbtlib.parse_nbt(r.split('contents: ',1)[1])
+
+run('mdl:api/begin')
+check('Theme invalid width rejected','returned 0' in api('theme_register','{key:"bad",theme:{button_width:1025}}'))
+api('theme_register','{key:"test_ocean",theme:{title:{color:"aqua"},body:{color:"gray"},button:{color:"gold"},button_width:177,body_width:333,columns:1}}')
+check('Registered theme applies','returned 1' in api('theme_apply','{key:"test_ocean"}'))
+api('title','{text:{text:"Theme test"}}');api('themed_body','{text:{text:"Themed body"}}');api('button','{label:{text:"Themed button"},callback:"mdl_test:echo",payload:{}}');run('mdl:api/show')
+check('Theme title styling survives setter',str(frame()['dialog']['title']['color'])=='aqua')
+check('Theme button width and label style',int(frame()['dialog']['actions'][0]['width'])==177 and str(frame()['dialog']['actions'][0]['label']['color'])=='gold')
+check('Theme body defaults and columns',int(frame()['dialog']['body'][0]['width'])==333 and int(frame()['dialog']['columns'])==1)
+api('template_save','{key:"test_theme"}');api('template_load','{key:"test_theme"}');check('Template retains theme',int(storage('mdl:work','theme.button_width'))==177)
+check('Unknown theme reports failure','returned 0' in api('theme_apply','{key:"does_not_exist"}'))
+api('translation_register','{locale:"en_us",key:"greeting",text:{text:"Hello",color:"green"}}');api('translation_register','{locale:"en_gb",key:"greeting",text:{text:"Hello there",color:"aqua"}}');api('translation_register','{locale:"en_us",key:"fallback_only",text:{text:"Fallback message"}}')
+api('locale_set','{locale:"en_gb"}');api('translate','{key:"greeting"}');check('Locale-specific component lookup',str(storage('mdl:i18n','result.text'))=='Hello there')
+api('translate','{key:"fallback_only"}');check('Locale fallback resolves missing local entry',str(storage('mdl:i18n','result.text'))=='Fallback message')
+api('translate','{key:"unknown_key"}');check('Missing translation produces explicit marker',str(storage('mdl:i18n','result.text'))=='[missing: unknown_key]')
+cmd('execute as Other run function mdl:api/locale_set {locale:"en_us"}');cmd('execute as Other run function mdl:api/translate {key:"greeting"}');check('Locale selection is player-scoped',str(storage('mdl:i18n','result.text'))=='Hello')
+run('mdl:api/begin');api('localized_title','{key:"greeting"}');api('localized_body','{key:"fallback_only",width:300}');api('localized_button','{key:"greeting",callback:"mdl_test:echo",payload:{id:7}}');run('mdl:api/show');check('Localized title body and routed button',str(frame()['dialog']['title']['text'])=='Hello there' and int(frame()['routes'][0]['payload']['id'])==7)
+api('state_set','{key:"counter",value:{value:17}}');cmd('execute as Other run function mdl:api/state_set {key:"counter",value:{value:99}}');api('state_get','{key:"counter"}');check('Player state isolates identical keys',int(storage('mdl:state','result.value'))==17)
+cmd('execute as Other run function mdl:api/state_get {key:"counter"}');check('Other player state unaffected',int(storage('mdl:state','result.value'))==99)
+api('state_set','{key:"empty",value:{}}');api('state_get','{key:"empty"}');check('Empty compound is found, not missing',int(storage('mdl:state','found'))==1)
+api('state_get','{key:"missing"}');check('Missing state clears prior output',int(storage('mdl:state','found'))==0 and len(storage('mdl:state','result'))==0)
+api('state_remove','{key:"counter"}');api('state_get','{key:"counter"}');check('Player state removal',int(storage('mdl:state','found'))==0)
+run('mdl:api/state_clear');check('State clear retains locale preference',str(data('players.p1.locale'))=='en_gb' and len(data('players.p1.state'))==0)
+api('locale_set','{locale:"en_us"}')
+run('mdl:demo/home');run('mdl:api/notifications_clear');before=score('Tester','mdl.shown')
+api('notify','{title:{text:"First notice"},body:{text:"First body"},width:300}');api('notify','{title:{text:"Second notice"},body:{text:"Second body"},width:300}')
+check('Notification enqueue does not interrupt UI',score('Tester','mdl.shown')==before and len(data('players.p1.notifications'))==2)
+run('mdl:api/notifications_show');check('Notification queue opens first native notice',str(frame()['dialog']['type'])=='minecraft:notice' and str(frame()['dialog']['title']['text'])=='First notice')
+check('Notification frames cannot be reusable templates','returned 0' in api('template_save','{key:"unsafe_notice"}'))
+click('mdl:api/notification_next');check('FIFO acknowledgement opens next entry',str(frame()['dialog']['title']['text'])=='Second notice' and len(data('players.p1.notifications'))==1)
+click('mdl:api/notification_next');check('Drained notifications restore prior renderer',str(frame()['view']['callback'])=='mdl:demo/home' and len(data('players.p1.notifications'))==0)
+check('Empty queue reports failure','returned 0' in run('mdl:api/notifications_show'))
+for i in range(32):api('notify','{title:{text:"Queued"},body:{text:"Bounded queue"},width:300}')
+check('Notification queue capacity rejects item 33','returned 0' in api('notify','{title:{text:"Overflow"},body:{text:"Rejected"},width:300}'))
+run('mdl:api/notifications_clear');check('Clearing background queue preserves normal UI',len(data('players.p1.notifications'))==0 and str(frame()['view']['callback'])=='mdl:demo/home')
+api('notify','{title:{text:"Clear current"},body:{text:"Return to home"},width:300}');run('mdl:api/notifications_show');run('mdl:api/notifications_clear');check('Clearing visible queue resumes prior renderer',str(frame()['view']['callback'])=='mdl:demo/home')
+run('mdl:api/begin');check('Form rules require existing receiver','returned 0' in api('form_rules','{step:2,offset:0,allowed:[]}'))
+run('mdl:demo/rules');g=int(frame()['form']['ticket']);api('cooldown','{ticks:0}');before=score('Tester','mdl.accept');send('trigger mdl.input set '+str(g*10+3));check('Server-side form step rejects odd value',score('Tester','mdl.accept')==before and str(hook_value('reject.reason'))=='validation')
+send('trigger mdl.input set '+str(g*10+6));check('Form allowed-value list rejects in-step value',score('Tester','mdl.accept')==before and str(hook_value('reject.reason'))=='validation')
+send('trigger mdl.input set '+str(g*10+4));check('Form rules accept valid step and allowed value',score('Tester','mdl.accept')==before+1)
+run('mdl:demo/wizard');check('Zero validation step rejected','returned 0' in api('form_rules','{step:0,offset:0,allowed:[]}'))
+api('form_rules','{step:2,offset:1,allowed:[]}');run('mdl:api/show');g=int(frame()['form']['ticket']);api('cooldown','{ticks:0}');send('trigger mdl.input set '+str(g*10+3));check('Form offset permits matching odd values',int(data('players.p1.wizard.power'))==3)
+items=[{'label':{'text':'A'},'rank':3,'callback':'mdl_test:echo','payload':{'id':1}},{'label':{'text':'B'},'rank':-1,'callback':'mdl_test:echo','payload':{'id':2}},{'label':{'text':'C'},'rank':3,'callback':'mdl_test:echo','payload':{'id':3}},{'label':{'text':'Missing rank'},'callback':'mdl_test:echo','payload':{'id':4}}]
+def sorted_catalog(rows,descending=0):
+ import json
+ args={'title':{'text':'Sorted test'},'items':[],'size':8,'page':0,'descending':descending}
+ cmd('data modify storage mdl_test:sort args set value '+json.dumps(args))
+ for row in rows:cmd('data modify storage mdl_test:sort args.items append value '+json.dumps(row))
+ return cmd('execute as Tester at @s run function mdl:api/catalog_sorted with storage mdl_test:sort args')
+sorted_catalog(items);rows=data('players.p1.catalog.items');check('Catalog ranks sort ascending with missing rank zero',[int(r['payload']['id']) for r in rows]==[2,4,1,3])
+sorted_catalog(items,1);rows=data('players.p1.catalog.items');check('Descending catalog sort preserves equal-rank order',[int(r['payload']['id']) for r in rows]==[1,3,4,2])
+rows=[{'label':{'text':str(i)},'rank':i,'callback':'mdl_test:echo','payload':{'id':i}} for i in range(63,-1,-1)]
+sorted_catalog(rows);check('Bounded sort completes all 64 entries',int(data('players.p1.catalog.items[0].rank'))==0 and int(data('players.p1.catalog.items[63].rank'))==63)
+check('Oversized ranked catalog rejected','returned 0' in sorted_catalog(rows+[rows[0]]))
+sorted_catalog([]);check('Empty ranked catalog remains closable',str(frame()['dialog']['exit_action']['label']['text'])=='Close')
+run('mdl:demo/home')
+# Persistence, queue isolation, rule cloning and sorted callback payload regressions.
+api('state_set','{key:"persistent",value:{value:55}}');api('locale_set','{locale:"en_gb"}');cmd('reload');time.sleep(.3);api('state_get','{key:"persistent"}');check('Player state survives reload',int(storage('mdl:state','result.value'))==55)
+check('Player locale survives reload',str(data('players.p1.locale'))=='en_gb');api('locale_set','{locale:"en_us"}')
+cmd('execute as Other run function mdl:api/notifications_clear');api('notify','{title:{text:"Isolated"},body:{text:"Only Tester"},width:300}');check('Notification queues are player-isolated',len(data('players.p1.notifications'))==1 and len(data('players.p2.notifications'))==0);run('mdl:api/notifications_clear')
+run('mdl:demo/rules');api('template_save','{key:"rule_clone"}');api('template_load','{key:"rule_clone"}');run('mdl:api/show');check('Numeric rules survive template rekeying',int(frame()['form']['rules']['step'])==2 and len(frame()['form']['rules']['allowed'])==3)
+sorted_catalog([{'label':{'text':'Later'},'rank':9,'callback':'mdl:demo/selected','payload':{'n':99}},{'label':{'text':'First'},'rank':1,'callback':'mdl:demo/selected','payload':{'n':15}}]);api('cooldown','{ticks:0}');click('mdl:demo/selected');check('Sorted selection dispatches corresponding trusted payload',str(frame()['dialog']['body'][0]['contents']['text'])=='Selected item: 15')
+check('Notification rejects invalid width','returned 0' in api('notify','{title:{text:"Invalid"},body:{text:"Rejected"},width:0}'))
+run('mdl:demo/home')
+Path('TEST_RESULTS.json').write_text(json.dumps(results,ensure_ascii=False,indent=2))
+print(sum(x['pass'] for x in results),'/',len(results));m.disconnect()
+raise SystemExit(0 if all(x['pass'] for x in results) else 1)

@@ -1,0 +1,33 @@
+name: Publish release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check tag matches VERSION
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          expected = 'v' + Path('VERSION').read_text().strip()
+          if os.environ['RELEASE_TAG'] != expected:
+              raise SystemExit(f'Tag must equal {expected}')
+          PY
+      - run: python tools/lint.py
+      - run: python -m unittest discover -s tests/unit -v
+      - run: python tools/build.py
+      - name: Create GitHub release and attach artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" artifacts/* --verify-tag --title "Modalith ${RELEASE_TAG}" --notes-file docs/RELEASE_NOTES.md

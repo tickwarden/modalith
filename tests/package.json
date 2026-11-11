@@ -1,0 +1,16 @@
+{
+  "name": "modalith-integration-clients",
+  "version": "1.3.0",
+  "private": true,
+  "description": "Local-only Minecraft protocol integration fixtures",
+  "license": "MIT",
+  "scripts": {
+    "clients": "node clients.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "minecraft-protocol": "1.68.0"
+  }
+}

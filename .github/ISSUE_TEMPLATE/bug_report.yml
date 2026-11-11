@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible non-security defect
+title: '[Bug]: '
+body:
+  - type: markdown
+    attributes:
+      value: 'For security issues, read SECURITY.md instead of posting exploit details.'
+  - type: input
+    id: versions
+    attributes:
+      label: Game and Modalith versions
+      placeholder: 'Vanilla Java 1.21.6, Modalith 1.1.0 / commit'
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: Include commands or a sanitized example pack, expected result, and actual result.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant sanitized logs
+      render: text

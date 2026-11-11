@@ -1,0 +1,11 @@
+name: Feature request
+description: Propose a concrete library improvement
+title: '[Feature]: '
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Use case and proposed behavior
+      description: Explain the problem, existing workarounds, and vanilla constraints.
+    validations:
+      required: true

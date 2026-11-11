@@ -1,0 +1,27 @@
+# Local dependencies and generated artifacts
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+artifacts/
+.test-runtime/
+# Local Minecraft test data and secrets
+world/
+world_nether/
+world_the_end/
+libraries/
+versions/
+logs/
+*.jar
+*.log
+packets.jsonl
+server.properties
+eula.txt
+ops.json
+usercache.json
+whitelist.json
+banned-*.json
+.env
+.env.*
+*.pem
+.DS_Store
