@@ -39,7 +39,7 @@ function mdl:api/actions {callback:[{type:"run_command",cmd:"say First"},{type:"
 - Up to **64 entries** execute per chain. Further entries are not run.
 - Nested dispatch is limited to **16 active chains**. A dispatch at the depth limit returns zero without executing.
 - A stack snapshots pending entries and shared payload. A nested renderer/chain cannot overwrite the parent's remaining queue.
-- Failure or an unsupported type produces result zero and does **not** stop subsequent entries. The chain is **not atomic** and provides no rollback or success-based branching. `api/actions` reports dispatch completion, not business success.
+- Failure or an unsupported type produces result zero and does **not** stop subsequent entries unless that entry opts into `stop_on_failure:1b` (2.1). The chain is **not atomic** and provides no rollback or success-based branching. `api/actions` reports zero for an explicitly stopped chain or an execution bound, otherwise completion rather than business success.
 - Rendering, close and refresh are ordinary ordered effects. If several actions render screens, the last screen wins. Prefer a single final renderer.
 - Accepted click/form routes are ticket/guard/range/cooldown validated once and consumed before dispatch, as before. Each privileged business operation must still recheck its own permission/state.
 
@@ -95,3 +95,5 @@ Register hooks from your own datapack using `data/mdl/tags/function/before_actio
 5. Update observers that assumed `mdl:event route.callback` was a string. Numeric validation and ticket semantics remain unchanged.
 
 Examples and codec demonstrations now live entirely under `data/mdl_demo`. The core still exposes its existing public `mdl.open` trigger as a bridge to the demo home; replace/disable that opener for private integration. The action showcase is `function mdl_demo:demo/actions`, also linked from the Features demo.
+
+See [the 2.1 runtime guide](RUNTIME_FEATURES.md) for `delay`, `conditional`, stop-on-failure and button disable APIs.

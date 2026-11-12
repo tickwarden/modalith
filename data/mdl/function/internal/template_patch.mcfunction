@@ -3,3 +3,4 @@ $execute if data storage mdl:work dialog.exit_action{action:{command:"/trigger m
 $execute if data storage mdl:work dialog.action{action:{command:"/trigger mdl.click set $(old)"}} run data modify storage mdl:work dialog.action.action.command set value "/trigger mdl.click set $(new)"
 $execute if data storage mdl:work dialog.yes{action:{command:"/trigger mdl.click set $(old)"}} run data modify storage mdl:work dialog.yes.action.command set value "/trigger mdl.click set $(new)"
 $execute if data storage mdl:work dialog.no{action:{command:"/trigger mdl.click set $(old)"}} run data modify storage mdl:work dialog.no.action.command set value "/trigger mdl.click set $(new)"
+$execute if data storage mdl:work disabled_last.action{command:"/trigger mdl.click set $(old)"} run data modify storage mdl:work disabled_last.action.command set value "/trigger mdl.click set $(new)"

@@ -43,7 +43,7 @@ class ReleaseTests(unittest.TestCase):
             self.assertTrue((directory / "SHA256SUMS").read_text().startswith(hashlib.sha256(first).hexdigest()))
 
     def test_new_public_apis_exist(self):
-        for name in ["template_save", "template_load", "template_delete", "guarded_button", "form_guard", "cooldown", "stats", "stats_reset", "progress", "progress_style", "auto_refresh", "auto_refresh_stop", "theme_register", "theme_apply", "themed_body", "translation_register", "locale_set", "translate", "localized_title", "localized_body", "localized_button", "state_set", "state_get", "state_remove", "state_clear", "notify", "notifications_show", "notification_next", "notifications_clear", "form_rules", "catalog_sorted", "button_width", "exit_width"]:
+        for name in ["template_save", "template_load", "template_delete", "guarded_button", "form_guard", "cooldown", "stats", "stats_reset", "progress", "progress_style", "auto_refresh", "auto_refresh_stop", "theme_register", "theme_apply", "themed_body", "translation_register", "locale_set", "translate", "localized_title", "localized_body", "localized_button", "state_set", "state_get", "state_remove", "state_clear", "notify", "notifications_show", "notification_next", "notifications_clear", "form_rules", "catalog_sorted", "button_width", "exit_width", "action_delay", "action_delay_cancel", "action_conditional", "button_enabled", "catalog_filter", "favorite_set", "favorite_get", "favorite_remove", "favorites_clear", "catalog_favorites"]:
             self.assertTrue((ROOT / "data" / "mdl" / "function" / "api" / f"{name}.mcfunction").is_file())
 
     def test_observer_tags_are_empty_in_production(self):

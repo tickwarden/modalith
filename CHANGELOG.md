@@ -1,6 +1,17 @@
 # Changelog
 
-## Unreleased
+## 2.1.0
+
+### Six new features
+
+1. Per-action stop_on_failure policy in ordered server chains.
+2. One cancellable delayed callback per player, 1–1200 online ticks, reload epoch invalidation.
+3. Predicate-controlled yes/no typed callback branches.
+4. Last-button enable/disable with native action removal and server route rejection.
+5. Stable bounded catalog filtering using exact server-owned tag tokens.
+6. Persistent player favorites with up to 64 items and a favorites catalog.
+
+### Also included
 
 - Updated the 2.0 demo home, native/typed action showcase and optional hook companion examples.
 - Added validated button_width and exit_width setters for per-button width overrides without changing existing builder signatures.

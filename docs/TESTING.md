@@ -6,11 +6,11 @@ Runtime checks use the official vanilla Minecraft **1.21.6** dedicated server wi
 
 Player submissions are actual serverbound `chat_command` packets. Setup/inspection uses local RCON. Clientbound `show_dialog` packets are decoded by `minecraft-protocol`.
 
-The recorded 2.0.0 run passes **140/140 integration assertions**. Machine-readable results are in `TEST_RESULTS.json`. It covers the previous 28 checks plus template ownership/rekeying, native footer/form template rekeying, predicate denial/permission changes/missing predicates, form guards, cooldown rejection/retry, lifecycle observer behavior, and metrics snapshot/reset semantics. Version 1.2 added 26 progress/live-view assertions; version 1.3 adds 44 checks for themes, locale fallback and persistence, state isolation, bounded notification FIFO/return behavior, numeric validation, stable rank sorting, the 64-row boundary, and sorted payload dispatch.
+The recorded 2.1.0 run passes **178/178 integration assertions**. Machine-readable results are in `TEST_RESULTS.json`. It covers the previous 28 checks plus template ownership/rekeying, native footer/form template rekeying, predicate denial/permission changes/missing predicates, form guards, cooldown rejection/retry, lifecycle observer behavior, and metrics snapshot/reset semantics. Version 1.2 added 26 progress/live-view assertions; version 1.3 adds 44 checks for themes, locale fallback and persistence, state isolation, bounded notification FIFO/return behavior, numeric validation, stable rank sorting, the 64-row boundary, and sorted payload dispatch.
 
 Operator status is verified separately by the test server's empty `ops.json`; connection-presence assertions do not establish permission level.
 
-Eight standard-library unit tests separately check release layout, deterministic packaging/checksums, version consistency, production observer isolation, new API files, and English runtime/docs. Static checks validate JSON, local function/tag references, and the absence of static dialog JSON. They do not parse Minecraft command syntax or execute macros.
+Ten standard-library unit tests separately check release layout, deterministic packaging/checksums, version consistency, production observer isolation, new API files, and English runtime/docs. Static checks validate JSON, local function/tag references, and the absence of static dialog JSON. They do not parse Minecraft command syntax or execute macros.
 
 ## What is not claimed
 
@@ -61,4 +61,6 @@ Large ranked-catalog test models are assembled record-by-record in fixture stora
 
 Twenty additional vanilla assertions cover ordered typed commands, inherited/overridden payloads, nested queue and result snapshots, before/after hook observation and cancellation, 64-action and 16-chain bounds, unsupported/empty actions, five native client action codecs and no privileged tickets, refresh/close, cloned multi-action ticket dispatch from a non-OP player, and the isolated action showcase. All callback fixtures are explicitly migrated to arrays; no compatibility adapter converts strings during the tests. Runtime source is checked byte-for-byte against tested production data.
 
-The subsequent example/width update adds integration assertions for missing targets, per-button overrides, invalid widths and native/exit codec bounds; those new assertions have not yet been executed in vanilla. The recorded 140-check result predates that update. Current static/unit/package checks are reported separately.
+## 2.1 coverage
+
+The latest run includes all earlier 140 checks, 8 previously unrun width assertions, and 30 runtime-feature assertions. It covers explicit stop-on-failure/continuation, predicate branches/missing predicates, delayed scheduling/capacity/cancellation/reload, native and routed disable/restore including forged tickets and template rekeying, favorites isolation/capacity/update/removal/reload, stable exact-tag filtering and the six-feature showcase. Initial development runs found macro/path issues, fixed before the successful full run; historical server logs retain those diagnostics. No manual graphical QA is claimed.

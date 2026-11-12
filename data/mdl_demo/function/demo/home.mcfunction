@@ -12,5 +12,6 @@ function mdl:api/button {label:{text:"New in 1.1 • Features"},callback:[{type:
 function mdl:api/button {label:{text:"New in 1.2 • Live progress"},callback:[{type:"function",function:"mdl_demo:demo/progress"}],payload:{}}
 function mdl:api/button {label:{text:"New in 1.3 • Six extensions"},callback:[{type:"function",function:"mdl_demo:demo/extended"}],payload:{}}
 function mdl:api/button {label:{text:"2.0 • Typed actions + hooks",color:"aqua"},callback:[{type:"function",function:"mdl_demo:demo/actions"}],payload:{}}
+function mdl:api/button {label:{text:"2.1 • Six runtime features",color:"gold"},callback:[{type:"function",function:"mdl_demo:demo/runtime"}],payload:{}}
 function mdl:api/exit {label: {text: "Close"}, callback:[{type:"close"}], payload: {}}
 function mdl:api/show

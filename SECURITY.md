@@ -27,3 +27,7 @@ Themes, locales, state keys and dictionaries are trusted developer-controlled in
 ## Typed actions (2.0)
 
 `run_command` uses `$$(cmd)` at server-function permission level. Action arrays, function IDs, payloads and hooks are trusted developer input, never arbitrary client data. Cancellation hooks do not provide a sandbox or rollback. Native client commands keep player permissions; native URL actions are not server callbacks. See docs/ACTIONS.md for bounds and migration.
+
+## 2.1 runtime features
+
+Deferred callbacks must recheck authorization and current business state. Favorites store trusted callback snapshots, not client commands. Disabled routes fail server validation but enabling a route does not grant permission. Catalog queries are trusted exact tokens; no untrusted string interpolation is supported. stop_on_failure is not transactional rollback.

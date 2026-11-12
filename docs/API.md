@@ -1,4 +1,4 @@
-# API reference — 2.0.0
+# API reference — 2.1.0
 
 ## Conventions
 
@@ -256,3 +256,7 @@ Notification acknowledgements use the existing route validator, one-use tickets 
 - `mdl:api/exit_width {width:220}`: resize the existing draft exit action.
 
 Both accept an NBT int in 1..1024. Call after adding the target and before show/notice/confirmation conversion. Invalid widths or absent targets return 0 without changing the target. Explicit setter widths override theme defaults. See [examples](EXAMPLES.md#configurable-button-widths).
+
+## 2.1 APIs
+
+`action_delay`, `action_delay_cancel`, `action_conditional`, `button_enabled`, `catalog_filter`, `favorite_set`, `favorite_get`, `favorite_remove`, `favorites_clear`, `catalog_favorites` and the per-entry `stop_on_failure:1b` policy are documented with signatures and limits in [RUNTIME_FEATURES.md](RUNTIME_FEATURES.md).
