@@ -1,70 +1,56 @@
-# Testing
+# Testing — 2.2 / Minecraft 26.3
 
-## Scope of the latest local run
+## Latest target and real-server validation
 
-Runtime checks use the official vanilla Minecraft **1.21.6** dedicated server with Java 21 and two non-OP protocol clients, `Tester` and `Other`. The isolated test server uses offline mode on localhost; its `ops.json` is empty. This configuration is for tests only, not a production recommendation.
+The official vanilla **26.3** dedicated server runs with **Java 25**. Its embedded version.json declares data pack version **121.0** and protocol **777**. Metadata uses min_format/max_format arrays, not legacy pack_format 80.
 
-Player submissions are actual serverbound `chat_command` packets. Setup/inspection uses local RCON. Clientbound `show_dialog` packets are decoded by `minecraft-protocol`.
+**35/35 RCON server checks pass**, recorded in `TEST_RESULTS.json` and `tests/run-metadata.json`. They exercise:
 
-The recorded 2.1.0 run passes **178/178 integration assertions**. Machine-readable results are in `TEST_RESULTS.json`. It covers the previous 28 checks plus template ownership/rekeying, native footer/form template rekeying, predicate denial/permission changes/missing predicates, form guards, cooldown rejection/retry, lifecycle observer behavior, and metrics snapshot/reset semantics. Version 1.2 added 26 progress/live-view assertions; version 1.3 adds 44 checks for themes, locale fallback and persistence, state isolation, bounded notification FIFO/return behavior, numeric validation, stable rank sorting, the 64-row boundary, and sorted payload dispatch.
+- Known-good and deliberately invalid dialog codec controls.
+- Last-button label and tooltip setters, complete styled/quoted components and missing-target rejection.
+- Body clearing and rebuilding without clearing buttons.
+- Columns 1/3/8, invalid 0/9/fractional values and notice rejection.
+- All three after_action values, invalid-mode rejection and none/pause consistency.
+- Legacy options delegation, escape validation and no partial mutation on invalid inputs.
+- Native URL/suggest/copy/inline-dialog/run_command codec instantiation.
+- Item bodies, four input codecs, dynamic numeric submission action and notice tooltips.
 
-Operator status is verified separately by the test server's empty `ops.json`; connection-presence assertions do not establish permission level.
+Core, demo and test fixtures load on the official server. Tested production data is compared byte-for-byte against the source. A real upgrade issue in the demo predicate discriminator was found and migrated from condition to type before validation.
 
-Ten standard-library unit tests separately check release layout, deterministic packaging/checksums, version consistency, production observer isolation, new API files, and English runtime/docs. Static checks validate JSON, local function/tag references, and the absence of static dialog JSON. They do not parse Minecraft command syntax or execute macros.
+### What these checks do NOT establish
 
-## What is not claimed
+There are intentionally **zero players** in this server test. Complete dialogs are passed into a test macro; Minecraft parses their actual command argument codecs when instantiating it, before target resolution. A negative control confirms malformed types are rejected. Long definitions remain in server storage to respect the RCON command length limit.
 
-- No graphical Minecraft client was used for manual pixel/layout/tooltip QA.
-- Client input editing and template expansion were not driven through a graphical UI. Tests inspect the template and send the expected numeric submission through the protocol.
-- No production-scale TPS/soak benchmark, packet fuzzing, or exhaustive NBT/codec boundary testing.
-- No compatibility claim for later Minecraft versions, Paper/Fabric forks, or proxies.
-- No exhaustive crash/persistence/reconnect matrix; online reload invalidation is covered.
-- GitHub-hosted CI has run after publication. Supplied workflows run static/unit/package checks, **not** the vanilla integration suite.
+This establishes real-server setter execution and codec acceptance, **not graphical display, client interaction, or end-to-end player callback/session compatibility**. There is no manual UI QA, permission/stock/TPS certification, or Paper/Fabric/proxy compatibility claim.
 
-## Static checks and release tests
+## Historical player integration
 
-From the repository root, with Python 3.11+:
+The pinned `minecraft-protocol 1.68.0` supports up to 26.1, not a complete 26.3 protocol schema. The client driver now fails explicitly instead of silently using an older schema. `tests/integration.py` remains the full protocol suite but was **not run on 26.3**.
+
+The earlier **178/178** Minecraft 1.21.6 / Java 21 player assertions and source hashes are preserved in `tests/history/2.1.0/`. They are historical regression evidence, **not** the current version's player-integration result. Completing this gap requires supported 26.3 clients followed by the full suite on a disposable world.
+
+## Static, unit and PR checks
+
+From the repository root:
 
 ```bash
 python tools/lint.py
 python -m unittest discover -s tests/unit -v
 python tools/build.py
+cd artifacts && sha256sum --check SHA256SUMS
 ```
 
-These commands need no third-party Python packages. The production ZIP excludes fixtures, test clients, CI files, and contributor documentation.
+**13/13 unit/layout tests** pass. They validate format ranges, the new predicate discriminator, APIs, draft validation structure, English docs/runtime, empty production observer tags, separate deterministic core/demo ZIPs and no demo references in core. Static checks are not a complete Minecraft command/macro parser.
 
-## Local integration procedure
+PR CI runs these static/unit/build/checksum checks and uploads both artifacts. It does not start Minecraft or imply the real-server suite ran on GitHub.
 
-Use a disposable world. The suite changes state and performs `/reload`; never run it against a production server.
+## Reproduce the 26.3 server checks
 
-1. Obtain a vanilla 1.21.6 server and Java 21. Review and accept Mojang's EULA yourself.
-2. Copy the source `mdl/` directory to `world/datapacks/Modalith`, the optional `mdl_demo` pack to `world/datapacks/ModalithDemo`, and the fixture pack `tests/fixtures/hooks` to `world/datapacks/mdl_test_hooks`. **Do not install the fixture pack in production.**
-3. Bind the test server/RCON to localhost, use game port 25565 and RCON port 25575. Enable RCON and set a test-only password. The default expected password is `local-test-only`; an environment override is supported.
-4. Use an isolated offline-mode server for these synthetic clients. Do not grant either test player OP. Keep other players out of the test world.
-5. Install Python test dependencies: `pip install -r tests/requirements.txt`.
-6. Install Node dependencies: `npm ci --prefix tests`. Node 22+ is recommended.
-7. Start the server, then run `node tests/clients.js`. Both `Tester` and `Other` should log in. The driver listens only on localhost port 25581 and writes `packets.jsonl` in the working directory.
-8. Run `python tests/integration.py`. A nonzero exit code means at least one assertion failed; unexpected exceptions also fail the run. Results are written to `TEST_RESULTS.json` in the working directory.
-9. Stop both clients/server afterward. Keep world data, server credentials, downloaded binaries, and raw logs out of the repository.
+1. Obtain official 26.3 and Java 25. Review/accept Mojang's EULA yourself.
+2. Use a disposable, localhost-only world. Install `mdl/` as core, `mdl_demo/` as optional demo, and `tests/fixtures/hooks` as a third test datapack. **Never deploy the fixture pack to production.**
+3. Enable localhost RCON, default port 25575 and test-only password `local-test-only`. Environment overrides: MDL_RCON_HOST, MDL_RCON_PORT, MDL_RCON_PASSWORD.
+4. Install Python dependencies: `pip install -r tests/requirements.txt`.
+5. In a writable scratch directory run `python /path/to/repository/tests/server_26_3.py`.
+6. Inspect `SERVER_26_3_RESULTS.json`, stdout and server load logs. No synthetic clients are needed for this narrower suite.
 
-The suite assumes the first two assigned library IDs are 1 and 2 and that the fixtures are installed. Use a clean world or adjust the helper IDs. Configuration overrides are `MDL_RCON_HOST`, `MDL_RCON_PORT`, `MDL_RCON_PASSWORD`, and `MDL_CLIENT_PORT`; the client driver supports the same client port and `MDL_GAME_PORT`. Do not expose this control driver publicly.
-
-## Test implementation notes
-
-The driver paces player commands to avoid vanilla's command spam disconnect. RCON output can truncate large NBT dumps, so tests query individual frame fields rather than dumping the complete catalog. Some modern SNBT escapes are not supported by `nbtlib`; the escaping regression uses the server's own NBT-path comparison instead.
-
-Lifecycle hooks write observer snapshots to `mdl_test:events`, allowing tests to inspect an input event even after a callback opens a new screen and replaces `mdl:event`. This is also the recommended pattern for application-side event auditing.
-
-Large ranked-catalog test models are assembled record-by-record in fixture storage and passed with `function ... with storage`, rather than exceeding the RCON command-length limit. Synthetic clients join in a defined order to satisfy the documented player-ID fixture assumption.
-
-## 2.0 coverage
-
-Twenty additional vanilla assertions cover ordered typed commands, inherited/overridden payloads, nested queue and result snapshots, before/after hook observation and cancellation, 64-action and 16-chain bounds, unsupported/empty actions, five native client action codecs and no privileged tickets, refresh/close, cloned multi-action ticket dispatch from a non-OP player, and the isolated action showcase. All callback fixtures are explicitly migrated to arrays; no compatibility adapter converts strings during the tests. Runtime source is checked byte-for-byte against tested production data.
-
-## 2.1 coverage
-
-The latest run includes all earlier 140 checks, 8 previously unrun width assertions, and 30 runtime-feature assertions. It covers explicit stop-on-failure/continuation, predicate branches/missing predicates, delayed scheduling/capacity/cancellation/reload, native and routed disable/restore including forged tickets and template rekeying, favorites isolation/capacity/update/removal/reload, stable exact-tag filtering and the six-feature showcase. Initial development runs found macro/path issues, fixed before the successful full run; historical server logs retain those diagnostics. No manual graphical QA is claimed.
-
-## Optional demo separation
-
-The source/layout update separates the public demo into its own datapack. Static/unit tests assert that core has no demo references or opener and that both ZIPs are deterministic and installable at their roots. The recorded 178-assertion vanilla run predates this packaging separation; it has not been rerun with the separate pack layout.
+The optional demo must be installed separately for graphical/manual testing; `/trigger mdl.open` belongs only to that pack. Both archives place pack.mcmeta at their roots, with no extra source folder.

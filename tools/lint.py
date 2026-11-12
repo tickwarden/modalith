@@ -19,8 +19,8 @@ def lint():
                 errors.append(f'{path.relative_to(ROOT)}: {exc}')
     for path in [ROOT / 'mdl/pack.mcmeta', demo / 'pack.mcmeta']:
         meta = json.loads(path.read_text())
-        if meta['pack']['pack_format'] != 80:
-            errors.append(f'{path}: pack_format must be 80')
+        if meta['pack'].get('min_format') != [121, 0] or meta['pack'].get('max_format') != [121, 0]:
+            errors.append(f'{path}: format range must be 121.0')
     version = (ROOT / 'VERSION').read_text().strip()
     if not re.fullmatch(r'\d+\.\d+\.\d+', version):
         errors.append('Invalid semantic VERSION')

@@ -1,4 +1,4 @@
-# API reference — 2.1.0
+# API reference — 2.2.0
 
 ## Conventions
 
@@ -260,3 +260,7 @@ Both accept an NBT int in 1..1024. Call after adding the target and before show/
 ## 2.1 APIs
 
 `action_delay`, `action_delay_cancel`, `action_conditional`, `button_enabled`, `catalog_filter`, `favorite_set`, `favorite_get`, `favorite_remove`, `favorites_clear`, `catalog_favorites` and the per-entry `stop_on_failure:1b` policy are documented with signatures and limits in [RUNTIME_FEATURES.md](RUNTIME_FEATURES.md).
+
+## 2.2 UI setters
+
+See [UI_CONTROLS.md](UI_CONTROLS.md) for `button_label {label}`, `body_clear`, `button_tooltip {text}`, `columns {columns:1..8}` and `after_action {value}`. These affect drafts before display/conversion, not committed player frames.

@@ -13,7 +13,7 @@ def _build(output: Path, source: Path, prefix: str) -> Path:
     if not re.fullmatch(r"\d+\.\d+\.\d+", version):
         raise ValueError("VERSION must contain a stable semantic version")
     output.mkdir(parents=True, exist_ok=True)
-    archive = output / f"{prefix}-{version}-mc1.21.6.zip"
+    archive = output / f"{prefix}-{version}-mc26.3.zip"
     files = [source / "pack.mcmeta", ROOT / "LICENSE"]
     files += sorted(p for p in (source / "data").rglob("*") if p.is_file())
     with zipfile.ZipFile(archive, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
@@ -24,7 +24,7 @@ def _build(output: Path, source: Path, prefix: str) -> Path:
             info.external_attr = 0o100644 << 16
             z.writestr(info, path.read_bytes(), compresslevel=9)
     # Include only the current version's pair, in core-before-demo order.
-    names = [f"modalith-{version}-mc1.21.6.zip", f"modalith-demo-{version}-mc1.21.6.zip"]
+    names = [f"modalith-{version}-mc26.3.zip", f"modalith-demo-{version}-mc26.3.zip"]
     (output / "SHA256SUMS").write_text("".join(
         f"{hashlib.sha256((output / name).read_bytes()).hexdigest()}  {name}\n"
         for name in names if (output / name).is_file()

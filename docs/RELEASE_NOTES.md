@@ -1,9 +1,14 @@
-# Modalith 2.1.0
+# Modalith 2.2.0
 
-Minecraft Java 1.21.6, pack format 80. Six additive runtime features: stop-on-failure, delayed callbacks, predicate branches, disabled buttons with server route gating, exact-token catalog filtering and persistent player favorites.
+Six requested changes:
 
-Demo: `mdl_demo:demo/runtime`. See docs/RUNTIME_FEATURES.md for API examples and honest limits. Existing 2.0 callback arrays remain valid; the 1.x-to-2.0 migration requirements still apply.
+1. Minecraft Java 26.3 / Java 25 / datapack version 121.0 migration.
+2. Last-button label setter.
+3. Draft body clear API.
+4. Whole-component button tooltips.
+5. Validated 1–8 columns setter.
+6. Configurable close/none/wait_for_response after_action.
 
-Local validation: 178/178 vanilla integration assertions and 10/10 unit tests pass; 212 functions, zero static dialog registry JSON. Protocol/codec testing is not manual graphical QA. The main production pack excludes test fixtures and the optional action-hook example companion pack.
+Core and optional demo remain separate. Predicates use the 26.3 type discriminator. See docs/UI_CONTROLS.md for signatures, limits and migration.
 
-Delayed jobs are capped at one per player, count online ticks, and are invalidated by reload. Filters match exact server-owned tags rather than substrings. Favorites are bounded snapshots, not inventory or a database. Stop-on-failure does not undo earlier effects.
+Validation: 35/35 real vanilla 26.3 server RCON/codec checks. Full player/session integration and manual graphical QA are not claimed. Pinned protocol fixtures lack a 26.3 schema; earlier 178-assertion 1.21.6 results remain historical evidence only. PR CI runs static/unit/build/checksum checks, not the server suite.

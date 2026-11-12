@@ -1,5 +1,17 @@
 # Changelog
 
+## 2.2.0 — six changes
+
+1. Target Minecraft Java 26.3, Java 25, data pack version 121.0.
+2. Add button_label for the last draft action button.
+3. Add body_clear to reset draft body messages.
+4. Add whole-component button_tooltip.
+5. Add validated columns setter (integer 1–8); legacy options delegates to it.
+6. Add after_action setter for close/none/wait_for_response.
+
+These setters operate on the draft, not already displayed player sessions.
+
+
 ## Unreleased — pack layout and PR checks
 
 - Moved the core source datapack to mdl/.

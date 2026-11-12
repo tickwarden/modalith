@@ -1,0 +1,892 @@
+[
+  {
+    "test": "Home commits session",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Two isolated players",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Catalog page 1",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Other player unchanged",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Catalog page 2",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Item payload callback",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "History rebuilds current catalog",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Stale ticket rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Cross-player ticket rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Wizard client template",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Wrong input gate rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Wizard first value saved",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Input range rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Wizard second value saved",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Three fields atomically packed",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Four controls parsed",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Choice submits without OP",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Item body codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Refresh renderer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Confirmation routes",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "TTL closes and invalidates",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Public opener no OP",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Draft clears previous form",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native confirmation codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native notice codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Component escaping and literal macro text",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Reload invalidates sessions",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Clients remain online",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Lifecycle on_show observer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Lifecycle close is idempotent",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Lifecycle timeout observer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Predicate denies without permission",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Denied action preserves session and ticket",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Predicate permits after server state change",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Missing predicate fails closed",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Cooldown rejects premature action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Cooldown allows same valid ticket later",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Templates bind to current owner",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Templates issue distinct fresh tickets",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Template button command is rekeyed",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Notice template footer rekeyed",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Confirmation template yes/no rekeyed",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Form template gate and template rekeyed",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Cloned form dispatches correctly",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Form predicates enforced before dispatch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Metrics snapshot matches scoreboard",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Metrics record shown accepted rejected expired",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Player metric reset preserves global totals",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Deleted template reports failure",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Clients remain connected after feature tests",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress zero renders empty bar",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress half renders correct fill and percentage",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress complete renders full bar",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress clamps negative values",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress clamps over-maximum values",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress rejects zero maximum",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress rejects unsafe maximum",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress rejects excessive segment count",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress rejects invalid body width",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress large numerator clamps before multiplication",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress custom glyphs survive dialog codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Progress style survives template cloning",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Auto-refresh requires an explicit renderer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Auto-refresh rejects too-short intervals",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Auto-refresh refuses input dialogs",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Show-time input guard disables timer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Auto-refresh invokes renderer while active",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Auto-refresh reissues route tickets",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Auto-refresh does not extend original TTL",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Auto-refresh is isolated per player",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Explicit timer stop freezes current view",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Closing cancels automatic refresh",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Non-rendering callback stops timer instead of retry-looping",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "TTL expires even with automatic refresh enabled",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Auto-refresh interval survives template cloning",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Reload invalidation stops live-view timers",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Theme invalid width rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Registered theme applies",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Theme title styling survives setter",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Theme button width and label style",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Theme body defaults and columns",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Template retains theme",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Unknown theme reports failure",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Locale-specific component lookup",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Locale fallback resolves missing local entry",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Missing translation produces explicit marker",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Locale selection is player-scoped",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Localized title body and routed button",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Player state isolates identical keys",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Other player state unaffected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Empty compound is found, not missing",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Missing state clears prior output",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Player state removal",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "State clear retains locale preference",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Notification enqueue does not interrupt UI",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Notification queue opens first native notice",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Notification frames cannot be reusable templates",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "FIFO acknowledgement opens next entry",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Drained notifications restore prior renderer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Empty queue reports failure",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Notification queue capacity rejects item 33",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Clearing background queue preserves normal UI",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Clearing visible queue resumes prior renderer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Form rules require existing receiver",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Server-side form step rejects odd value",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Form allowed-value list rejects in-step value",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Form rules accept valid step and allowed value",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Zero validation step rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Form offset permits matching odd values",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Catalog ranks sort ascending with missing rank zero",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Descending catalog sort preserves equal-rank order",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Bounded sort completes all 64 entries",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Oversized ranked catalog rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Empty ranked catalog remains closable",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Player state survives reload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Player locale survives reload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Notification queues are player-isolated",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Numeric rules survive template rekeying",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Sorted selection dispatches corresponding trusted payload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Notification rejects invalid width",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Typed command actions execute in array order",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Function action inherits route payload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Action-specific payload overrides shared payload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Nested chain preserves parent remainder",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Nested function result is restored for after hook",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Dispatcher stack drains after nested calls",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Before and after hooks observe each action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Before-action hook can cancel execution",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Action chain bounded to 64 entries",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Unsupported action reports zero result",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Empty callback array is a no-op",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Five native action buttons pass server dialog codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native buttons allocate no privileged callback tickets",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native URL action retains its URL",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Refresh action rebuilds renderer",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Close action invalidates the current session",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Recursive action dispatch stops at 16 chains",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Non-OP ticket dispatch runs entire cloned action array",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Cloned chain dispatch drains stack",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Isolated action showcase renders",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Width setter rejects absent action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Explicit width overrides routed button width",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Width zero rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Width above codec maximum rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Fractional width rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Invalid widths leave previous width unchanged",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native width override passes dialog codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Exit width override passes dialog codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Stopped dispatch reports failure and leaves effects untouched",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Default failure policy still continues",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Predicate false runs no branch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Predicate true runs yes branch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Missing predicate never runs privileged yes branch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delayed action schedules successfully",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Second outstanding delay is rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delayed action does not execute synchronously",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delayed action executes once after ticks",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Cancelled delayed action does not execute",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delay rejects zero ticks",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delay rejects fractional ticks",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Reload cancels epoch-stale delayed action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Disabled button has no client action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Disabled server route rejects forged trigger",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Template re-enables using fresh ticket",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native action restores after toggle",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites preserve trusted item payload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites isolated per player",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites render via ordinary catalog",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Removed favorite clears stale output",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites reject entry 65",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Existing favorite can update at capacity",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites survive reload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Exact tag filter preserves source order",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Filter does not pretend to support substring matching",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Empty filter includes all items",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delay typed action dispatches its saved callback",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Conditional typed action selects a branch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Six-feature demo renders disabled action",
+    "pass": true,
+    "detail": ""
+  }
+]

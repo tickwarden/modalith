@@ -1,1 +1,13 @@
-{"pack":{"pack_format":80,"description":"Modalith 2.0 optional action hook examples"}}
+{
+  "pack": {
+    "description": "Modalith 2.0 optional action hook examples",
+    "min_format": [
+      121,
+      0
+    ],
+    "max_format": [
+      121,
+      0
+    ]
+  }
+}

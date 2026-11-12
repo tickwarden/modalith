@@ -35,11 +35,11 @@ git init -b main
 # git config user.email "YOUR VERIFIED OR NOREPLY EMAIL"
 git add .
 git diff --cached --stat
-git commit -m "Release Modalith 2.1.0"
+git commit -m "Release Modalith 2.2.0"
 
 # This command publishes the repository publicly when you choose to run it:
 gh repo create tickwarden/modalith --public --source=. --remote=origin --push \
-  --description "Macro-native Minecraft Java 1.21.6 dialog library with runtime templates and validated callbacks"
+  --description "Macro-native Minecraft Java 26.3 dialog library with runtime templates and validated callbacks"
 ```
 
 If the directory is already a Git repository, skip `git init`. If `origin` exists, inspect it before reusing it. Do not force-push to an existing repository. For an existing `tickwarden/modalith`, clone it separately and apply this source tree as a reviewed commit/PR instead.
@@ -49,8 +49,8 @@ If the directory is already a Git repository, skip `git init`. If `origin` exist
 After the `main` branch passes the **Validate and package** workflow, push the matching version tag:
 
 ```bash
-git tag -a v2.1.0 -m "Modalith 2.1.0"
-git push origin v2.1.0
+git tag -a v2.2.0 -m "Modalith 2.2.0"
+git push origin v2.2.0
 ```
 
 The release workflow verifies the tag equals `v` + `VERSION`, runs static/unit checks, builds the datapack, and creates a GitHub release with the ZIP and `SHA256SUMS` attached. It uses the repository-scoped `GITHUB_TOKEN`, not a personal token. Repository settings must allow Actions to write release contents. Workflow execution on GitHub itself has not been tested before the repository exists.

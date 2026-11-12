@@ -15,7 +15,7 @@ spec.loader.exec_module(builder)
 
 class ReleaseTests(unittest.TestCase):
     def test_supported_target(self):
-        self.assertEqual(json.loads((ROOT / "mdl" / "pack.mcmeta").read_text())["pack"]["pack_format"], 80)
+        self.assertEqual(json.loads((ROOT / "mdl" / "pack.mcmeta").read_text())["pack"]["min_format"], [121, 0])
 
     def test_version_consistency(self):
         version = (ROOT / "VERSION").read_text().strip()
@@ -43,7 +43,7 @@ class ReleaseTests(unittest.TestCase):
             self.assertTrue((directory / "SHA256SUMS").read_text().startswith(hashlib.sha256(first).hexdigest()))
 
     def test_new_public_apis_exist(self):
-        for name in ["template_save", "template_load", "template_delete", "guarded_button", "form_guard", "cooldown", "stats", "stats_reset", "progress", "progress_style", "auto_refresh", "auto_refresh_stop", "theme_register", "theme_apply", "themed_body", "translation_register", "locale_set", "translate", "localized_title", "localized_body", "localized_button", "state_set", "state_get", "state_remove", "state_clear", "notify", "notifications_show", "notification_next", "notifications_clear", "form_rules", "catalog_sorted", "button_width", "exit_width", "action_delay", "action_delay_cancel", "action_conditional", "button_enabled", "catalog_filter", "favorite_set", "favorite_get", "favorite_remove", "favorites_clear", "catalog_favorites"]:
+        for name in ["template_save", "template_load", "template_delete", "guarded_button", "form_guard", "cooldown", "stats", "stats_reset", "progress", "progress_style", "auto_refresh", "auto_refresh_stop", "theme_register", "theme_apply", "themed_body", "translation_register", "locale_set", "translate", "localized_title", "localized_body", "localized_button", "state_set", "state_get", "state_remove", "state_clear", "notify", "notifications_show", "notification_next", "notifications_clear", "form_rules", "catalog_sorted", "button_width", "exit_width", "action_delay", "action_delay_cancel", "action_conditional", "button_enabled", "catalog_filter", "favorite_set", "favorite_get", "favorite_remove", "favorites_clear", "catalog_favorites", "button_label", "body_clear", "button_tooltip", "columns", "after_action"]:
             self.assertTrue((ROOT / "mdl" / "data" / "mdl" / "function" / "api" / f"{name}.mcfunction").is_file())
 
     def test_observer_tags_are_empty_in_production(self):
@@ -67,7 +67,7 @@ class ReleaseTests(unittest.TestCase):
         for token in ['type:"close"', 'type:"refresh"', 'type:"run_command"', 'key:"action_demo"']:
             self.assertIn(token, actions)
         example = ROOT / 'examples/action_hooks'
-        self.assertEqual(json.loads((example / 'pack.mcmeta').read_text())['pack']['pack_format'], 80)
+        self.assertEqual(json.loads((example / 'pack.mcmeta').read_text())['pack']['min_format'], [121, 0])
         for hook in ['before_action', 'after_action']:
             value = json.loads((example / 'data/mdl/tags/function' / (hook + '.json')).read_text())['values'][0]
             ns, path = value.split(':')
@@ -103,6 +103,24 @@ class ReleaseTests(unittest.TestCase):
                 self.assertNotIn('data/mdl/function/load.mcfunction', z.namelist())
                 self.assertIsNone(z.testzip())
             self.assertEqual(len((directory / 'SHA256SUMS').read_text().splitlines()), 2)
+
+    def test_all_runtime_packs_target_26_3(self):
+        for directory in ['mdl', 'mdl_demo', 'examples/action_hooks', 'tests/fixtures/hooks']:
+            pack = json.loads((ROOT / directory / 'pack.mcmeta').read_text())['pack']
+            self.assertNotIn('pack_format', pack)
+            self.assertEqual(pack['min_format'], [121, 0])
+            self.assertEqual(pack['max_format'], [121, 0])
+        predicate = json.loads((ROOT / 'mdl_demo/data/mdl_demo/predicate/demo_allowed.json').read_text())
+        self.assertEqual(predicate['type'], 'minecraft:entity_properties')
+        self.assertNotIn('condition', predicate)
+
+    def test_ui_control_setters_and_demo(self):
+        base = ROOT / 'mdl/data/mdl/function/api'
+        for name in ['button_label', 'button_tooltip', 'body_clear', 'columns', 'after_action']:
+            self.assertTrue((base / (name + '.mcfunction')).is_file())
+        self.assertIn('matches 1..8', (base / 'columns.mcfunction').read_text())
+        self.assertIn('dialog.pause set value 0b', (base / 'after_action.mcfunction').read_text())
+        self.assertTrue((ROOT / 'mdl_demo/data/mdl_demo/function/demo/ui_controls.mcfunction').is_file())
 
     def test_no_turkish_text_in_runtime_or_documentation(self):
         import re
