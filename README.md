@@ -87,20 +87,21 @@ All demo UI, documentation, and contributor-facing text is in English.
 
 ## Install
 
-1. Build or download `modalith-2.1.0-mc1.21.6.zip`.
-2. Copy it to `<world>/datapacks/`. The ZIP contains `pack.mcmeta` at its root.
+1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.1.0-mc1.21.6.zip`.
+2. Copy it to `<world>/datapacks/`. The ZIP contains `pack.mcmeta` at its root (not an extra `mdl/` directory). You may also install the source `mdl/` folder directly as its own datapack.
 3. Run `/reload`.
-4. As a player, run `/trigger mdl.open`. OP is not required.
+4. The core has no demo opener. Open your own UI through your integration.
+5. Optional: install `modalith-demo-2.1.0-mc1.21.6.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
 
-Administrator alternative:
+With the optional demo installed, the administrator alternative is:
 
 ```mcfunction
 execute as <player> at @s run function mdl_demo:demo/home
 ```
 
-The home screen links directly to **2.0 • Typed actions + hooks**. See the [example walkthrough](docs/EXAMPLES.md) for native buttons, ordered callbacks and the optional hook companion pack.
+The optional demo home screen links directly to **2.0 • Typed actions + hooks**. See the [example walkthrough](docs/EXAMPLES.md) for native buttons, ordered callbacks and the optional hook companion pack.
 
-The demo opener is public. Replace its routing in `tick.mcfunction` before deploying a private/admin UI. Recheck permissions in privileged callbacks.
+The optional demo opener is public. Do not install the demo on a private/admin-only deployment. Core has no reference to `mdl_demo` and works without the demo pack. Recheck permissions in privileged callbacks.
 
 ## Quick start
 

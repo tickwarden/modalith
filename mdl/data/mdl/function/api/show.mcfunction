@@ -2,7 +2,7 @@ execute unless entity @s[type=minecraft:player] run return 0
 execute store result score #owner mdl.tmp run data get storage mdl:work owner
 execute unless score @s mdl.id = #owner mdl.tmp run return 0
 # Ensure required nonempty actions. Passive buttons use close, not waiting.
-execute if data storage mdl:work dialog{type:"minecraft:multi_action"} unless data storage mdl:work dialog.actions[0] run data modify storage mdl:work dialog.actions append value {label:"Close",action:{type:"minecraft:run_command",command:"/trigger mdl.open set 1"}}
+execute if data storage mdl:work dialog{type:"minecraft:multi_action"} unless data storage mdl:work dialog.actions[0] run function mdl:api/button {label:{text:"Close"},callback:[{type:"close"}],payload:{}}
 execute store success score #shown mdl.tmp run function mdl:internal/show with storage mdl:work
 execute unless score #shown mdl.tmp matches 1 run return 0
 function mdl:internal/context

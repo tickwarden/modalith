@@ -119,3 +119,7 @@ The extra helpers still share synchronous scratch. Observers must not open build
 ## 2.0 action dispatch
 
 `internal/callback` snapshots a typed callback array and shared payload into `mdl:dispatch stack`. Each entry is removed before execution, with up to 64 entries and 16 nested frames. The current frame survives renderer reentrancy. Action metadata lives in `mdl:action`; cancellable before/after hooks surround server dispatch only. Native client buttons are not privileged routes. See [ACTIONS.md](ACTIONS.md) for the context boundary and migration.
+
+## Source pack boundaries
+
+`mdl/` is the independent core datapack root. `mdl_demo/` is an optional companion datapack with its own load/tick tags, demo objectives and public opener. Core contains no demo namespace references. Repository-level tools/tests and workflows build/check both but are not included in either runtime data directory.

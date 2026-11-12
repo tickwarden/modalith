@@ -1,6 +1,8 @@
 # Updated 2.0 examples
 
-All bundled runtime examples use **`mdl_demo`**, not the core `mdl` namespace. All callback fields are typed arrays. Existing core APIs still live in `mdl`.
+Install the separate `modalith-demo-2.1.0-mc1.21.6.zip` alongside the core before using these examples. Source: `mdl_demo`. The core ZIP contains no demos or public demo opener.
+
+All runtime examples use **`mdl_demo`**, not the core `mdl` namespace. All callback fields are typed arrays. Existing core APIs still live in `mdl`.
 
 ## Start here
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — pack layout and PR checks
+
+- Moved the core source datapack to mdl/.
+- Extracted the optional demo into mdl_demo/, with its own metadata and load/tick tags.
+- Removed demo opener/objective registration and namespace references from core.
+- Core-only empty-dialog fallback now uses a routed close action rather than the demo opener.
+- Build and layout tests validate independent core/demo archives; pull requests run lint, unit tests and packaging.
+
+
 ## 2.1.0
 
 ### Six new features

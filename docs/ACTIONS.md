@@ -94,6 +94,6 @@ Register hooks from your own datapack using `data/mdl/tags/function/before_actio
 4. Replace `mdl:demo/*` with **`mdl_demo:demo/*`**, `mdl:test/*` with `mdl_demo:test/*`, and the example predicate with `mdl_demo:demo_allowed`.
 5. Update observers that assumed `mdl:event route.callback` was a string. Numeric validation and ticket semantics remain unchanged.
 
-Examples and codec demonstrations now live entirely under `data/mdl_demo`. The core still exposes its existing public `mdl.open` trigger as a bridge to the demo home; replace/disable that opener for private integration. The action showcase is `function mdl_demo:demo/actions`, also linked from the Features demo.
+Examples and codec demonstrations live in the separate optional datapack `mdl_demo/data/mdl_demo`. Only that companion pack registers and handles the public `mdl.open` trigger; the core has no demo dependency. The action showcase is `function mdl_demo:demo/actions`, also linked from the Features demo.
 
 See [the 2.1 runtime guide](RUNTIME_FEATURES.md) for `delay`, `conditional`, stop-on-failure and button disable APIs.
