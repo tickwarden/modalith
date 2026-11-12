@@ -1,19 +1,9 @@
-# Modalith 2.0.0
+# Modalith 2.1.0
 
-Minecraft Java 1.21.6, datapack format 80. No static dialog registry files.
+Minecraft Java 1.21.6, pack format 80. Six additive runtime features: stop-on-failure, delayed callbacks, predicate branches, disabled buttons with server route gating, exact-token catalog filtering and persistent player favorites.
 
-## Breaking changes
+Demo: `mdl_demo:demo/runtime`. See docs/RUNTIME_FEATURES.md for API examples and honest limits. Existing 2.0 callback arrays remain valid; the 1.x-to-2.0 migration requirements still apply.
 
-- Callback fields are typed arrays instead of strings, including views, numeric forms and catalog entries.
-- Examples and demo predicate moved to `mdl_demo` namespace. Rebuild stored 1.x templates/renderers.
-- See [the migration and actions guide](ACTIONS.md) before upgrading.
+Local validation: 178/178 vanilla integration assertions and 10/10 unit tests pass; 212 functions, zero static dialog registry JSON. Protocol/codec testing is not manual graphical QA. The main production pack excludes test fixtures and the optional action-hook example companion pack.
 
-## Added
-
-- Eight action entry points: run_command, open_url, suggest_command, copy_to_clipboard, show_dialog, function, close and refresh.
-- Ordered server callback chains with nested queue snapshots, a 64-entry execution cap and 16-chain depth cap.
-- Native client buttons remain distinct from privileged server chains; vanilla does not batch several client actions from one button.
-- before_action/after_action observer tags with cancellation, action index, effective payload and integer result.
-- A multi-action/native-button showcase in `mdl_demo:demo/actions`.
-
-Local vanilla integration and release unit results are recorded in TEST_RESULTS.json and tests/run-metadata.json. Native action codec validation is not a claim of manual graphical/browser testing. Earlier progress, refresh, state, localization, themes, queues and validation features remain available through the migrated API.
+Delayed jobs are capped at one per player, count online ticks, and are invalidated by reload. Filters match exact server-owned tags rather than substrings. Favorites are bounded snapshots, not inventory or a database. Stop-on-failure does not undo earlier effects.

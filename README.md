@@ -10,7 +10,7 @@ $return run dialog show @s $(dialog)
 
 The library serializes an NBT compound from storage into an inline dialog definition. It does not register new dialog IDs or bypass vanilla permissions and codecs.
 
-**Version:** 2.0.0 · **Data pack format:** 80 · **License:** MIT
+**Version:** 2.1.0 · **Data pack format:** 80 · **License:** MIT
 **Repository:** [tickwarden/modalith](https://github.com/tickwarden/modalith)
 
 ## Publication history
@@ -18,6 +18,17 @@ The library serializes an NBT compound from storage into an inline dialog defini
 Modalith started at **1.0.0**, not 1.3.0. Versions **1.0.0, 1.1.0, and 1.2.0** were developed and packaged locally before the repository was uploaded to GitHub. The repository was first published on **November 11, 2026**, when development had already reached **1.3.0**.
 
 The initial GitHub commit therefore imports the accumulated 1.3.0 source; it is **not the project's first development version**. Earlier development stages are documented in the [changelog](CHANGELOG.md), but their original commit-by-commit history is not present in this repository. Those entries describe pre-publication versions, not prior GitHub Releases or tags.
+
+## New in 2.1: six runtime features
+
+- Opt-in stop-on-failure for server action chains.
+- One cancellable delayed callback per player (1–1200 online ticks).
+- Predicate-controlled yes/no action branches.
+- Button enable/disable with server-side route rejection.
+- Stable exact-tag catalog filtering (up to 64 records).
+- Persistent player favorites and favorites catalogs (up to 64 items).
+
+See [the runtime feature guide](docs/RUNTIME_FEATURES.md). Demo: `function mdl_demo:demo/runtime`.
 
 ## New in 2.0: typed multi-action callbacks
 
@@ -76,7 +87,7 @@ All demo UI, documentation, and contributor-facing text is in English.
 
 ## Install
 
-1. Build or download `modalith-2.0.0-mc1.21.6.zip`.
+1. Build or download `modalith-2.1.0-mc1.21.6.zip`.
 2. Copy it to `<world>/datapacks/`. The ZIP contains `pack.mcmeta` at its root.
 3. Run `/reload`.
 4. As a player, run `/trigger mdl.open`. OP is not required.

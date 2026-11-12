@@ -10,6 +10,7 @@ data modify storage mdl:work catalog set from storage mdl:template source.catalo
 execute if data storage mdl:template source.progress_style run data modify storage mdl:work progress_style set from storage mdl:template source.progress_style
 execute if data storage mdl:template source.refresh run data modify storage mdl:work refresh set from storage mdl:template source.refresh
 execute if data storage mdl:template source.theme run data modify storage mdl:work theme set from storage mdl:template source.theme
+execute if data storage mdl:template source.disabled_last run data modify storage mdl:work disabled_last set from storage mdl:template source.disabled_last
 # Notification markers are intentionally not cloned; queued acknowledgements are not reusable templates.
 data modify storage mdl:template queue set from storage mdl:template source.routes
 scoreboard players set #template_ok mdl.tmp 1

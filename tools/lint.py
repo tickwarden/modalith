@@ -32,6 +32,10 @@ def lint():
         for number, line in enumerate(text.splitlines(), 1):
             if line.lstrip().startswith("#"):
                 continue
+            if line.startswith("$") and "$(" not in line:
+                errors.append(f"{path.name}: macro line without variables")
+            if re.search(r"\[-?\d+\]\{", line):
+                errors.append(f"{path.name}: compound match directly after list index")
             for ref in re.findall(r"\bfunction mdl:([a-z0-9_/]+)", line):
                 if ref not in functions:
                     errors.append(f"{path.name}:{number}: missing mdl:{ref}")
@@ -43,6 +47,10 @@ def lint():
         for line in path.read_text().splitlines():
             if line.lstrip().startswith("#"):
                 continue
+            if line.startswith("$") and "$(" not in line:
+                errors.append(f"{path.name}: macro line without variables")
+            if re.search(r"\[-?\d+\]\{", line):
+                errors.append(f"{path.name}: compound match directly after list index")
             for ref in re.findall(r"\bfunction (mdl_demo:[a-z0-9_/]+)", line):
                 if ref not in all_functions:
                     errors.append(f"{path.name}: missing {ref}")

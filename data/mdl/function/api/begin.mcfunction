@@ -2,6 +2,7 @@
 execute unless entity @s[type=minecraft:player] run return 0
 execute unless score @s mdl.id matches 1.. run function mdl:internal/identify
 function mdl:internal/context
+data remove storage mdl:work disabled_last
 data remove storage mdl:work dialog
 data remove storage mdl:work routes
 data remove storage mdl:work form

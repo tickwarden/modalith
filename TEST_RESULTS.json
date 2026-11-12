@@ -698,5 +698,195 @@
     "test": "Isolated action showcase renders",
     "pass": true,
     "detail": ""
+  },
+  {
+    "test": "Width setter rejects absent action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Explicit width overrides routed button width",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Width zero rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Width above codec maximum rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Fractional width rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Invalid widths leave previous width unchanged",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native width override passes dialog codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Exit width override passes dialog codec",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Stopped dispatch reports failure and leaves effects untouched",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Default failure policy still continues",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Predicate false runs no branch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Predicate true runs yes branch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Missing predicate never runs privileged yes branch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delayed action schedules successfully",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Second outstanding delay is rejected",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delayed action does not execute synchronously",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delayed action executes once after ticks",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Cancelled delayed action does not execute",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delay rejects zero ticks",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delay rejects fractional ticks",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Reload cancels epoch-stale delayed action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Disabled button has no client action",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Disabled server route rejects forged trigger",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Template re-enables using fresh ticket",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Native action restores after toggle",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites preserve trusted item payload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites isolated per player",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites render via ordinary catalog",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Removed favorite clears stale output",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites reject entry 65",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Existing favorite can update at capacity",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Favorites survive reload",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Exact tag filter preserves source order",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Filter does not pretend to support substring matching",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Empty filter includes all items",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Delay typed action dispatches its saved callback",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Conditional typed action selects a branch",
+    "pass": true,
+    "detail": ""
+  },
+  {
+    "test": "Six-feature demo renders disabled action",
+    "pass": true,
+    "detail": ""
   }
 ]

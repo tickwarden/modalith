@@ -1,0 +1,1 @@
+function mdl:api/catalog_filter {title:{text:"Rare tag filter"},size:8,page:0,query:"rare",items:[{label:{text:"Rare A"},tags:["rare"],callback:[{type:"close"}],payload:{}},{label:{text:"Common"},tags:["common"],callback:[{type:"close"}],payload:{}},{label:{text:"Rare B"},tags:["rare"],callback:[{type:"close"}],payload:{}}]}

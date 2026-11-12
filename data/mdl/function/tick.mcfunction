@@ -11,3 +11,4 @@ execute as @a[scores={mdl.open=1..}] at @s run function mdl_demo:demo/home
 scoreboard players set @a mdl.open 0
 scoreboard players enable @a mdl.open
 execute as @a[tag=mdl.active,scores={mdl.interval=5..,mdl.refresh=..0}] at @s run function mdl:internal/auto_refresh
+execute as @a at @s run function mdl:internal/delay_tick

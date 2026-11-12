@@ -3,3 +3,4 @@ $execute if data storage mdl:work dialog.exit_action{action:{template:"/trigger 
 $execute if data storage mdl:work dialog.action{action:{template:"/trigger mdl.input set $(old)$(suffix)"}} run data modify storage mdl:work dialog.action.action.template set value "/trigger mdl.input set $(new)$(suffix)"
 $execute if data storage mdl:work dialog.yes{action:{template:"/trigger mdl.input set $(old)$(suffix)"}} run data modify storage mdl:work dialog.yes.action.template set value "/trigger mdl.input set $(new)$(suffix)"
 $execute if data storage mdl:work dialog.no{action:{template:"/trigger mdl.input set $(old)$(suffix)"}} run data modify storage mdl:work dialog.no.action.template set value "/trigger mdl.input set $(new)$(suffix)"
+$execute if data storage mdl:work disabled_last.action{template:"/trigger mdl.input set $(old)$(suffix)"} run data modify storage mdl:work disabled_last.action.template set value "/trigger mdl.input set $(new)$(suffix)"
