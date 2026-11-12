@@ -10,7 +10,7 @@ The installable datapack ZIP is separate from the source archive. Do not upload 
 
 - Review the MIT license and attribution; the project is not affiliated with Mojang/Microsoft.
 - Run the static checks, unit tests, and local vanilla integration procedure.
-- Check `VERSION`, `pack.mcmeta`, changelog, and release notes agree.
+- Check `VERSION`, `mdl/pack.mcmeta`, changelog, and release notes agree.
 - Inspect `git diff` and ensure no world, credentials, server binary, downloaded JRE, logs, or `.env` files are tracked.
 - Review repository visibility. The example below creates a **public** repository; change `--public` to `--private` if you want a private staging repository.
 - Set your own Git commit identity. Do not paste authentication tokens into files or commands stored in shell scripts.
@@ -69,3 +69,5 @@ Do not also create the same release manually unless you intentionally skip/disab
 ## Future releases
 
 Update `VERSION`, pack description/load message, changelog, and release notes together. Run local integration tests again after runtime changes, commit, wait for CI, then push a matching `vX.Y.Z` tag. Packaging is deterministic for identical source bytes within the same Python/zlib toolchain; checksums identify the exact published archive.
+
+The core source root is `mdl/`; the optional demo source root is `mdl_demo/`. Build from the repository root with `python tools/build.py`; publish both ZIPs and their SHA256SUMS. Each ZIP has pack.mcmeta at its root, not an extra source directory.

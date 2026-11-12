@@ -38,7 +38,7 @@ These commands need no third-party Python packages. The production ZIP excludes 
 Use a disposable world. The suite changes state and performs `/reload`; never run it against a production server.
 
 1. Obtain a vanilla 1.21.6 server and Java 21. Review and accept Mojang's EULA yourself.
-2. Copy this pack to `world/datapacks/Modalith` and the fixture pack `tests/fixtures/hooks` to `world/datapacks/mdl_test_hooks`. **Do not install the fixture pack in production.**
+2. Copy the source `mdl/` directory to `world/datapacks/Modalith`, the optional `mdl_demo` pack to `world/datapacks/ModalithDemo`, and the fixture pack `tests/fixtures/hooks` to `world/datapacks/mdl_test_hooks`. **Do not install the fixture pack in production.**
 3. Bind the test server/RCON to localhost, use game port 25565 and RCON port 25575. Enable RCON and set a test-only password. The default expected password is `local-test-only`; an environment override is supported.
 4. Use an isolated offline-mode server for these synthetic clients. Do not grant either test player OP. Keep other players out of the test world.
 5. Install Python test dependencies: `pip install -r tests/requirements.txt`.
@@ -64,3 +64,7 @@ Twenty additional vanilla assertions cover ordered typed commands, inherited/ove
 ## 2.1 coverage
 
 The latest run includes all earlier 140 checks, 8 previously unrun width assertions, and 30 runtime-feature assertions. It covers explicit stop-on-failure/continuation, predicate branches/missing predicates, delayed scheduling/capacity/cancellation/reload, native and routed disable/restore including forged tickets and template rekeying, favorites isolation/capacity/update/removal/reload, stable exact-tag filtering and the six-feature showcase. Initial development runs found macro/path issues, fixed before the successful full run; historical server logs retain those diagnostics. No manual graphical QA is claimed.
+
+## Optional demo separation
+
+The source/layout update separates the public demo into its own datapack. Static/unit tests assert that core has no demo references or opener and that both ZIPs are deterministic and installable at their roots. The recorded 178-assertion vanilla run predates this packaging separation; it has not been rerun with the separate pack layout.

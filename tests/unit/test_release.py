@@ -15,12 +15,12 @@ spec.loader.exec_module(builder)
 
 class ReleaseTests(unittest.TestCase):
     def test_supported_target(self):
-        self.assertEqual(json.loads((ROOT / "pack.mcmeta").read_text())["pack"]["pack_format"], 80)
+        self.assertEqual(json.loads((ROOT / "mdl" / "pack.mcmeta").read_text())["pack"]["pack_format"], 80)
 
     def test_version_consistency(self):
         version = (ROOT / "VERSION").read_text().strip()
         self.assertIn(version, (ROOT / "README.md").read_text())
-        self.assertIn(version, (ROOT / "pack.mcmeta").read_text())
+        self.assertIn(version, (ROOT / "mdl" / "pack.mcmeta").read_text())
         self.assertIn(version, (ROOT / "CHANGELOG.md").read_text())
 
     def test_zip_root_and_no_test_hooks(self):
@@ -44,26 +44,26 @@ class ReleaseTests(unittest.TestCase):
 
     def test_new_public_apis_exist(self):
         for name in ["template_save", "template_load", "template_delete", "guarded_button", "form_guard", "cooldown", "stats", "stats_reset", "progress", "progress_style", "auto_refresh", "auto_refresh_stop", "theme_register", "theme_apply", "themed_body", "translation_register", "locale_set", "translate", "localized_title", "localized_body", "localized_button", "state_set", "state_get", "state_remove", "state_clear", "notify", "notifications_show", "notification_next", "notifications_clear", "form_rules", "catalog_sorted", "button_width", "exit_width", "action_delay", "action_delay_cancel", "action_conditional", "button_enabled", "catalog_filter", "favorite_set", "favorite_get", "favorite_remove", "favorites_clear", "catalog_favorites"]:
-            self.assertTrue((ROOT / "data" / "mdl" / "function" / "api" / f"{name}.mcfunction").is_file())
+            self.assertTrue((ROOT / "mdl" / "data" / "mdl" / "function" / "api" / f"{name}.mcfunction").is_file())
 
     def test_observer_tags_are_empty_in_production(self):
         for name in ["event", "show", "close", "timeout", "reject", "before_action", "after_action"]:
-            path = ROOT / "data" / "mdl" / "tags" / "function" / f"{name if name in ['before_action', 'after_action'] else 'on_' + name}.json"
+            path = ROOT / "mdl" / "data" / "mdl" / "tags" / "function" / f"{name if name in ['before_action', 'after_action'] else 'on_' + name}.json"
             self.assertEqual(json.loads(path.read_text())["values"], [])
 
     def test_typed_dispatch_and_actions(self):
         for name in ['function', 'run_command', 'close', 'refresh', 'open_url', 'suggest_command', 'copy_to_clipboard', 'show_dialog']:
-            self.assertTrue((ROOT / 'data/mdl/function/action' / (name + '.mcfunction')).is_file())
-        self.assertEqual((ROOT / 'data/mdl/function/action/run_command.mcfunction').read_text().strip(), '$$(cmd)')
-        for path in (ROOT / 'data').rglob('*.mcfunction'):
+            self.assertTrue((ROOT / 'mdl/data/mdl/function/action' / (name + '.mcfunction')).is_file())
+        self.assertEqual((ROOT / 'mdl/data/mdl/function/action/run_command.mcfunction').read_text().strip(), '$$(cmd)')
+        for path in (ROOT / 'mdl/data').rglob('*.mcfunction'):
             self.assertNotIn('callback:"', path.read_text())
-        self.assertFalse((ROOT / 'data/mdl/function/demo').exists())
-        self.assertTrue((ROOT / 'data/mdl_demo/function/demo/actions.mcfunction').is_file())
+        self.assertFalse((ROOT / 'mdl/data/mdl/function/demo').exists())
+        self.assertTrue((ROOT / 'mdl_demo/data/mdl_demo/function/demo/actions.mcfunction').is_file())
 
     def test_updated_examples_and_optional_hook_pack(self):
-        home = (ROOT / 'data/mdl_demo/function/demo/home.mcfunction').read_text()
+        home = (ROOT / 'mdl_demo/data/mdl_demo/function/demo/home.mcfunction').read_text()
         self.assertIn('mdl_demo:demo/actions', home)
-        actions = (ROOT / 'data/mdl_demo/function/demo/actions.mcfunction').read_text()
+        actions = (ROOT / 'mdl_demo/data/mdl_demo/function/demo/actions.mcfunction').read_text()
         for token in ['type:"close"', 'type:"refresh"', 'type:"run_command"', 'key:"action_demo"']:
             self.assertIn(token, actions)
         example = ROOT / 'examples/action_hooks'
@@ -78,16 +78,35 @@ class ReleaseTests(unittest.TestCase):
 
     def test_width_setter_validation_precedes_target_mutation(self):
         for name, target in [('button_width', 'dialog.actions[-1]'), ('exit_width', 'dialog.exit_action')]:
-            text = (ROOT / 'data/mdl/function/api' / (name + '.mcfunction')).read_text()
+            text = (ROOT / 'mdl/data/mdl/function/api' / (name + '.mcfunction')).read_text()
             self.assertIn('matches 1..1024 run return 0', text)
             self.assertIn('check.width int 1', text)
             self.assertIn('score #width_type mdl.tmp matches 1 run return 0', text)
             self.assertIn('unless data storage mdl:work ' + target + ' run return 0', text)
             self.assertLess(text.index('matches 1..1024'), text.index(target + '.width set'))
 
+    def test_demo_is_an_optional_independent_archive(self):
+        for path in (ROOT / 'mdl/data').rglob('*.mcfunction'):
+            self.assertNotIn('mdl_demo:', path.read_text())
+            self.assertNotIn('mdl.open', path.read_text())
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            core = builder.build(directory)
+            demo = builder.build_demo(directory)
+            with zipfile.ZipFile(core) as z:
+                self.assertFalse(any('mdl_demo' in n for n in z.namelist()))
+            first = demo.read_bytes()
+            self.assertEqual(first, builder.build_demo(directory).read_bytes())
+            with zipfile.ZipFile(demo) as z:
+                self.assertIn('pack.mcmeta', z.namelist())
+                self.assertIn('data/mdl_demo/function/load.mcfunction', z.namelist())
+                self.assertNotIn('data/mdl/function/load.mcfunction', z.namelist())
+                self.assertIsNone(z.testzip())
+            self.assertEqual(len((directory / 'SHA256SUMS').read_text().splitlines()), 2)
+
     def test_no_turkish_text_in_runtime_or_documentation(self):
         import re
-        for directory in [ROOT / "data", ROOT / "docs"]:
+        for directory in [ROOT / "mdl" / "data", ROOT / "docs"]:
             for path in directory.rglob("*"):
                 if path.is_file():
                     self.assertIsNone(re.search("[çğıöşüÇĞİÖŞÜ]", path.read_text()), str(path))

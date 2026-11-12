@@ -1,6 +1,6 @@
 # Six runtime features — 2.1
 
-All inputs below are **trusted server developer data**. No feature adds arbitrary client command transport or a security sandbox. Demo: `function mdl_demo:demo/runtime`, also linked from the home menu.
+All inputs below are **trusted server developer data**. No feature adds arbitrary client command transport or a security sandbox. With the optional demo pack installed: `function mdl_demo:demo/runtime`, also linked from the home menu.
 
 ## 1. Stop a chain on failure
 

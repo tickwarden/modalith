@@ -1,27 +1,39 @@
-name: Validate and package
+name: Validate core and optional demo
 on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: pack-checks-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   validate:
+    name: Lint, unit tests and package layout
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.11'
-      - name: Static consistency checks
+      - name: Validate core and optional demo references
         run: python tools/lint.py
-      - name: Release/layout unit tests
+      - name: Unit tests and core/demo isolation checks
         run: python -m unittest discover -s tests/unit -v
-      - name: Build installable datapack
+      - name: Build independent installable datapacks
         run: python tools/build.py
+      - name: Verify archive checksums
+        working-directory: artifacts
+        run: sha256sum --check SHA256SUMS
       - uses: actions/upload-artifact@v7.0.2
         with:
-          name: modalith-datapack
-          path: artifacts/*
+          name: modalith-core-and-demo
+          path: |
+            artifacts/modalith-*.zip
+            artifacts/SHA256SUMS
           if-no-files-found: error
