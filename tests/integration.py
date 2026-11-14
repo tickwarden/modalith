@@ -22,7 +22,7 @@ def frame(p=1):
  return out
 def click(callback,p='Tester',pid=1):
  r=next(x for x in frame(pid)['routes'] if str(x['callback'][0].get('function','mdl:api/'+str(x['callback'][0]['type'])))==callback);send('trigger mdl.click set '+str(int(r['ticket'])),p);return int(r['ticket'])
-run('mdl_demo:demo/home');check('Home commits session',len(frame()['routes'])==12)
+run('mdl_demo:demo/home');check('Home commits session',len(frame()['routes'])==13)
 run('mdl_demo:demo/home','Other');other=frame(2).snbt();check('Two isolated players',frame()['owner']!=frame(2)['owner'])
 t=click('mdl_demo:demo/catalog');check('Catalog page 1',len(frame()['dialog']['actions'])==9)
 check('Other player unchanged',frame(2).snbt()==other)

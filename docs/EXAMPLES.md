@@ -1,6 +1,6 @@
 # Updated 2.0 examples
 
-Install the separate `modalith-demo-2.1.0-mc1.21.6.zip` alongside the core before using these examples. Source: `mdl_demo`. The core ZIP contains no demos or public demo opener.
+Install the separate `modalith-demo-2.2.0-mc26.3.zip` alongside the core before using these examples. Source: `mdl_demo`. The core ZIP contains no demos or public demo opener.
 
 All runtime examples use **`mdl_demo`**, not the core `mdl` namespace. All callback fields are typed arrays. Existing core APIs still live in `mdl`.
 
@@ -95,3 +95,7 @@ function mdl:api/show
 ```
 
 `button_width` overrides the most recently appended action button, whether native, routed, raw or a numeric form submit button. Call it **after** adding that button and **before** `show`. For notice/confirmation conversion, call it before `notice` or `confirmation`. `exit_width` affects only the existing multi-action exit button. Both require an NBT **int** in `1..1024`, return 1 on success or 0 for an invalid width/missing target, and leave the button unchanged on failure. The explicit setter overrides the theme width for that button. Other buttons keep their original theme/default widths. Existing builder signatures are unchanged.
+
+## 2.2 controls showcase
+
+On Minecraft 26.3 with core and demo installed, run `function mdl_demo:demo/ui_controls`. It demonstrates body replacement, label replacement, full-component tooltips, three columns and `after_action:none`. See [UI_CONTROLS.md](UI_CONTROLS.md).

@@ -4,6 +4,10 @@ const mc = require('minecraft-protocol');
 const fs = require('node:fs');
 const net = require('node:net');
 const clients = {};
+const gameVersion = process.env.MDL_GAME_VERSION || '26.3';
+if (!require('minecraft-data')(gameVersion)) {
+  throw new Error(`Protocol fixtures do not support ${gameVersion}. Use tests/server_26_3.py for server-only checks; do not relabel older-version integration results.`);
+}
 const port = Number(process.env.MDL_CLIENT_PORT || 25581);
 const server = net.createServer(socket => {
   let buffer = '';
@@ -29,7 +33,7 @@ server.listen(port, '127.0.0.1', () => console.log(`Local test driver: ${port}`)
 function connect(username) {
   const client = mc.createClient({
     host: '127.0.0.1', port: Number(process.env.MDL_GAME_PORT || 25565),
-    username, version: '1.21.6', auth: 'offline'
+    username, version: gameVersion, auth: 'offline'
   });
   clients[username] = client;
   client.on('login', () => {

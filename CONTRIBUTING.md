@@ -5,7 +5,7 @@ Thank you for improving Modalith. The intended repository is `tickwarden/modalit
 ## Development requirements
 
 - Python 3.11+ for linting/build/release unit tests.
-- Java 21 and vanilla Java Edition 1.21.6 for runtime testing.
+- Java 21 and vanilla Java Edition 26.3 for runtime testing.
 - Node 22+ and the pinned test dependencies for protocol integration tests.
 
 Run from the repository root:

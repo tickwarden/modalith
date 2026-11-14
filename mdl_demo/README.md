@@ -1,8 +1,8 @@
 # Modalith optional demo datapack
 
-Requires the matching Modalith core (currently 2.1.0) and Minecraft Java 1.21.6.
+Requires the matching Modalith core (currently 2.2.0) and Minecraft Java 26.3.
 
-Install `modalith-demo-2.1.0-mc1.21.6.zip` alongside `modalith-2.1.0-mc1.21.6.zip` in the world datapacks directory and reload. Alternatively copy this directory as its own datapack; pack.mcmeta must be at its root. Do not merge its data directory into core.
+Install `modalith-demo-2.2.0-mc26.3.zip` alongside `modalith-2.2.0-mc26.3.zip` in the world datapacks directory and reload. Alternatively copy this directory as its own datapack; pack.mcmeta must be at its root. Do not merge its data directory into core.
 
 Run `/trigger mdl.open` as a player. Administrator shortcut: `/execute as <player> at @s run function mdl_demo:demo/home`.
 

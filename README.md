@@ -1,6 +1,6 @@
 # Modalith
 
-**Macro-native dialog library for Minecraft Java 1.21.6.**
+**Macro-native dialog library for Minecraft Java 26.3.**
 
 Build dialogs at runtime, route non-OP player actions back to server functions, and keep UI state separate for every player. No mods, plugins, resource packs, or static dialog registry JSON files are required.
 
@@ -10,7 +10,7 @@ $return run dialog show @s $(dialog)
 
 The library serializes an NBT compound from storage into an inline dialog definition. It does not register new dialog IDs or bypass vanilla permissions and codecs.
 
-**Version:** 2.1.0 · **Data pack format:** 80 · **License:** MIT
+**Version:** 2.2.0 · **Data pack version:** 121.0 · **License:** MIT
 **Repository:** [tickwarden/modalith](https://github.com/tickwarden/modalith)
 
 ## Publication history
@@ -18,6 +18,12 @@ The library serializes an NBT compound from storage into an inline dialog defini
 Modalith started at **1.0.0**, not 1.3.0. Versions **1.0.0, 1.1.0, and 1.2.0** were developed and packaged locally before the repository was uploaded to GitHub. The repository was first published on **November 11, 2026**, when development had already reached **1.3.0**.
 
 The initial GitHub commit therefore imports the accumulated 1.3.0 source; it is **not the project's first development version**. Earlier development stages are documented in the [changelog](CHANGELOG.md), but their original commit-by-commit history is not present in this repository. Those entries describe pre-publication versions, not prior GitHub Releases or tags.
+
+## New in 2.2: Minecraft 26.3 and UI controls
+
+Targets Java Edition **26.3**, **Java 25**, and data pack version **121.0**. Adds `button_label`, `body_clear`, `button_tooltip`, validated `columns`, and configurable `after_action`. See [UI controls and migration](docs/UI_CONTROLS.md).
+
+Validation: **35/35 real-server RCON/codec checks** and static/unit/layout tests. Full non-OP player integration has **not** been rerun on 26.3 because the pinned protocol fixtures lack its schema. Earlier 178-check results are historical, not 26.3 evidence.
 
 ## New in 2.1: six runtime features
 
@@ -87,11 +93,11 @@ All demo UI, documentation, and contributor-facing text is in English.
 
 ## Install
 
-1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.1.0-mc1.21.6.zip`.
+1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.2.0-mc26.3.zip`.
 2. Copy it to `<world>/datapacks/`. The ZIP contains `pack.mcmeta` at its root (not an extra `mdl/` directory). You may also install the source `mdl/` folder directly as its own datapack.
 3. Run `/reload`.
 4. The core has no demo opener. Open your own UI through your integration.
-5. Optional: install `modalith-demo-2.1.0-mc1.21.6.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
+5. Optional: install `modalith-demo-2.2.0-mc26.3.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
 
 With the optional demo installed, the administrator alternative is:
 
@@ -185,4 +191,4 @@ Arbitrary text capture from non-OP players is **not** implemented as a generic v
 
 Macros do not remove dialog width/layout limits, packet limits, command-chain limits, or permission requirements. A valid ticket proves only that a player submitted an allowed action for their active session—not that a physical button was clicked. Recheck permissions, balances, stock, and state at the point of use.
 
-**Compatibility:** Minecraft Java 1.21.6 only. Later versions, forks, and proxies need independent testing. This project is not affiliated with Mojang or Microsoft.
+**Compatibility:** Minecraft Java 26.3 only. Later versions, forks, and proxies need independent testing. This project is not affiliated with Mojang or Microsoft.
