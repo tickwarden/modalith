@@ -1,14 +1,9 @@
-# Modalith 2.2.0
+# Modalith 2.3.0
 
-Six requested changes:
+Minecraft Java 26.3 / Java 25 / datapack version 121.0.
 
-1. Minecraft Java 26.3 / Java 25 / datapack version 121.0 migration.
-2. Last-button label setter.
-3. Draft body clear API.
-4. Whole-component button tooltips.
-5. Validated 1–8 columns setter.
-6. Configurable close/none/wait_for_response after_action.
+Four new read-only composite widgets: stat card, key-value list, checklist and step indicator. They append ordinary plain_message body components, preserve supplied text styles, use validated width/list bounds and reject known invalid models without partial body output. No new native widget types or interactive checkbox/table controls are claimed.
 
-Core and optional demo remain separate. Predicates use the 26.3 type discriminator. See docs/UI_CONTROLS.md for signatures, limits and migration.
+API guide: docs/WIDGETS.md. Optional demo: mdl_demo:demo/widgets. Core and demo remain independent datapacks; existing 2.2 APIs remain available.
 
-Validation: 35/35 real vanilla 26.3 server RCON/codec checks. Full player/session integration and manual graphical QA are not claimed. Pinned protocol fixtures lack a 26.3 schema; earlier 178-assertion 1.21.6 results remain historical evidence only. PR CI runs static/unit/build/checksum checks, not the server suite.
+Validation: 68/68 real-server RCON/codec checks (35 previous + 33 widgets), 14/14 unit/layout tests, static lint and deterministic package/checksum checks. No manual graphical UI or end-to-end player session testing is claimed. PR CI runs static/unit/build checks, not the server suite.

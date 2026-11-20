@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.0 — four composite widgets
+
+- Stat card: title, value and description.
+- Key-value list: up to 32 labeled rows.
+- Checklist: up to 32 done/pending/failed entries.
+- Step indicator: 1–16 steps with a one-based current position.
+
+All four append a read-only plain_message body component. These are composite text layouts, not newly registered native dialog types.
+
+
 ## 2.2.0 — six changes
 
 1. Target Minecraft Java 26.3, Java 25, data pack version 121.0.

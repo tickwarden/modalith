@@ -10,7 +10,7 @@ $return run dialog show @s $(dialog)
 
 The library serializes an NBT compound from storage into an inline dialog definition. It does not register new dialog IDs or bypass vanilla permissions and codecs.
 
-**Version:** 2.2.0 · **Data pack version:** 121.0 · **License:** MIT
+**Version:** 2.3.0 · **Data pack version:** 121.0 · **License:** MIT
 **Repository:** [tickwarden/modalith](https://github.com/tickwarden/modalith)
 
 ## Publication history
@@ -19,11 +19,22 @@ Modalith started at **1.0.0**, not 1.3.0. Versions **1.0.0, 1.1.0, and 1.2.0** w
 
 The initial GitHub commit therefore imports the accumulated 1.3.0 source; it is **not the project's first development version**. Earlier development stages are documented in the [changelog](CHANGELOG.md), but their original commit-by-commit history is not present in this repository. Those entries describe pre-publication versions, not prior GitHub Releases or tags.
 
+## New in 2.3: four composite widgets
+
+- **Stat card:** title, value and description.
+- **Key-value list:** up to 32 ordered labeled values.
+- **Checklist:** up to 32 done/pending/failed status rows.
+- **Step indicator:** 1–16 stages with a one-based current position.
+
+These are **read-only text compositions**, not new native widget types or interactive inputs. See [widget APIs and examples](docs/WIDGETS.md). Demo: `function mdl_demo:demo/widgets` with the optional demo installed.
+
+Latest validation: **68/68 real-server RCON/codec checks** and **14/14 unit/layout tests**. No manual graphical or full player-session integration claim.
+
 ## New in 2.2: Minecraft 26.3 and UI controls
 
 Targets Java Edition **26.3**, **Java 25**, and data pack version **121.0**. Adds `button_label`, `body_clear`, `button_tooltip`, validated `columns`, and configurable `after_action`. See [UI controls and migration](docs/UI_CONTROLS.md).
 
-Validation: **35/35 real-server RCON/codec checks** and static/unit/layout tests. Full non-OP player integration has **not** been rerun on 26.3 because the pinned protocol fixtures lack its schema. Earlier 178-check results are historical, not 26.3 evidence.
+Initial 2.2 validation: **35/35 real-server RCON/codec checks** and static/unit/layout tests. Full non-OP player integration has **not** been rerun on 26.3 because the pinned protocol fixtures lack its schema. Earlier 178-check results are historical, not 26.3 evidence.
 
 ## New in 2.1: six runtime features
 
@@ -93,11 +104,11 @@ All demo UI, documentation, and contributor-facing text is in English.
 
 ## Install
 
-1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.2.0-mc26.3.zip`.
+1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.3.0-mc26.3.zip`.
 2. Copy it to `<world>/datapacks/`. The ZIP contains `pack.mcmeta` at its root (not an extra `mdl/` directory). You may also install the source `mdl/` folder directly as its own datapack.
 3. Run `/reload`.
 4. The core has no demo opener. Open your own UI through your integration.
-5. Optional: install `modalith-demo-2.2.0-mc26.3.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
+5. Optional: install `modalith-demo-2.3.0-mc26.3.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
 
 With the optional demo installed, the administrator alternative is:
 

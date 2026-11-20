@@ -122,6 +122,18 @@ class ReleaseTests(unittest.TestCase):
         self.assertIn('dialog.pause set value 0b', (base / 'after_action.mcfunction').read_text())
         self.assertTrue((ROOT / 'mdl_demo/data/mdl_demo/function/demo/ui_controls.mcfunction').is_file())
 
+    def test_composite_widget_contracts(self):
+        root = ROOT / 'mdl/data/mdl/function'
+        for name in ['stat_card', 'key_value', 'checklist', 'step_indicator']:
+            code = (root / 'api/widget' / (name + '.mcfunction')).read_text()
+            self.assertIn('internal/widget/width', code)
+            self.assertIn('internal/widget/emit', code)
+        self.assertIn('matches 0..32', (root / 'api/widget/key_value.mcfunction').read_text())
+        self.assertIn('matches 0..32', (root / 'api/widget/checklist.mcfunction').read_text())
+        self.assertIn('matches 1..16', (root / 'api/widget/step_indicator.mcfunction').read_text())
+        self.assertIn('function mdl:api/body', (root / 'internal/widget/emit.mcfunction').read_text())
+        self.assertTrue((ROOT / 'mdl_demo/data/mdl_demo/function/demo/widgets.mcfunction').is_file())
+
     def test_no_turkish_text_in_runtime_or_documentation(self):
         import re
         for directory in [ROOT / "mdl" / "data", ROOT / "docs"]:
