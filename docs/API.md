@@ -268,3 +268,7 @@ See [UI_CONTROLS.md](UI_CONTROLS.md) for `button_label {label}`, `body_clear`, `
 ## 2.3 composite body widgets
 
 `widget/stat_card`, `widget/key_value`, `widget/checklist`, and `widget/step_indicator` append read-only plain_message body layouts. See [WIDGETS.md](WIDGETS.md) for complete schemas, list bounds, validation and rendering limits.
+
+## Diagnostics and safe testing
+
+See [diagnostics](DIAGNOSTICS.md) and [test policy](TESTING.md).

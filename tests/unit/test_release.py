@@ -79,10 +79,10 @@ class ReleaseTests(unittest.TestCase):
     def test_width_setter_validation_precedes_target_mutation(self):
         for name, target in [('button_width', 'dialog.actions[-1]'), ('exit_width', 'dialog.exit_action')]:
             text = (ROOT / 'mdl/data/mdl/function/api' / (name + '.mcfunction')).read_text()
-            self.assertIn('matches 1..1024 run return 0', text)
+            self.assertIn('matches 1..1024 run return run function mdl:internal/diagnostic/error', text)
             self.assertIn('check.width int 1', text)
-            self.assertIn('score #width_type mdl.tmp matches 1 run return 0', text)
-            self.assertIn('unless data storage mdl:work ' + target + ' run return 0', text)
+            self.assertIn('score #width_type mdl.tmp matches 1 run return run function mdl:internal/diagnostic/error', text)
+            self.assertIn('unless data storage mdl:work ' + target + ' run return run function mdl:internal/diagnostic/error', text)
             self.assertLess(text.index('matches 1..1024'), text.index(target + '.width set'))
 
     def test_demo_is_an_optional_independent_archive(self):

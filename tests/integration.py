@@ -1,7 +1,10 @@
+from local_safety import require_local_test_environment, port as safe_port
+SAFE_HOST, SAFE_RCON_PORT = require_local_test_environment()
+safe_port(__import__("os").getenv("MDL_CLIENT_PORT", "25581"))
 from mcrcon import MCRcon
 import nbtlib,json,socket,time,os
 from pathlib import Path
-m=MCRcon(os.getenv('MDL_RCON_HOST','127.0.0.1'),os.getenv('MDL_RCON_PASSWORD','local-test-only'),port=int(os.getenv('MDL_RCON_PORT','25575')));m.connect()
+m=MCRcon(SAFE_HOST,os.getenv('MDL_RCON_PASSWORD','local-test-only'),port=SAFE_RCON_PORT);m.connect()
 results=[]
 def cmd(s):return m.command(s)
 def run(fn,p='Tester'):return cmd(f'execute as {p} at @s run function {fn}')
