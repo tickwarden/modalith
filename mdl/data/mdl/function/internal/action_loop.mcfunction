@@ -27,7 +27,7 @@ data modify storage mdl:action payload set from storage mdl:dispatch stack[-1].p
 execute if data storage mdl:action action.payload run data modify storage mdl:action payload set from storage mdl:action action.payload
 function #mdl:after_action
 execute store result score #action_result mdl.tmp run data get storage mdl:dispatch stack[-1].result
-execute if data storage mdl:dispatch stack[-1].current{stop_on_failure:1b} if score #action_result mdl.tmp matches 0 run return 0
+execute if data storage mdl:dispatch stack[-1].current{stop_on_failure:1b} if score #action_result mdl.tmp matches 0 run return run function mdl:internal/diagnostic/stopped
 execute store result score #index mdl.tmp run data get storage mdl:dispatch stack[-1].index
 scoreboard players add #index mdl.tmp 1
 execute store result storage mdl:dispatch stack[-1].index int 1 run scoreboard players get #index mdl.tmp

@@ -1,3 +1,4 @@
+function mdl:internal/diagnostic/warning {code:"W_ROUTE_REJECTED",source:"mdl:internal/reject"}
 scoreboard players add @s mdl.reject 1
 scoreboard players add #rejected mdl.stat 1
 function mdl:internal/lifecycle

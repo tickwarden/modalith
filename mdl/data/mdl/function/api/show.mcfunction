@@ -1,10 +1,10 @@
-execute unless entity @s[type=minecraft:player] run return 0
+execute unless entity @s[type=minecraft:player] run return run function mdl:internal/diagnostic/error {code:"E_NOT_PLAYER",source:"mdl:api/show"}
 execute store result score #owner mdl.tmp run data get storage mdl:work owner
-execute unless score @s mdl.id = #owner mdl.tmp run return 0
+execute unless score @s mdl.id = #owner mdl.tmp run return run function mdl:internal/diagnostic/error {code:"E_DRAFT_OWNER",source:"mdl:api/show"}
 # Ensure required nonempty actions. Passive buttons use close, not waiting.
 execute if data storage mdl:work dialog{type:"minecraft:multi_action"} unless data storage mdl:work dialog.actions[0] run function mdl:api/button {label:{text:"Close"},callback:[{type:"close"}],payload:{}}
 execute store success score #shown mdl.tmp run function mdl:internal/show with storage mdl:work
-execute unless score #shown mdl.tmp matches 1 run return 0
+execute unless score #shown mdl.tmp matches 1 run return run function mdl:internal/diagnostic/error {code:"E_DIALOG_SHOW",source:"mdl:api/show"}
 function mdl:internal/context
 function mdl:internal/commit with storage mdl:ctx
 scoreboard players set @s mdl.click 0

@@ -1,0 +1,23 @@
+{
+  "version": "2.3.0",
+  "minecraft": "26.3",
+  "java": "Temurin 25.0.5.1",
+  "pack_version": [
+    121,
+    0
+  ],
+  "run_at": "2026-11-20T16:48:56.108746+00:00",
+  "server_sha1": "33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c",
+  "server_checks": 68,
+  "server_checks_passed": 68,
+  "widget_checks": 33,
+  "previous_checks": 35,
+  "unit_tests": 14,
+  "static_functions": 233,
+  "static_dialog_json": 0,
+  "function_load_errors": false,
+  "runtime_source_identical": true,
+  "test_scope": "RCON draft APIs and real server argument codecs with zero players; not graphical or player-session testing",
+  "player_integration_executed": false,
+  "graphical_ui_qa": false
+}

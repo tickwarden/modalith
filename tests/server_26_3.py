@@ -6,6 +6,9 @@ from pathlib import Path
 import json
 import os
 import re
+from local_safety import require_local_test_environment, port as safe_port
+SAFE_HOST, SAFE_RCON_PORT = require_local_test_environment()
+safe_port(__import__("os").getenv("MDL_CLIENT_PORT", "25581"))
 from mcrcon import MCRcon
 import nbtlib
 
@@ -15,7 +18,7 @@ def check(name, value):
     results.append({'test': name, 'pass': bool(value)})
     print('PASS' if value else 'FAIL', name)
 
-with MCRcon(os.getenv('MDL_RCON_HOST', '127.0.0.1'), os.getenv('MDL_RCON_PASSWORD', 'local-test-only'), port=int(os.getenv('MDL_RCON_PORT', '25575'))) as m:
+with MCRcon(SAFE_HOST, os.getenv('MDL_RCON_PASSWORD', 'local-test-only'), port=SAFE_RCON_PORT) as m:
     def cmd(value):
         return m.command(value)
     def get(path):
@@ -146,6 +149,42 @@ with MCRcon(os.getenv('MDL_RCON_HOST', '127.0.0.1'), os.getenv('MDL_RCON_PASSWOR
     check('Widgets leave buttons intact', len(get('dialog.actions'))==1 and str(get('dialog.actions[0].label.text'))=='Old')
     cmd('data remove storage mdl:work dialog')
     check('Widget refuses missing draft','returned 0' in widget('stat_card',card))
+
+    # Diagnostics: instrumented errors/warnings, adversarial values and bounded/privacy behavior.
+    def log_get(path):
+        return nbtlib.parse_nbt(cmd('data get storage mdl:log ' + path).split('contents: ',1)[1])
+    api('diagnostics_enabled','{enabled:1b}');api('diagnostics_clear');draft()
+    before=get('dialog').snbt()
+    check('Invalid width keeps failure return with diagnostics','returned 0' in api('button_width','{width:0}'))
+    check('Width rejection records fixed error code',str(log_get('last.code'))=='E_WIDTH_RANGE' and str(log_get('last.severity'))=='error')
+    check('Diagnostic error leaves draft untouched',get('dialog').snbt()==before)
+    api('button_width','{width:1.5d}');check('Fractional width classified separately',str(log_get('last.code'))=='E_WIDTH_TYPE')
+    api('columns','{columns:999999}');check('Extreme columns are rejected and classified',str(log_get('last.code'))=='E_COLUMNS_RANGE')
+    mode=str(get('dialog.after_action'));api('after_action','{value:"open_url"}')
+    check('Unsupported action mode is classified without mutation',str(log_get('last.code'))=='E_AFTER_ACTION_VALUE' and str(get('dialog.after_action'))==mode)
+    widget('checklist',{'title':{'text':'Private'},'items':[{'label':{'text':'PRIVATE_USER_192.0.2.123'},'status':'unknown'}],'width':200})
+    check('Malformed checklist records schema failure',str(log_get('last.code'))=='E_WIDGET_STATUS')
+    api('actions','{callback:[{type:"PRIVATE_UNKNOWN_ACTION"}],payload:{username:"PRIVATE_USER_192.0.2.123"}}')
+    check('Unknown action emits a warning',str(log_get('last.code'))=='W_UNKNOWN_ACTION' and str(log_get('last.severity'))=='warning')
+    api('actions','{callback:[{type:"unknown",stop_on_failure:1b}],payload:{}}')
+    check('Stopped action emits bounded warning code',str(log_get('last.code'))=='W_ACTION_STOPPED')
+    records=log_get('records')
+    check('Records contain only severity code and source',all(set(row.keys())=={'severity','code','source'} for row in records))
+    check('No supplied identity or action data in diagnostics','PRIVATE_' not in records.snbt() and '192.0.2.123' not in records.snbt())
+    check('Snapshot API succeeds','returned 1' in api('diagnostics'))
+    snapshot=nbtlib.parse_nbt(cmd('data get storage mdl:diagnostics snapshot').split('contents: ',1)[1])
+    check('Snapshot preserves both severity counters',int(snapshot['counts']['error'])>0 and int(snapshot['counts']['warning'])>0)
+    api('diagnostics_clear')
+    for _ in range(100):api('columns','{columns:0}')
+    check('Diagnostics flood retained at 32 records',len(log_get('records'))==32)
+    check('Flood counts reflect all 100 instrumented errors',int(log_get('counts.error'))==100)
+    before=log_get('records').snbt();api('diagnostics_enabled','{enabled:0b}');api('columns','{columns:0}')
+    check('Disabled diagnostics keep API failures but do not record',log_get('records').snbt()==before and int(log_get('counts.error'))==100)
+    check('Invalid diagnostic toggle rejected','returned 0' in api('diagnostics_enabled','{enabled:2}'))
+    api('diagnostics_enabled','{enabled:1b}');api('columns','{columns:0}');check('Diagnostics can be re-enabled',int(log_get('counts.error'))==101)
+    cmd('data modify storage mdl:log counts.error set value 2147483647');api('columns','{columns:0}')
+    check('Diagnostic counter saturates without overflow',int(log_get('counts.error'))==2147483647)
+    api('diagnostics_clear');check('Clear resets records and counters',len(log_get('records'))==0 and int(log_get('counts.error'))==0 and int(log_get('counts.warning'))==0)
 
 Path('SERVER_26_3_RESULTS.json').write_text(json.dumps(results, indent=2) + '\n')
 print(sum(x['pass'] for x in results), '/', len(results))

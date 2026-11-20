@@ -1,3 +1,39 @@
+# Current verification: 2.4.0
+
+- Official vanilla Minecraft 26.3, Java 25: **88/88** RCON/API/codec checks.
+- Python: **24/24** offline unit tests; lint: **241 functions, 0 errors**.
+- No human or synthetic game clients were connected in this run. No graphical,
+  player-session, end-to-end trigger, or DDoS test is claimed.
+- Previous evidence is preserved under `tests/history/2.3.0/`.
+- Results: `TEST_RESULTS.json` and `tests/run-metadata.json`.
+
+## Fail-closed local test policy
+
+Prepare a new disposable directory with `python tests/prepare_local_server.py DIR`.
+Review its files; obtain the official server and explicitly accept its EULA yourself.
+Never use real player data, unknown servers, public hosts, tunnels or port forwarding.
+Use an actually isolated local environment, not an exposed hosted preview.
+Server preparation does not download, run or accept the EULA.
+
+Both Python RCON entrypoints and `tests/clients.js` require
+`MDL_LOCAL_TEST_ACK=1` and `MDL_TEST_SERVER_DIR=DIR`. Destinations must be numeric
+loopback addresses matching the prepared settings. DNS, public/private remote,
+wildcard and metadata destinations fail before connection. Status/query must be off,
+whitelist must contain only the two documented synthetic identities, and ops empty.
+The Node controller binds loopback; dialog capture requires `MDL_CAPTURE_DIALOGS=1`.
+Synthetic clients are test automation, never evidence of human activity.
+
+These checks inspect configuration, not running-process provenance, network namespaces,
+plugins, firewall rules or platform routing. Localhost binding alone is insufficient:
+this hosted run exposed separate platform forwarding listeners, despite loopback-bound
+Java listeners. The server was stopped after checks. No public accessibility test or
+network isolation guarantee is asserted. Do not repeat tests where forwarding is enabled.
+This tooling provides neither IP anonymity nor DDoS protection. Do not publish raw logs,
+credentials, captures or world data. `log-ips=false` is only one setting, not a universal
+log scrubber. The fixed local test RCON password is never suitable for an exposed server.
+
+## Historical test documentation (not current evidence)
+
 # Testing — 2.3 / Minecraft 26.3
 
 ## Latest target and real-server validation

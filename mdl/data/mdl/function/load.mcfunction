@@ -31,3 +31,4 @@ tag @a remove mdl.active
 tag @a remove mdl.form
 execute as @a run function mdl:internal/invalidate
 data modify storage mdl:dispatch stack set value []
+function mdl:internal/diagnostic/init

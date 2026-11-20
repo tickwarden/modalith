@@ -270,5 +270,85 @@
   {
     "test": "Widget refuses missing draft",
     "pass": true
+  },
+  {
+    "test": "Invalid width keeps failure return with diagnostics",
+    "pass": true
+  },
+  {
+    "test": "Width rejection records fixed error code",
+    "pass": true
+  },
+  {
+    "test": "Diagnostic error leaves draft untouched",
+    "pass": true
+  },
+  {
+    "test": "Fractional width classified separately",
+    "pass": true
+  },
+  {
+    "test": "Extreme columns are rejected and classified",
+    "pass": true
+  },
+  {
+    "test": "Unsupported action mode is classified without mutation",
+    "pass": true
+  },
+  {
+    "test": "Malformed checklist records schema failure",
+    "pass": true
+  },
+  {
+    "test": "Unknown action emits a warning",
+    "pass": true
+  },
+  {
+    "test": "Stopped action emits bounded warning code",
+    "pass": true
+  },
+  {
+    "test": "Records contain only severity code and source",
+    "pass": true
+  },
+  {
+    "test": "No supplied identity or action data in diagnostics",
+    "pass": true
+  },
+  {
+    "test": "Snapshot API succeeds",
+    "pass": true
+  },
+  {
+    "test": "Snapshot preserves both severity counters",
+    "pass": true
+  },
+  {
+    "test": "Diagnostics flood retained at 32 records",
+    "pass": true
+  },
+  {
+    "test": "Flood counts reflect all 100 instrumented errors",
+    "pass": true
+  },
+  {
+    "test": "Disabled diagnostics keep API failures but do not record",
+    "pass": true
+  },
+  {
+    "test": "Invalid diagnostic toggle rejected",
+    "pass": true
+  },
+  {
+    "test": "Diagnostics can be re-enabled",
+    "pass": true
+  },
+  {
+    "test": "Diagnostic counter saturates without overflow",
+    "pass": true
+  },
+  {
+    "test": "Clear resets records and counters",
+    "pass": true
   }
 ]

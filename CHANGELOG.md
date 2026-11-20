@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.0 — diagnostics and local test safety
+
+- Bounded structured error/warning diagnostics for instrumented validation and dispatch paths, without player/payload fields.
+- Snapshot, clear and enable/disable APIs; no automatic chat/console reporting.
+- Fail-closed local-only test preflight, explicit acknowledgement, no public status/query endpoint, synthetic whitelist and disabled default packet capture.
+- Negative/adversarial diagnostics and test-safety regression checks.
+
+
 ## 2.3.0 — four composite widgets
 
 - Stat card: title, value and description.

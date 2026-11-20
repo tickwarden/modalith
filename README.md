@@ -10,7 +10,7 @@ $return run dialog show @s $(dialog)
 
 The library serializes an NBT compound from storage into an inline dialog definition. It does not register new dialog IDs or bypass vanilla permissions and codecs.
 
-**Version:** 2.3.0 · **Data pack version:** 121.0 · **License:** MIT
+**Version:** 2.4.0 · **Data pack version:** 121.0 · **License:** MIT
 **Repository:** [tickwarden/modalith](https://github.com/tickwarden/modalith)
 
 ## Publication history
@@ -104,11 +104,11 @@ All demo UI, documentation, and contributor-facing text is in English.
 
 ## Install
 
-1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.3.0-mc26.3.zip`.
+1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.4.0-mc26.3.zip`.
 2. Copy it to `<world>/datapacks/`. The ZIP contains `pack.mcmeta` at its root (not an extra `mdl/` directory). You may also install the source `mdl/` folder directly as its own datapack.
 3. Run `/reload`.
 4. The core has no demo opener. Open your own UI through your integration.
-5. Optional: install `modalith-demo-2.3.0-mc26.3.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
+5. Optional: install `modalith-demo-2.4.0-mc26.3.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
 
 With the optional demo installed, the administrator alternative is:
 
@@ -203,3 +203,7 @@ Arbitrary text capture from non-OP players is **not** implemented as a generic v
 Macros do not remove dialog width/layout limits, packet limits, command-chain limits, or permission requirements. A valid ticket proves only that a player submitted an allowed action for their active session—not that a physical button was clicked. Recheck permissions, balances, stock, and state at the point of use.
 
 **Compatibility:** Minecraft Java 26.3 only. Later versions, forks, and proxies need independent testing. This project is not affiliated with Mojang or Microsoft.
+
+## Diagnostics and safe testing
+
+See [diagnostics](docs/DIAGNOSTICS.md) and [test policy](docs/TESTING.md).
