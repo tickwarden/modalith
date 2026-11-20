@@ -1,0 +1,142 @@
+[
+  {
+    "test": "Known-good notice passes real server codec",
+    "pass": true
+  },
+  {
+    "test": "Negative codec control rejects unknown dialog type",
+    "pass": true
+  },
+  {
+    "test": "Label setter succeeds",
+    "pass": true
+  },
+  {
+    "test": "Label preserves quotes and component styling",
+    "pass": true
+  },
+  {
+    "test": "Tooltip setter succeeds",
+    "pass": true
+  },
+  {
+    "test": "Tooltip retains full component",
+    "pass": true
+  },
+  {
+    "test": "Updated label and tooltip pass dialog codec",
+    "pass": true
+  },
+  {
+    "test": "Body clear succeeds",
+    "pass": true
+  },
+  {
+    "test": "Body clear empties only body",
+    "pass": true
+  },
+  {
+    "test": "Body can be rebuilt after clearing",
+    "pass": true
+  },
+  {
+    "test": "Columns accepts 1",
+    "pass": true
+  },
+  {
+    "test": "Columns accepts 3",
+    "pass": true
+  },
+  {
+    "test": "Columns accepts 8",
+    "pass": true
+  },
+  {
+    "test": "Columns rejects 0",
+    "pass": true
+  },
+  {
+    "test": "Columns rejects 9",
+    "pass": true
+  },
+  {
+    "test": "Columns rejects 2.5d",
+    "pass": true
+  },
+  {
+    "test": "after_action accepts close",
+    "pass": true
+  },
+  {
+    "test": "after_action accepts none",
+    "pass": true
+  },
+  {
+    "test": "after_action accepts wait_for_response",
+    "pass": true
+  },
+  {
+    "test": "after_action rejects unknown mode without mutation",
+    "pass": true
+  },
+  {
+    "test": "none forces pause false for valid codec",
+    "pass": true
+  },
+  {
+    "test": "Legacy options delegates to validated columns",
+    "pass": true
+  },
+  {
+    "test": "Legacy options rejects invalid columns",
+    "pass": true
+  },
+  {
+    "test": "Legacy options rejects invalid escape before mutation",
+    "pass": true
+  },
+  {
+    "test": "Label rejects missing last button",
+    "pass": true
+  },
+  {
+    "test": "Tooltip rejects missing last button",
+    "pass": true
+  },
+  {
+    "test": "Native open_url codec",
+    "pass": true
+  },
+  {
+    "test": "Native suggest_command codec",
+    "pass": true
+  },
+  {
+    "test": "Native copy_to_clipboard codec",
+    "pass": true
+  },
+  {
+    "test": "Native inline show_dialog codec",
+    "pass": true
+  },
+  {
+    "test": "Native run_command codec",
+    "pass": true
+  },
+  {
+    "test": "Item body codec on 26.3",
+    "pass": true
+  },
+  {
+    "test": "Four inputs and dynamic numeric submission codec",
+    "pass": true
+  },
+  {
+    "test": "Notice tooltip codec",
+    "pass": true
+  },
+  {
+    "test": "Columns refuses notice without mutation",
+    "pass": true
+  }
+]

@@ -1,6 +1,6 @@
 # Updated 2.0 examples
 
-Install the separate `modalith-demo-2.2.0-mc26.3.zip` alongside the core before using these examples. Source: `mdl_demo`. The core ZIP contains no demos or public demo opener.
+Install the separate `modalith-demo-2.3.0-mc26.3.zip` alongside the core before using these examples. Source: `mdl_demo`. The core ZIP contains no demos or public demo opener.
 
 All runtime examples use **`mdl_demo`**, not the core `mdl` namespace. All callback fields are typed arrays. Existing core APIs still live in `mdl`.
 
@@ -99,3 +99,7 @@ function mdl:api/show
 ## 2.2 controls showcase
 
 On Minecraft 26.3 with core and demo installed, run `function mdl_demo:demo/ui_controls`. It demonstrates body replacement, label replacement, full-component tooltips, three columns and `after_action:none`. See [UI_CONTROLS.md](UI_CONTROLS.md).
+
+## 2.3 widget showcase
+
+With matching core/demo installed: `function mdl_demo:demo/widgets`. This renders stat card, key-value list, checklist and step indicator using static sample values. They are not interactive native controls. Full usage: [WIDGETS.md](WIDGETS.md).

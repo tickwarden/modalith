@@ -5,6 +5,7 @@ Requires a disposable server with core installed. Does not replace player integr
 from pathlib import Path
 import json
 import os
+import re
 from mcrcon import MCRcon
 import nbtlib
 
@@ -18,7 +19,10 @@ with MCRcon(os.getenv('MDL_RCON_HOST', '127.0.0.1'), os.getenv('MDL_RCON_PASSWOR
     def cmd(value):
         return m.command(value)
     def get(path):
-        return nbtlib.parse_nbt(cmd('data get storage mdl:work ' + path).split('contents: ', 1)[1])
+        text = cmd('data get storage mdl:work ' + path).split('contents: ', 1)[1]
+        # nbtlib 2 predates expanded SNBT control-character escapes.
+        text = re.sub(r'\\\\|\\[nrt]', lambda m: {'\\n':'\n','\\r':'\r','\\t':'\t'}.get(m.group(),m.group()), text)
+        return nbtlib.parse_nbt(text)
     def api(name, args=''):
         return cmd('function mdl:api/' + name + (' ' + args if args else ''))
     def draft():
@@ -81,6 +85,67 @@ with MCRcon(os.getenv('MDL_RCON_HOST', '127.0.0.1'), os.getenv('MDL_RCON_PASSWOR
     cmd('data remove storage mdl:work dialog.columns')
     check('Notice tooltip codec', codec())
     check('Columns refuses notice without mutation', 'returned 0' in api('columns', '{columns:2}'))
+
+    # 2.3 composite widget checks: one plain_message per widget, no client UI claimed.
+    def widget(name, args):
+        values = dict(args)
+        lists = {k: values.pop(k) for k in list(values) if isinstance(values[k], list)}
+        values.update({k: [] for k in lists})
+        cmd('data modify storage mdl_test:widget args set value ' + json.dumps(values))
+        for key, entries in lists.items():
+            for entry in entries:
+                cmd('data modify storage mdl_test:widget args.' + key + ' append value ' + json.dumps(entry))
+        return cmd('function mdl:api/widget/' + name + ' with storage mdl_test:widget args')
+    def body():
+        return get('dialog.body')
+    draft()
+    card = {'title':{'text':'Balance','color':'gold'},'value':{'text':'125','bold':True},'description':{'text':'Quoted "coins" $(literal)'},'width':300}
+    check('Stat card appends successfully', 'returned 1' in widget('stat_card', card))
+    check('Stat card uses one plain_message', len(body()) == 2 and str(body()[-1]['type']) == 'minecraft:plain_message')
+    check('Stat card preserves value and quoted description', str(body()[-1]['contents']['extra'][2]['text']) == '125' and str(body()[-1]['contents']['extra'][4]['text']) == 'Quoted "coins" $(literal)')
+    check('Stat card passes actual server codec', codec())
+    before = body().snbt()
+    for width in [0, 1025, 1.5]:
+        check('Widget rejects width ' + str(width) + ' atomically', 'returned 0' in widget('stat_card', dict(card,width=width)) and body().snbt() == before)
+    for width in [1,1024]:
+        check('Widget accepts boundary width ' + str(width), 'returned 1' in widget('stat_card', dict(card,width=width)) and int(body()[-1]['width']) == width)
+    rows = {'title':{'text':'Stats'},'rows':[{'label':{'text':'Health'},'value':{'text':'20','color':'green'}},{'label':{'text':'Mana'},'value':{'text':'15'}}],'width':280}
+    check('Key-value list appends', 'returned 1' in widget('key_value',rows))
+    check('Key-value list preserves row order and style', str(body()[-1]['contents']['extra'][1]['extra'][0]['text']) == 'Health' and str(body()[-1]['contents']['extra'][1]['extra'][2]['color']) == 'green')
+    check('Key-value list codec',codec())
+    check('Empty key-value list renders title only','returned 1' in widget('key_value',dict(rows,rows=[])) and len(body()[-1]['contents']['extra'])==1)
+    check('Key-value list accepts 32 rows','returned 1' in widget('key_value',dict(rows,rows=[rows['rows'][0]]*32)))
+    api('body_clear')
+    before=body().snbt()
+    check('Key-value list rejects row 33 atomically','returned 0' in widget('key_value',dict(rows,rows=[rows['rows'][0]]*33)) and body().snbt()==before)
+    check('Key-value list rejects missing value atomically','returned 0' in widget('key_value',dict(rows,rows=[{'label':{'text':'Bad'}}])) and body().snbt()==before)
+    checklist={'title':{'text':'Tasks'},'items':[{'label':{'text':'A'},'status':'done'},{'label':{'text':'B'},'status':'pending'},{'label':{'text':'C'},'status':'failed'}],'width':280}
+    check('Checklist appends','returned 1' in widget('checklist',checklist))
+    markers=[str(row['extra'][0]['text']) for row in body()[-1]['contents']['extra'][1:]]
+    check('Checklist distinguishes three states',markers==['[x] ','[ ] ','[!] '])
+    check('Checklist codec',codec())
+    before=body().snbt()
+    check('Unknown checklist state rejects entire widget','returned 0' in widget('checklist',dict(checklist,items=[checklist['items'][0],{'label':{'text':'Bad'},'status':'unknown'}])) and body().snbt()==before)
+    check('Checklist accepts 32 items','returned 1' in widget('checklist',dict(checklist,items=[checklist['items'][0]]*32)))
+    api('body_clear')
+    before=body().snbt()
+    check('Checklist rejects item 33 atomically','returned 0' in widget('checklist',dict(checklist,items=[checklist['items'][0]]*33)) and body().snbt()==before)
+    steps={'title':{'text':'Checkout'},'steps':[{'label':{'text':'Cart'}},{'label':{'text':'Pay'}},{'label':{'text':'Done'}}],'current':2,'width':300}
+    check('Step indicator appends','returned 1' in widget('step_indicator',steps))
+    markers=[str(row['extra'][0]['text']) for row in body()[-1]['contents']['extra'][1:]]
+    check('Step indicator marks completed/current/pending',markers==['[+] ','[>] ','[ ] '])
+    check('Step indicator codec',codec())
+    before=body().snbt()
+    for current in [0,4,1.5]:
+        check('Step indicator rejects position ' + str(current),'returned 0' in widget('step_indicator',dict(steps,current=current)) and body().snbt()==before)
+    check('Step indicator accepts 16 steps','returned 1' in widget('step_indicator',dict(steps,steps=[steps['steps'][0]]*16,current=16)))
+    api('body_clear')
+    before=body().snbt()
+    check('Step indicator rejects step 17 atomically','returned 0' in widget('step_indicator',dict(steps,steps=[steps['steps'][0]]*17,current=1)) and body().snbt()==before)
+    check('Step indicator rejects empty list','returned 0' in widget('step_indicator',dict(steps,steps=[],current=1)) and body().snbt()==before)
+    check('Widgets leave buttons intact', len(get('dialog.actions'))==1 and str(get('dialog.actions[0].label.text'))=='Old')
+    cmd('data remove storage mdl:work dialog')
+    check('Widget refuses missing draft','returned 0' in widget('stat_card',card))
 
 Path('SERVER_26_3_RESULTS.json').write_text(json.dumps(results, indent=2) + '\n')
 print(sum(x['pass'] for x in results), '/', len(results))

@@ -1,0 +1,22 @@
+{
+  "version": "2.2.0",
+  "minecraft": "26.3",
+  "java": "Temurin 25.0.5",
+  "pack_version": [
+    121,
+    0
+  ],
+  "protocol_version": 777,
+  "run_at": "2026-11-12T14:29:21.021630+00:00",
+  "server_sha1": "33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c",
+  "server_checks": 35,
+  "server_checks_passed": 35,
+  "test_scope": "RCON draft API and real server argument-codec instantiation with zero players",
+  "player_integration_executed": false,
+  "player_integration_blocker": "Pinned minecraft-protocol 1.68.0/minecraft-data do not provide a 26.3 protocol schema. Historical 178 checks preserved separately, not relabeled.",
+  "graphical_ui_qa": false,
+  "runtime_source_identical": true,
+  "static_functions": 220,
+  "unit_tests": 13,
+  "function_load_errors": false
+}

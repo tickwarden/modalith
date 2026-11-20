@@ -1,10 +1,10 @@
-# Testing — 2.2 / Minecraft 26.3
+# Testing — 2.3 / Minecraft 26.3
 
 ## Latest target and real-server validation
 
 The official vanilla **26.3** dedicated server runs with **Java 25**. Its embedded version.json declares data pack version **121.0** and protocol **777**. Metadata uses min_format/max_format arrays, not legacy pack_format 80.
 
-**35/35 RCON server checks pass**, recorded in `TEST_RESULTS.json` and `tests/run-metadata.json`. They exercise:
+**68/68 RCON server checks pass**, recorded in `TEST_RESULTS.json` and `tests/run-metadata.json`. They exercise:
 
 - Known-good and deliberately invalid dialog codec controls.
 - Last-button label and tooltip setters, complete styled/quoted components and missing-target rejection.
@@ -40,7 +40,7 @@ python tools/build.py
 cd artifacts && sha256sum --check SHA256SUMS
 ```
 
-**13/13 unit/layout tests** pass. They validate format ranges, the new predicate discriminator, APIs, draft validation structure, English docs/runtime, empty production observer tags, separate deterministic core/demo ZIPs and no demo references in core. Static checks are not a complete Minecraft command/macro parser.
+**14/14 unit/layout tests** pass. They validate format ranges, the new predicate discriminator, APIs, draft validation structure, English docs/runtime, empty production observer tags, separate deterministic core/demo ZIPs and no demo references in core. Static checks are not a complete Minecraft command/macro parser.
 
 PR CI runs these static/unit/build/checksum checks and uploads both artifacts. It does not start Minecraft or imply the real-server suite ran on GitHub.
 
@@ -54,3 +54,7 @@ PR CI runs these static/unit/build/checksum checks and uploads both artifacts. I
 6. Inspect `SERVER_26_3_RESULTS.json`, stdout and server load logs. No synthetic clients are needed for this narrower suite.
 
 The optional demo must be installed separately for graphical/manual testing; `/trigger mdl.open` belongs only to that pack. Both archives place pack.mcmeta at their roots, with no extra source folder.
+
+## 2.3 widget coverage
+
+The suite retains the previous 35 checks and adds 33 widget assertions: component value/quote/style preservation, one-body output, width boundaries and fractional rejection, key-value row order/missing fields/0–32 bounds, checklist state markers/invalid status/32-entry boundary, and step position/16-entry bounds. Invalid-input checks compare body snapshots to confirm no partial append. The test reader normalizes SNBT control-character escapes because nbtlib 2 predates the server newline escape syntax. This is a test-reader compatibility shim, not a production-data change. Native codec instantiation uses a positive and negative control; zero synthetic players are involved. 2.2 results are archived in tests/history/2.2.0.

@@ -1,4 +1,4 @@
-# API reference — 2.2.0
+# API reference — 2.3.0
 
 ## Conventions
 
@@ -264,3 +264,7 @@ Both accept an NBT int in 1..1024. Call after adding the target and before show/
 ## 2.2 UI setters
 
 See [UI_CONTROLS.md](UI_CONTROLS.md) for `button_label {label}`, `body_clear`, `button_tooltip {text}`, `columns {columns:1..8}` and `after_action {value}`. These affect drafts before display/conversion, not committed player frames.
+
+## 2.3 composite body widgets
+
+`widget/stat_card`, `widget/key_value`, `widget/checklist`, and `widget/step_indicator` append read-only plain_message body layouts. See [WIDGETS.md](WIDGETS.md) for complete schemas, list bounds, validation and rendering limits.

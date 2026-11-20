@@ -138,5 +138,137 @@
   {
     "test": "Columns refuses notice without mutation",
     "pass": true
+  },
+  {
+    "test": "Stat card appends successfully",
+    "pass": true
+  },
+  {
+    "test": "Stat card uses one plain_message",
+    "pass": true
+  },
+  {
+    "test": "Stat card preserves value and quoted description",
+    "pass": true
+  },
+  {
+    "test": "Stat card passes actual server codec",
+    "pass": true
+  },
+  {
+    "test": "Widget rejects width 0 atomically",
+    "pass": true
+  },
+  {
+    "test": "Widget rejects width 1025 atomically",
+    "pass": true
+  },
+  {
+    "test": "Widget rejects width 1.5 atomically",
+    "pass": true
+  },
+  {
+    "test": "Widget accepts boundary width 1",
+    "pass": true
+  },
+  {
+    "test": "Widget accepts boundary width 1024",
+    "pass": true
+  },
+  {
+    "test": "Key-value list appends",
+    "pass": true
+  },
+  {
+    "test": "Key-value list preserves row order and style",
+    "pass": true
+  },
+  {
+    "test": "Key-value list codec",
+    "pass": true
+  },
+  {
+    "test": "Empty key-value list renders title only",
+    "pass": true
+  },
+  {
+    "test": "Key-value list accepts 32 rows",
+    "pass": true
+  },
+  {
+    "test": "Key-value list rejects row 33 atomically",
+    "pass": true
+  },
+  {
+    "test": "Key-value list rejects missing value atomically",
+    "pass": true
+  },
+  {
+    "test": "Checklist appends",
+    "pass": true
+  },
+  {
+    "test": "Checklist distinguishes three states",
+    "pass": true
+  },
+  {
+    "test": "Checklist codec",
+    "pass": true
+  },
+  {
+    "test": "Unknown checklist state rejects entire widget",
+    "pass": true
+  },
+  {
+    "test": "Checklist accepts 32 items",
+    "pass": true
+  },
+  {
+    "test": "Checklist rejects item 33 atomically",
+    "pass": true
+  },
+  {
+    "test": "Step indicator appends",
+    "pass": true
+  },
+  {
+    "test": "Step indicator marks completed/current/pending",
+    "pass": true
+  },
+  {
+    "test": "Step indicator codec",
+    "pass": true
+  },
+  {
+    "test": "Step indicator rejects position 0",
+    "pass": true
+  },
+  {
+    "test": "Step indicator rejects position 4",
+    "pass": true
+  },
+  {
+    "test": "Step indicator rejects position 1.5",
+    "pass": true
+  },
+  {
+    "test": "Step indicator accepts 16 steps",
+    "pass": true
+  },
+  {
+    "test": "Step indicator rejects step 17 atomically",
+    "pass": true
+  },
+  {
+    "test": "Step indicator rejects empty list",
+    "pass": true
+  },
+  {
+    "test": "Widgets leave buttons intact",
+    "pass": true
+  },
+  {
+    "test": "Widget refuses missing draft",
+    "pass": true
   }
 ]
