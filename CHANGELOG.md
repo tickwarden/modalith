@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.5.0
+
+- Three read-only widgets: callout, comparison and timeline.
+- Three draft settings: Escape, pause and default body width.
+- Structural draft validation, indexed body replacement and removal.
+- Integer/bounds diagnostics, optional standalone demo and adversarial regression checks.
+
+
 ## 2.4.0 — diagnostics and local test safety
 
 - Bounded structured error/warning diagnostics for instrumented validation and dispatch paths, without player/payload fields.

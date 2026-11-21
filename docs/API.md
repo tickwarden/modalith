@@ -1,4 +1,4 @@
-# API reference — 2.3.0
+# API reference - 2.5.0
 
 ## Conventions
 
@@ -272,3 +272,9 @@ See [UI_CONTROLS.md](UI_CONTROLS.md) for `button_label {label}`, `body_clear`, `
 ## Diagnostics and safe testing
 
 See [diagnostics](DIAGNOSTICS.md) and [test policy](TESTING.md).
+
+## Nine UI features (2.5)
+
+See [schemas and examples](NINE_FEATURES.md): `widget/callout`, `widget/comparison`,
+`widget/timeline`, `escape`, `pause`, `body_width` (with `body_default`), `validate`,
+`body_set` and `body_remove`.

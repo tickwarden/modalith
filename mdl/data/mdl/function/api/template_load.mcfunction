@@ -3,6 +3,7 @@ $execute unless data storage mdl:templates entries.$(key) run return 0
 $data modify storage mdl:template source set from storage mdl:templates entries.$(key)
 execute if data storage mdl:template source{notification:1b} run return 0
 function mdl:api/begin
+execute if data storage mdl:template source.body_width run data modify storage mdl:work body_width set from storage mdl:template source.body_width
 data modify storage mdl:work dialog set from storage mdl:template source.dialog
 data modify storage mdl:work form set from storage mdl:template source.form
 data modify storage mdl:work view set from storage mdl:template source.view

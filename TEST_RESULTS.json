@@ -350,5 +350,501 @@
   {
     "test": "Clear resets records and counters",
     "pass": true
+  },
+  {
+    "test": "Callout info appends",
+    "pass": true
+  },
+  {
+    "test": "Callout info native codec",
+    "pass": true
+  },
+  {
+    "test": "Callout info marker color",
+    "pass": true
+  },
+  {
+    "test": "Callout success appends",
+    "pass": true
+  },
+  {
+    "test": "Callout success native codec",
+    "pass": true
+  },
+  {
+    "test": "Callout success marker color",
+    "pass": true
+  },
+  {
+    "test": "Callout warning appends",
+    "pass": true
+  },
+  {
+    "test": "Callout warning native codec",
+    "pass": true
+  },
+  {
+    "test": "Callout warning marker color",
+    "pass": true
+  },
+  {
+    "test": "Callout error appends",
+    "pass": true
+  },
+  {
+    "test": "Callout error native codec",
+    "pass": true
+  },
+  {
+    "test": "Callout error marker color",
+    "pass": true
+  },
+  {
+    "test": "Unknown callout level is atomic",
+    "pass": true
+  },
+  {
+    "test": "Callout scalar component rejected",
+    "pass": true
+  },
+  {
+    "test": "comparison accepts 0",
+    "pass": true
+  },
+  {
+    "test": "comparison codec 0",
+    "pass": true
+  },
+  {
+    "test": "comparison preserves quoted title 0",
+    "pass": true
+  },
+  {
+    "test": "comparison accepts 1",
+    "pass": true
+  },
+  {
+    "test": "comparison codec 1",
+    "pass": true
+  },
+  {
+    "test": "comparison preserves quoted title 1",
+    "pass": true
+  },
+  {
+    "test": "comparison preserves row order",
+    "pass": true
+  },
+  {
+    "test": "comparison accepts 32",
+    "pass": true
+  },
+  {
+    "test": "comparison codec 32",
+    "pass": true
+  },
+  {
+    "test": "comparison preserves quoted title 32",
+    "pass": true
+  },
+  {
+    "test": "comparison rejects 33 rows",
+    "pass": true
+  },
+  {
+    "test": "comparison rejects scalar list",
+    "pass": true
+  },
+  {
+    "test": "comparison rejects string list",
+    "pass": true
+  },
+  {
+    "test": "comparison rejects missing fields",
+    "pass": true
+  },
+  {
+    "test": "comparison rejects fractional width",
+    "pass": true
+  },
+  {
+    "test": "timeline accepts 0",
+    "pass": true
+  },
+  {
+    "test": "timeline codec 0",
+    "pass": true
+  },
+  {
+    "test": "timeline preserves quoted title 0",
+    "pass": true
+  },
+  {
+    "test": "timeline accepts 1",
+    "pass": true
+  },
+  {
+    "test": "timeline codec 1",
+    "pass": true
+  },
+  {
+    "test": "timeline preserves quoted title 1",
+    "pass": true
+  },
+  {
+    "test": "timeline preserves row order",
+    "pass": true
+  },
+  {
+    "test": "timeline accepts 32",
+    "pass": true
+  },
+  {
+    "test": "timeline codec 32",
+    "pass": true
+  },
+  {
+    "test": "timeline preserves quoted title 32",
+    "pass": true
+  },
+  {
+    "test": "timeline rejects 33 rows",
+    "pass": true
+  },
+  {
+    "test": "timeline rejects scalar list",
+    "pass": true
+  },
+  {
+    "test": "timeline rejects string list",
+    "pass": true
+  },
+  {
+    "test": "timeline rejects missing fields",
+    "pass": true
+  },
+  {
+    "test": "timeline rejects fractional width",
+    "pass": true
+  },
+  {
+    "test": "escape accepts 0",
+    "pass": true
+  },
+  {
+    "test": "escape accepts 1",
+    "pass": true
+  },
+  {
+    "test": "escape accepts 0b",
+    "pass": true
+  },
+  {
+    "test": "escape accepts 1b",
+    "pass": true
+  },
+  {
+    "test": "escape accepts 1.0d",
+    "pass": true
+  },
+  {
+    "test": "escape rejects 2",
+    "pass": true
+  },
+  {
+    "test": "escape rejects -1",
+    "pass": true
+  },
+  {
+    "test": "escape rejects 0.5d",
+    "pass": true
+  },
+  {
+    "test": "escape rejects \"invalid\"",
+    "pass": true
+  },
+  {
+    "test": "pause accepts 0",
+    "pass": true
+  },
+  {
+    "test": "pause accepts 1",
+    "pass": true
+  },
+  {
+    "test": "pause accepts 0b",
+    "pass": true
+  },
+  {
+    "test": "pause accepts 1b",
+    "pass": true
+  },
+  {
+    "test": "pause accepts 1.0d",
+    "pass": true
+  },
+  {
+    "test": "pause rejects 2",
+    "pass": true
+  },
+  {
+    "test": "pause rejects -1",
+    "pass": true
+  },
+  {
+    "test": "pause rejects 0.5d",
+    "pass": true
+  },
+  {
+    "test": "pause rejects \"invalid\"",
+    "pass": true
+  },
+  {
+    "test": "Pause true incompatible with none",
+    "pass": true
+  },
+  {
+    "test": "Pause false compatible with none",
+    "pass": true
+  },
+  {
+    "test": "Existing none setter still normalizes pause",
+    "pass": true
+  },
+  {
+    "test": "Default body fallback is 300",
+    "pass": true
+  },
+  {
+    "test": "Set default body width 1",
+    "pass": true
+  },
+  {
+    "test": "Inherited width 1",
+    "pass": true
+  },
+  {
+    "test": "Set default body width 1024",
+    "pass": true
+  },
+  {
+    "test": "Inherited width 1024",
+    "pass": true
+  },
+  {
+    "test": "Set default body width 240",
+    "pass": true
+  },
+  {
+    "test": "Inherited width 240",
+    "pass": true
+  },
+  {
+    "test": "Explicit body width wins over default",
+    "pass": true
+  },
+  {
+    "test": "Invalid default width preserved 0",
+    "pass": true
+  },
+  {
+    "test": "Invalid default width preserved 1025",
+    "pass": true
+  },
+  {
+    "test": "Invalid default width preserved -1",
+    "pass": true
+  },
+  {
+    "test": "Invalid default width preserved 1.5d",
+    "pass": true
+  },
+  {
+    "test": "Invalid default width preserved \"wide\"",
+    "pass": true
+  },
+  {
+    "test": "Invalid explicit width atomic",
+    "pass": true
+  },
+  {
+    "test": "Default bodies native codec",
+    "pass": true
+  },
+  {
+    "test": "Replace first body",
+    "pass": true
+  },
+  {
+    "test": "Replacement preserves length and actions",
+    "pass": true
+  },
+  {
+    "test": "Replacement preserves styled component",
+    "pass": true
+  },
+  {
+    "test": "Replacement codec",
+    "pass": true
+  },
+  {
+    "test": "body_set invalid index -1",
+    "pass": true
+  },
+  {
+    "test": "body_set invalid index 1.5d",
+    "pass": true
+  },
+  {
+    "test": "body_set invalid index 999999",
+    "pass": true
+  },
+  {
+    "test": "body_set invalid index 2147483647",
+    "pass": true
+  },
+  {
+    "test": "body_set invalid index \"invalid\"",
+    "pass": true
+  },
+  {
+    "test": "body_remove invalid index -1",
+    "pass": true
+  },
+  {
+    "test": "body_remove invalid index 1.5d",
+    "pass": true
+  },
+  {
+    "test": "body_remove invalid index 999999",
+    "pass": true
+  },
+  {
+    "test": "body_remove invalid index 2147483647",
+    "pass": true
+  },
+  {
+    "test": "body_remove invalid index \"invalid\"",
+    "pass": true
+  },
+  {
+    "test": "Replacement invalid width atomic",
+    "pass": true
+  },
+  {
+    "test": "Text replacement refuses item body",
+    "pass": true
+  },
+  {
+    "test": "Remove item body",
+    "pass": true
+  },
+  {
+    "test": "Remove first body",
+    "pass": true
+  },
+  {
+    "test": "Removal preserves actions",
+    "pass": true
+  },
+  {
+    "test": "Replacement uses existing body theme",
+    "pass": true
+  },
+  {
+    "test": "Validator accepts valid draft",
+    "pass": true
+  },
+  {
+    "test": "Validator does not modify draft",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects columns=0",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects columns=2.5d",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects after_action=\"invalid\"",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects body=\"bad\"",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects body=[{type:\"minecraft:unknown\"}]",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects body=[{type:\"minecraft:plain_message\",contents:{text:\"Bad\"},width:0}]",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects title=\"scalar\"",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects actions=[]",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects pause=2b",
+    "pass": true
+  },
+  {
+    "test": "Validator rejects pause-none conflict",
+    "pass": true
+  },
+  {
+    "test": "Validator accepts notice conversion",
+    "pass": true
+  },
+  {
+    "test": "Validator accepts confirmation conversion",
+    "pass": true
+  },
+  {
+    "test": "Removing empty body fails atomically",
+    "pass": true
+  },
+  {
+    "test": "escape refuses absent draft",
+    "pass": true
+  },
+  {
+    "test": "pause refuses absent draft",
+    "pass": true
+  },
+  {
+    "test": "body_width refuses absent draft",
+    "pass": true
+  },
+  {
+    "test": "body_default refuses absent draft",
+    "pass": true
+  },
+  {
+    "test": "body_set refuses absent draft",
+    "pass": true
+  },
+  {
+    "test": "body_remove refuses absent draft",
+    "pass": true
+  },
+  {
+    "test": "validate refuses absent draft",
+    "pass": true
+  },
+  {
+    "test": "widget/callout refuses absent draft",
+    "pass": true
+  },
+  {
+    "test": "New failures are diagnosed",
+    "pass": true
   }
 ]

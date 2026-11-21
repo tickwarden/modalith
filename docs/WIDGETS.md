@@ -1,4 +1,7 @@
-# Four composite widgets — 2.3
+# Composite widgets
+
+The original four widgets below were introduced in 2.3. Three additional widgets
+(callout, comparison and timeline) are documented in [the 2.5 guide](NINE_FEATURES.md).
 
 These APIs build **read-only text layouts** using a single vanilla `minecraft:plain_message` body each. They do not register new widget IDs, add an image renderer, create interactive checkboxes or provide a native table/card/stepper control. They require Minecraft Java 26.3 and the normal Modalith draft workflow.
 

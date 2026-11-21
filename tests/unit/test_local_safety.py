@@ -89,7 +89,7 @@ class LocalSafetyTests(unittest.TestCase):
 
     def test_real_entrypoints_refuse_before_optional_dependencies_or_connections(self):
         env = {k:v for k,v in os.environ.items() if not k.startswith('MDL_')}
-        for script in ['integration.py', 'server_26_3.py']:
+        for script in ['integration.py', 'server_26_3.py', 'server_nine.py']:
             result = subprocess.run([sys.executable, str(ROOT / 'tests' / script)], env=env, capture_output=True, text=True, timeout=10)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('MDL_LOCAL_TEST_ACK', result.stderr)

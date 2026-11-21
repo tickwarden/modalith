@@ -1,0 +1,28 @@
+{
+  "version": "2.4.0",
+  "minecraft": "26.3",
+  "java": "Temurin 25.0.5.1",
+  "pack_version": [
+    121,
+    0
+  ],
+  "run_at": "2026-11-20T17:00:23.409849+00:00",
+  "server_sha1": "33680f5f2ac32864d6d7cf5e56a705fdb3e05f4c",
+  "server_checks": 88,
+  "server_checks_passed": 88,
+  "unit_tests": 24,
+  "static_functions": 241,
+  "static_dialog_json": 0,
+  "function_load_errors": false,
+  "runtime_source_identical": true,
+  "human_players_connected": false,
+  "synthetic_game_clients_started": false,
+  "test_scope": "RCON-only draft APIs, diagnostics and codec checks; no graphical/player session QA",
+  "native_server_binds_loopback": true,
+  "status_query_disabled": true,
+  "synthetic_whitelist_only": true,
+  "ip_log_property_disabled": true,
+  "platform_port_forwarders_observed": true,
+  "network_boundary_note": "The Java listeners were loopback-bound, but the hosted platform exposed separate forwarding listeners. This is not proof of network isolation. The test server was stopped after checks; no public accessibility or privacy guarantee is asserted. Do not run with forwarding/proxy exposure.",
+  "raw_server_logs_published": false
+}
