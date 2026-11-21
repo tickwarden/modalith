@@ -1,5 +1,5 @@
 function mdl:api/begin
-function mdl:api/title {text: {text: "MODALITH 2.0 • Macro Laboratory", color: "aqua", bold: 1b}}
+function mdl:api/title {text: {text: "MODALITH 2.5 • Macro Laboratory", color: "aqua", bold: 1b}}
 function mdl:api/body {text: {text: "No static dialog files. This screen was built at runtime: storage → SNBT → macro.", color: "gray"}, width: 310}
 function mdl:api/view {callback:[{type:"function",function:"mdl_demo:demo/home"}], payload: {}}
 function mdl:api/button {label: {text: "Dynamic catalog • 80 items"}, callback:[{type:"function",function:"mdl_demo:demo/catalog"}], payload: {}}
@@ -15,5 +15,6 @@ function mdl:api/button {label:{text:"2.0 • Typed actions + hooks",color:"aqua
 function mdl:api/button {label:{text:"2.1 • Six runtime features",color:"gold"},callback:[{type:"function",function:"mdl_demo:demo/runtime"}],payload:{}}
 function mdl:api/button {label:{text:"2.2 • Tooltip, layout and body controls"},callback:[{type:"function",function:"mdl_demo:demo/ui_controls"}],payload:{}}
 function mdl:api/button {label:{text:"2.3 • Four composite widgets"},callback:[{type:"function",function:"mdl_demo:demo/widgets"}],payload:{}}
+function mdl:api/button {label:{text:"2.5 - Nine UI features",color:"aqua"},callback:[{type:"function",function:"mdl_demo:demo/nine_features"}],payload:{}}
 function mdl:api/exit {label: {text: "Close"}, callback:[{type:"close"}], payload: {}}
 function mdl:api/show

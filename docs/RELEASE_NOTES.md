@@ -1,9 +1,22 @@
-# Modalith 2.3.0
+# Modalith 2.5.0
 
-Minecraft Java 26.3 / Java 25 / datapack version 121.0.
+Minecraft Java 26.3 / Java 25 / datapack 121.0.
 
-Four new read-only composite widgets: stat card, key-value list, checklist and step indicator. They append ordinary plain_message body components, preserve supplied text styles, use validated width/list bounds and reject known invalid models without partial body output. No new native widget types or interactive checkbox/table controls are claimed.
+Nine new features: three read-only widgets (callout, comparison, timeline), three
+draft settings (Escape, pause, default body width), and three tools (structural
+validator, indexed body replacement and removal). The supporting `body_default`
+entrypoint avoids optional macro arguments; existing valid explicit-width body
+calls retain their signature. Default width resets at begin and is copied by templates.
 
-API guide: docs/WIDGETS.md. Optional demo: mdl_demo:demo/widgets. Core and demo remain independent datapacks; existing 2.2 APIs remain available.
+New errors use the existing bounded diagnostics. Structural validation is not the
+full native codec; widgets are ordinary text, not interactive/native new controls.
+No player session, multiplayer pausing, complete input-schema validation or GUI QA
+is claimed. English documentation: docs/NINE_FEATURES.md. Optional demo:
+mdl_demo:demo/nine_features. Core remains independent of demo/test fixtures.
 
-Validation: 68/68 real-server RCON/codec checks (35 previous + 33 widgets), 14/14 unit/layout tests, static lint and deterministic package/checksum checks. No manual graphical UI or end-to-end player session testing is claimed. PR CI runs static/unit/build checks, not the server suite.
+Live RCON/codec suites run in a separate Linux network namespace with loopback only,
+with server shutdown in a finally block. See docs/TESTING.md for final counts/evidence.
+CI runs static/unit/build checks, not the live server suites. No auto-merge.
+
+Verified: 212/212 live RCON/codec checks (88 prior + 124 new), 32/32 unit tests,
+262 functions linted with zero errors, deterministic core/demo packaging and checksums.

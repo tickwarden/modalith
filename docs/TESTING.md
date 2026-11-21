@@ -1,3 +1,45 @@
+# Current verification: 2.5.0
+
+- Official vanilla Minecraft 26.3 / Java 25: **212/212** RCON/API/codec checks
+  (88 prior regressions plus 124 new-feature checks).
+- Python: **32/32** offline unit tests; lint: **262 functions, 0 errors**.
+- Installed runtime data and pack metadata match source byte-for-byte; no function
+  load errors. Core/demo archive layout, reproducibility and checksums verified.
+- No player clients (human or synthetic) were connected. No graphical, player-session,
+  end-to-end trigger or DDoS test is claimed. Begin/template default-width wiring has
+  structural unit coverage, not live player-session coverage.
+- Current results: `TEST_RESULTS.json` and `tests/run-metadata.json`.
+  The sandbox clock differs from the session date; metadata preserves it as an
+  explicitly labeled environment reading, not an asserted wall-clock timestamp.
+  Prior evidence remains under `tests/history/2.4.0/` and earlier history directories.
+
+## Isolated live-test harness
+
+The 2.5 run used a separate Linux network namespace with **only loopback**, no external
+interface, a namespace different from the launching environment, and no game clients.
+This replaces the shared hosted networking used in the previous run. Java was stopped
+in the harness cleanup; test credentials/world/runtime are not release artifacts.
+
+On a Linux machine where namespace creation is permitted, prepare a new disposable
+runtime as documented below, review official downloads and accept the EULA explicitly.
+Then, adapting the local user/interpreter paths as necessary:
+
+```sh
+sudo env MDL_HOST_NETNS="$(readlink /proc/self/ns/net)" unshare -n sh -c \
+  'ip link set lo up; exec runuser -u user -- /usr/local/bin/python tests/run_isolated.py /absolute/runtime'
+```
+
+The harness verifies loopback-only interfaces and a changed namespace **before** Java
+starts, then executes both server suites and stops Java in `finally`. It does not
+create/download a server, accept an EULA, configure a firewall or make a namespace
+safe by itself. Missing prerequisites fail closed. It needs Linux `ip`, `unshare`,
+`runuser`, Python test dependencies and Java 25 in the prepared runtime. The normal
+RCON test preflight remains active. Do not add veth interfaces, proxies or forwarding.
+The host administrator can still inspect/control a namespace: this is not protection
+against a hostile hosting provider or an IP anonymity/DDoS guarantee.
+
+## Previous 2.4 verification and preparation policy (historical evidence)
+
 # Current verification: 2.4.0
 
 - Official vanilla Minecraft 26.3, Java 25: **88/88** RCON/API/codec checks.

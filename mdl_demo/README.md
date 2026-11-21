@@ -1,8 +1,8 @@
 # Modalith optional demo datapack
 
-Requires the matching Modalith core (currently 2.4.0) and Minecraft Java 26.3.
+Requires the matching Modalith core (currently 2.5.0) and Minecraft Java 26.3.
 
-Install `modalith-demo-2.4.0-mc26.3.zip` alongside `modalith-2.4.0-mc26.3.zip` in the world datapacks directory and reload. Alternatively copy this directory as its own datapack; pack.mcmeta must be at its root. Do not merge its data directory into core.
+Install `modalith-demo-2.5.0-mc26.3.zip` alongside `modalith-2.5.0-mc26.3.zip` in the world datapacks directory and reload. Alternatively copy this directory as its own datapack; pack.mcmeta must be at its root. Do not merge its data directory into core.
 
 Run `/trigger mdl.open` as a player. Administrator shortcut: `/execute as <player> at @s run function mdl_demo:demo/home`.
 
@@ -11,3 +11,5 @@ Only this optional pack creates/handles mdl.open and the demo scoreboard. Removi
 Core has no dependency on this pack. This demo is intentionally public; omit it from private deployments. Closing open demo sessions before removing it avoids callbacks that reference removed demo functions. Build both archives with `python tools/build.py` from the repository root. The core source datapack is the sibling `mdl/` directory.
 
 Static/layout validation covers this extraction; the vanilla integration suite has not yet been rerun with the separate pack layout.
+
+2.5 demo: `mdl_demo:demo/nine_features` (also linked from the home menu).

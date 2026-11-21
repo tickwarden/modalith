@@ -10,7 +10,7 @@ $return run dialog show @s $(dialog)
 
 The library serializes an NBT compound from storage into an inline dialog definition. It does not register new dialog IDs or bypass vanilla permissions and codecs.
 
-**Version:** 2.4.0 · **Data pack version:** 121.0 · **License:** MIT
+**Version:** 2.5.0 · **Data pack version:** 121.0 · **License:** MIT
 **Repository:** [tickwarden/modalith](https://github.com/tickwarden/modalith)
 
 ## Publication history
@@ -19,7 +19,16 @@ Modalith started at **1.0.0**, not 1.3.0. Versions **1.0.0, 1.1.0, and 1.2.0** w
 
 The initial GitHub commit therefore imports the accumulated 1.3.0 source; it is **not the project's first development version**. Earlier development stages are documented in the [changelog](CHANGELOG.md), but their original commit-by-commit history is not present in this repository. Those entries describe pre-publication versions, not prior GitHub Releases or tags.
 
-## New in 2.3: four composite widgets
+## New in 2.5: nine UI features
+
+- **Widgets:** callout, comparison and timeline (read-only text layouts).
+- **Settings:** independent Escape, pause and draft-local default body width.
+- **Tools:** structural validation, indexed body replacement and removal.
+
+See [the nine-feature guide](docs/NINE_FEATURES.md) for schemas, limits and examples.
+Default-width text uses `body_default`; existing explicit `body` calls stay supported.
+
+## Previously in 2.3: four composite widgets
 
 - **Stat card:** title, value and description.
 - **Key-value list:** up to 32 ordered labeled values.
@@ -104,11 +113,11 @@ All demo UI, documentation, and contributor-facing text is in English.
 
 ## Install
 
-1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.4.0-mc26.3.zip`.
+1. The core source datapack lives in `mdl/`; the optional demo lives in `mdl_demo/`. Build or download `modalith-2.5.0-mc26.3.zip`.
 2. Copy it to `<world>/datapacks/`. The ZIP contains `pack.mcmeta` at its root (not an extra `mdl/` directory). You may also install the source `mdl/` folder directly as its own datapack.
 3. Run `/reload`.
 4. The core has no demo opener. Open your own UI through your integration.
-5. Optional: install `modalith-demo-2.4.0-mc26.3.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
+5. Optional: install `modalith-demo-2.5.0-mc26.3.zip` alongside core, reload, then run `/trigger mdl.open` without OP.
 
 With the optional demo installed, the administrator alternative is:
 
